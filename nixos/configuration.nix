@@ -11,8 +11,8 @@ in
 {
   imports =
     [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      inputs.home-manager.nixosModules.default
+      /etc/nixos/hardware-configuration.nix
+      # inputs.home-manager.nixosModules.default
     ];
 
   # Bootloader.
