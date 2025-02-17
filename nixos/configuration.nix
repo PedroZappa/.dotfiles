@@ -127,9 +127,9 @@ in
     # Interpreters
     lua
     luajitPackages.luarocks
-    python39
+    python3Full
     # Compilers
-		clang
+		unstable.clang
     gcc
     # Build Tools
     gnumake42
