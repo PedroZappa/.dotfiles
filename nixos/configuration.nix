@@ -93,6 +93,7 @@
       neo-cowsay
       fortune
       fortune-kind
+      clolcat
     ];
   };
 
@@ -106,6 +107,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     ghostty
+    tmux
     zsh
     nushell
     atuin
@@ -114,7 +116,7 @@
     neovim
     lua
     luajitPackages.luarocks
-    tmux
+    python39
     git
 		clang
     gnumake42
@@ -166,6 +168,13 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.11"; # Did you read the comment?
+
+  # Create Symlinks to interpreters
+  system.activationScripts.createBinEnv = {
+    text = ''
+      ln -s /run/current-system/sw/bin/env /usr/bin/env
+    '';
+  };
   system.activationScripts.createBinBash = {
     text = ''
       ln -s /run/current-system/sw/bin/bash /bin/bash
