@@ -106,32 +106,47 @@ in
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    git
+    # Terminals
     ghostty
     tmux
+    # Shell
     zsh
     nushell
     atuin
     starship
+    # Editors
     vim
     neovim
+    # Interpreters
     lua
     luajitPackages.luarocks
     python39
-    git
+    # Compilers
 		clang
-    valgrind
+    gcc
+    # Build Tools
     gnumake42
+    # Libs
+    juce
+    readline
+    # Debug & Heuristics
+    valgrind
+    gdb
     cmake
+    # Package Managers
     cargo
+    uv
+    # Web
     google-chrome
     nodejs_23
     wget
     curl
+    # Utils
     unzip
     fzf
     ripgrep
     yarn
-    uv
     bat
     fx
     alejandra
@@ -153,12 +168,18 @@ in
 
   # List services that you want to enable:
 
+  # Enable mDNS responder to resolve IP addresses
+  services.avahi.enable = true;
+
   # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
+  services.openssh = {
+    enable = true;
+    ports = [ 22 ];
+  };
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
+  networking.firewall.allowedTCPPorts = [ 22 ];
+  networking.firewall.allowedUDPPorts = [ 22 ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
@@ -171,7 +192,6 @@ in
   system.stateVersion = "24.11"; # Did you read the comment?
 
   # Create Symlinks to interpreters
-# Create Symlinks to interpreters
   system.activationScripts.createInterpreterLinks = {
     text = ''
       if [ ! -e /usr/bin/env ]; then
