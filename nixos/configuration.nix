@@ -17,7 +17,7 @@
   boot.loader.grub.device = "/dev/sda";
   boot.loader.grub.useOSProber = true;
 
-  networking.hostName = "z"; # Define your hostname.
+  networking.hostName = "znix"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -119,16 +119,17 @@
     python39
     git
 		clang
+    valgrind
     gnumake42
     cmake
     cargo
     google-chrome
+    nodejs_23
     wget
     curl
     unzip
     fzf
     ripgrep
-    nodejs_23
     yarn
     uv
     bat
@@ -170,14 +171,15 @@
   system.stateVersion = "24.11"; # Did you read the comment?
 
   # Create Symlinks to interpreters
-  system.activationScripts.createBinEnv = {
+# Create Symlinks to interpreters
+  system.activationScripts.createInterpreterLinks = {
     text = ''
-      ln -s /run/current-system/sw/bin/env /usr/bin/env
-    '';
-  };
-  system.activationScripts.createBinBash = {
-    text = ''
-      ln -s /run/current-system/sw/bin/bash /bin/bash
+      if [ ! -e /usr/bin/env ]; then
+        ln -s /run/current-system/sw/bin/env /usr/bin/env
+      fi
+      if [ ! -e /bin/bash ]; then
+        ln -s /run/current-system/sw/bin/bash /bin/bash
+      fi
     '';
   };
 
