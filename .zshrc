@@ -102,6 +102,7 @@ alias nn='norminette'
 
 # Neovim
 alias v='nvim'
+alias sv='sudo -E nvim'
 alias vc='vim | clolcat'
 alias clear_nvim='rm -rf ~/.local/share/nvim'
  
