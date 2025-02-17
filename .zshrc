@@ -92,7 +92,7 @@ zemoji() {
 #######################
 
 # NixOS
-alias nixre="sudo nixos-rebuild switch -I 'home=$HOME'":
+alias nixre="sudo nixos-rebuild switch -I 'home=$HOME' --flake /etc/nixos"
 
 # Compiling
 alias ccw='cc -Wall -Wextra -Werror -g'
