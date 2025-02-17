@@ -91,6 +91,9 @@ zemoji() {
 ### Zedro's Aliases ###
 #######################
 
+# NixOS
+alias nixre="sudo nixos-rebuild switch -I 'home=$HOME'":
+
 # Compiling
 alias ccw='cc -Wall -Wextra -Werror -g'
 
@@ -99,7 +102,7 @@ alias nn='norminette'
 
 # Neovim
 alias v='nvim'
-alias vc='vim | lolcat'
+alias vc='vim | clolcat'
 alias clear_nvim='rm -rf ~/.local/share/nvim'
  
 # git
@@ -148,8 +151,8 @@ alias rstream="~/.dotfiles/scripts/audio/read-stream.sh"
  fi
  
  # Load Cowsay
- if command -v lolcat > /dev/null 2>&1; then
- 	eval "zshcow" | lolcat
+ if command -v clolcat > /dev/null 2>&1; then
+ 	eval "zshcow" | clolcat
  else
  	eval "zshcow"
  fi

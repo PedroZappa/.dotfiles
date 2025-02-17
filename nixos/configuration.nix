@@ -2,8 +2,9 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }: let
-  hostname = "z";
+{ config, pkgs, home ? "", ... }: 
+let
+  hostname = "znix";
 in
 {
   imports =
@@ -88,6 +89,11 @@ in
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       dwt1-shell-color-scripts
+      cowsay
+      neo-cowsay
+      fortune
+      fortune-kind
+      clolcat
     ];
   };
 
@@ -101,6 +107,7 @@ in
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     ghostty
+    tmux
     zsh
     nushell
     atuin
@@ -109,19 +116,20 @@ in
     neovim
     lua
     luajitPackages.luarocks
-    tmux
+    python39
     git
 		clang
+    valgrind
     gnumake42
     cmake
     cargo
     google-chrome
+    nodejs_23
     wget
     curl
     unzip
     fzf
     ripgrep
-    nodejs_23
     yarn
     uv
     bat
@@ -161,6 +169,19 @@ in
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.11"; # Did you read the comment?
+
+  # Create Symlinks to interpreters
+# Create Symlinks to interpreters
+  system.activationScripts.createInterpreterLinks = {
+    text = ''
+      if [ ! -e /usr/bin/env ]; then
+        ln -s /run/current-system/sw/bin/env /usr/bin/env
+      fi
+      if [ ! -e /bin/bash ]; then
+        ln -s /run/current-system/sw/bin/bash /bin/bash
+      fi
+    '';
+  };
 
   # Enable SSH
   services.flatpak.enable = true;
