@@ -4,6 +4,8 @@
 
 { config, pkgs, home ? "", ... }: 
 let
+# Import the unstable channel
+  unstable = import (builtins.fetchTarball "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz") {};
   hostname = "znix";
 in
 {
@@ -99,6 +101,7 @@ in
 
   # Install programs.
   programs.zsh.enable = true;
+  programs.starship.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -117,7 +120,7 @@ in
     starship
     # Editors
     vim
-    neovim
+    unstable.neovim
     # Interpreters
     lua
     luajitPackages.luarocks
