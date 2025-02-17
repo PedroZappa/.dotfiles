@@ -110,6 +110,7 @@ fi
 # Associative array defining source and target FILES
 declare -A FILES
 FILES=(
+    ["$HOME/.dotfiles/nixos"]="$HOME/etc/"
     ["$HOME/.dotfiles/ghostty"]="$HOME/.config/"
     ["$HOME/.dotfiles/.profile"]="$HOME/.profile"
     ["$HOME/.dotfiles/.zshrc"]="$HOME/.zshrc"

@@ -169,17 +169,17 @@ in
   # List services that you want to enable:
 
   # Enable mDNS responder to resolve IP addresses
-  services.avahi.enable = true;
+  # services.avahi.enable = true;
 
   # Enable the OpenSSH daemon.
   services.openssh = {
     enable = true;
-    ports = [ 22 ];
+    # ports = [ 22 ];
   };
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 22 ];
-  networking.firewall.allowedUDPPorts = [ 22 ];
+  # networking.firewall.allowedTCPPorts = [ 22 ];
+  # networking.firewall.allowedUDPPorts = [ 22 ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
