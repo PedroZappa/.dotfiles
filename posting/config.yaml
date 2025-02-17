@@ -2,11 +2,11 @@ theme: galaxy
 layout: horizontal
 editor: nvim
 pager: bat
-pager_json: jq
+pager_json: fx
 response:
   prettify_json: true
 heading:
-  visible: false
+  visible: true
   show_host: true
 watch_env_files: true
 animation: full
