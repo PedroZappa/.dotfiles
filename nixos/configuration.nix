@@ -128,6 +128,7 @@ in
     # Build Tools
     gnumake42
     # Libs
+    boost
     juce
     readline
     # Debug & Heuristics
