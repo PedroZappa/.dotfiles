@@ -86,10 +86,11 @@
     shell = pkgs.zsh;
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
+      dwt1-shell-color-scripts
     ];
   };
 
-  # Install firefox.
+  # Install programs.
   programs.zsh.enable = true;
 
   # Allow unfree packages
@@ -100,17 +101,30 @@
   environment.systemPackages = with pkgs; [
     ghostty
     zsh
+    nushell
+    atuin
     starship
     vim
     neovim
+    lua
+    luajitPackages.luarocks
     tmux
     git
+		clang
+    gnumake42
+    cmake
+    cargo
     google-chrome
     wget
     curl
     unzip
     fzf
-    atuin
+    ripgrep
+    nodejs_23
+    yarn
+    uv
+    bat
+    fx
   ];
 
   # Get Patched Nerd Font

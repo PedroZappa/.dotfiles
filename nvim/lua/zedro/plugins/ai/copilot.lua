@@ -20,7 +20,7 @@ return {
         },
       },
       suggestion = {
-        enabled = true,
+        -- enabled = true,
         auto_trigger = false,
         hide_during_completion = true,
         debounce = 75,
