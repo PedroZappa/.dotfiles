@@ -91,6 +91,9 @@ zemoji() {
 ### Zedro's Aliases ###
 #######################
 
+# NixOS
+alias nixre="sudo nixos-rebuild switch -I 'home=$HOME'":
+
 # Compiling
 alias ccw='cc -Wall -Wextra -Werror -g'
 
