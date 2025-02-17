@@ -2,9 +2,10 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }: let
-  hostname = "z";
-in
+{ config, pkgs, ... }: 
+# let
+#   hostname = "z";
+# in
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -16,7 +17,7 @@ in
   boot.loader.grub.device = "/dev/sda";
   boot.loader.grub.useOSProber = true;
 
-  networking.hostName = hostname; # Define your hostname.
+  networking.hostName = "z"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -88,6 +89,10 @@ in
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       dwt1-shell-color-scripts
+      cowsay
+      neo-cowsay
+      fortune
+      fortune-kind
     ];
   };
 
@@ -161,6 +166,11 @@ in
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.11"; # Did you read the comment?
+  system.activationScripts.createBinBash = {
+    text = ''
+      ln -s /run/current-system/sw/bin/bash /bin/bash
+    '';
+  };
 
   # Enable SSH
   services.flatpak.enable = true;
