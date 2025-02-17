@@ -2,8 +2,9 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
-
+{ config, pkgs, ... }: let
+  hostname = "z";
+in
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -15,7 +16,7 @@
   boot.loader.grub.device = "/dev/sda";
   boot.loader.grub.useOSProber = true;
 
-  networking.hostName = "z"; # Define your hostname.
+  networking.hostName = hostname; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -125,6 +126,7 @@
     uv
     bat
     fx
+    alejandra
   ];
 
   # Get Patched Nerd Font
@@ -163,10 +165,16 @@
   # Enable SSH
   services.flatpak.enable = true;
 
+  # Configure Auto System Update
+  # system.autoUpgrade = {
+  #   enable = true;
+  # }
+
   # Configure Automatic Weekly Garbage Collection
   nix.gc = {
     automatic = true;
     dates = "weekly";
     options = "--delete-older-than 7d";
   };
+
 }
