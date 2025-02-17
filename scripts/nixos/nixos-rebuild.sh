@@ -3,6 +3,7 @@
 # I believe there are a few ways to do this:
 #
 #    1. My current way, using a minimal /etc/nixos/configuration.nix that just imports my config from my home directory (see it in the gist)
+#    https://gist.github.com/0atman/1a5133b842f929ba4c1e195ee67599d5
 #    2. Symlinking to your own configuration.nix in your home directory (I think I tried and abandoned this and links made relative paths weird)
 #    3. My new favourite way: as @clot27 says, you can provide nixos-rebuild with a path to the config, allowing it to be entirely inside your dotfies, with zero bootstrapping of files required.
 #       `nixos-rebuild switch -I nixos-config=path/to/configuration.nix`
