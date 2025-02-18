@@ -5,6 +5,7 @@
 { config, pkgs, inputs, ... }:
 let
 # Import the unstable channel
+  stateVersion = "24.11";
   unstable = import (builtins.fetchTarball "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz") {};
   hostname = "znix";
   user = "zedro";
@@ -13,6 +14,7 @@ in
   imports =
     [ # Include the results of the hardware scan.
       /etc/nixos/hardware-configuration.nix
+      <home-manager/nixos>
       # inputs.home-manager.nixosModules.default
     ];
 
@@ -141,7 +143,7 @@ in
     isNormalUser = true;
     description = "Zedro";
     shell = pkgs.zsh;
-    extraGroups = [ "networkmanager" "wheel" "" ];
+    extraGroups = [ "networkmanager" "wheel" "audio" ];
     packages = with pkgs; [
       dwt1-shell-color-scripts
       cowsay
@@ -161,6 +163,16 @@ in
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+
+
+  # Home Manager
+  home-manager.users.${user} = { pkgs, ... }: {
+    home.stateVersion = stateVersion;
+    home.packages = with pkgs; [
+      htop
+      httpie
+    ];
+  }; 
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -265,7 +277,7 @@ in
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.11"; # Did you read the comment?
+  system.stateVersion = stateVersion; # Did you read the comment?
 
   # Create Symlinks to interpreters
   system.activationScripts.createInterpreterLinks = {
