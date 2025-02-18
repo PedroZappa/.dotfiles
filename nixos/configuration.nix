@@ -14,7 +14,6 @@ in
   imports =
     [ # Include the results of the hardware scan.
       /etc/nixos/hardware-configuration.nix
-      <home-manager/nixos>
       # inputs.home-manager.nixosModules.default
     ];
 
@@ -166,13 +165,13 @@ in
 
 
   # Home Manager
-  home-manager.users.${user} = { pkgs, ... }: {
-    home.stateVersion = stateVersion;
-    home.packages = with pkgs; [
-      htop
-      httpie
-    ];
-  }; 
+  # home-manager.users.${user} = { pkgs, ... }: {
+  #   home.stateVersion = stateVersion;
+  #   home.packages = with pkgs; [
+  #     htop
+  #     httpie
+  #   ];
+  # }; 
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -239,12 +238,6 @@ in
     fx
     alejandra
   ];
-
-  # Get Patched Nerd Font
-  fonts.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ "FiraCode" ]; })
-  ];
-
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
