@@ -92,8 +92,8 @@ zemoji() {
 #######################
 
 # NixOS
-# Rebuild NixOS & Home Manager
-alias nixre="sudo nixos-rebuild switch && home-manager switch"
+# Rebuild NixOS & Home Manager from Flake 
+alias nixre="sudo nixos-rebuild switch --flake '.#' && nix build '.#homeConfig.zedro.activationPackage'"
 # nix-collect-garbage -> Removes undeclared packaged/deps and symliks
 # nix-store --gc -> Optimized Nix Store
 alias nixcg="sudo nix-collect-garbage -d && nix-store --gc"
