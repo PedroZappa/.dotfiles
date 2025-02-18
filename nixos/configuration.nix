@@ -52,22 +52,7 @@ in
     };
   };
 
-  # UEFI
-  # boot.loader.systemd-boot.enable = true;
-  # boot.loader.canTouchEfiVariables = true;
-  # boot.loader = {
-  #   efi = {
-  #     canTouchEfiVariables = true;
-  #     efiSysMountPoint = "/boot/efi";
-  #   };
-  #   grub = {
-  #     enable = true;
-  #     devices = ["nodev"];
-  #     efiSupport = true;
-  #   };
-  # };
-
-  # Networking
+  # networking
   networking = {
     hostName = hostname; # Define your hostname
     networkmanager.enable = true; # Enable networking
@@ -181,9 +166,11 @@ in
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    # Terminal
+    ghostty # Terminal Emulator
+    coreutils # GNU Utilities
+    xdg-utils # Environment integration
     git
-    # Terminals
-    ghostty
     tmux
     # Shell
     zsh
@@ -242,6 +229,10 @@ in
     bat
     fx
     alejandra
+    vlc # Media Player
+    cifs-utils # Samba
+    appimage-run # Runs AppImages on NixOS
+
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -260,7 +251,7 @@ in
   # Enable the OpenSSH daemon.
   services.openssh = {
     enable = true;
-    # ports = [ 22 ];
+    ports = [ 22 ];
   };
 
   # Open ports in the firewall.
