@@ -151,6 +151,7 @@ in
       clolcat
       btop
       stow
+      discord
     ];
   };
 
@@ -303,4 +304,14 @@ in
     options = "--delete-older-than 7d";
   };
 
+  # Overlays
+  nixpkgs.overlays = [
+    (self: super: {
+      discord = super.discord.overrideAttrs (
+        _: { src = builtins.fetchTarball {
+          url = "http://discord.com/api/download?platform=linux&format=tar.gz";
+        }; }
+      );
+    })
+  ];
 }
