@@ -16,14 +16,34 @@ in
     ];
 
   # Bootloader.
-  boot.loader.grub.enable = true;
-  boot.loader.grub.device = "/dev/sda";
-  boot.loader.grub.useOSProber = true;
+  boot.loader.grub = {
+    enable = true;
+    device = "/dev/sda";
+    # useOSProber = true; # search for bootble partitions
+  };
 
   networking.hostName = hostname; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  # nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.extraOptions = ''
+    experimental-features = nix-command flakes
+  '';
+  
+  # UEFI 
+  # boot.loader.systemd-boot.enable = true;
+  # boot.loader.canTouchEfiVariables = true;
+  # boot.loader = {
+  #   efi = {
+  #     canTouchEfiVariables = true;
+  #     efiSysMountPoint = "/boot/efi";
+  #   };
+  #   grub = {
+  #     enable = true;
+  #     devices = ["nodev"];
+  #     efiSupport = true;
+  #   };
+  # };
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -99,6 +119,8 @@ in
       fortune
       fortune-kind
       clolcat
+      btop
+      stow
     ];
   };
 
@@ -130,20 +152,33 @@ in
     python3Full
     # Compilers
 		unstable.clang
-    gcc
+    unstable.gcc
     # Build Tools
     gnumake42
+    cmake
     # Libs
     llvmPackages_19.libllvm
     libgcc
-    boost186
-    websocketpp # <boost/asio>
-    juce
+    libgccjit
+    # C/C++
+    clang-tools
+    codespell
+    conan
+    cppcheck
+    doxygen
+    gtest
+    lcov
+    vcpkg
+    vcpkg-tool
+    unstable.boost.dev
+    unstable.boost
+    websocketpp
+    libnghttp2_asio
+    unstable.juce
     readline
     # Debug & Heuristics
     valgrind
     gdb
-    cmake
     # Package Managers
     cargo
     uv
@@ -212,6 +247,16 @@ in
       fi
     '';
   };
+  # Create Symlinks to Boost headers
+  # system.activationScripts.createBoostHeaderLinks = {
+  #   text = ''
+  #     BOOST_INCLUDE_DIR="/run/current-system/sw/includes/boost"
+  #     
+  #     if [ ! -e /usr/include/boost ]; then
+  #       ln -s $BOOST_INCLUDE_DIR /usr/include/boost
+  #     fi
+  #   '';
+  # };
 
   # Enable SSH
   services.flatpak.enable = true;
