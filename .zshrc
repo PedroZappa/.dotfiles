@@ -92,7 +92,8 @@ zemoji() {
 #######################
 
 # NixOS
-alias nixre="sudo nixos-rebuild switch"
+# Rebuild NixOS & Home Manager
+alias nixre="sudo nixos-rebuild switch && home-manager switch"
 # nix-collect-garbage -> Removes undeclared packaged/deps and symliks
 # nix-store --gc -> Optimized Nix Store
 alias nixcg="sudo nix-collect-garbage -d && nix-store --gc"
@@ -101,9 +102,6 @@ alias nixdg="nix-env --delete-generations"
 
 # Compiling
 alias ccw='cc -Wall -Wextra -Werror -g'
-
-# 42 Norm Check
-alias nn='norminette'
 
 # Neovim
 alias v='nvim'

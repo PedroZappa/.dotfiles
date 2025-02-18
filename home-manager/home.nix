@@ -1,3 +1,5 @@
+# man home-configuration.nix
+
 { config, pkgs, ... }:
 
 {

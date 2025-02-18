@@ -66,7 +66,8 @@ in
   # Internationalizations (Locales)
   time.timeZone = "Europe/Lisbon";
 
-  # nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  # Enable Flakes
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
@@ -162,16 +163,6 @@ in
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-
-
-  # Home Manager
-  # home-manager.users.${user} = { pkgs, ... }: {
-  #   home.stateVersion = stateVersion;
-  #   home.packages = with pkgs; [
-  #     htop
-  #     httpie
-  #   ];
-  # }; 
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -323,4 +314,10 @@ in
       );
     })
   ];
+
+  # Enabling Flakes
+  # nix = {
+  #   package = pkgs.nixFlakes;
+  #   extraOptions = "experimental-features = nix-command flake";
+  # };
 }
