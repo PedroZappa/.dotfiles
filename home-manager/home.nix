@@ -30,6 +30,7 @@
     # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
     # # fonts?
     # (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
+    (pkgs.nerdfonts.override { fonts = [ "FiraCode" ]; })
 
     # # You can also create simple shell scripts directly inside your
     # # configuration. For example, this adds a command 'my-hello' to your
@@ -38,10 +39,6 @@
     #   echo "Hello, ${config.home.username}!"
     # '')
   ];
-
-  # fonts.packages = [
-  #   (pkgs.nerdfonts.override { fonts = [ "FiraCode" ]; })
-  # ];
 
   # Home Manager is pretty good at managing dotfileS. The primary way to manage
   # plain files is through 'home.file'.

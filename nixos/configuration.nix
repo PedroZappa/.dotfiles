@@ -2,6 +2,17 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
+# Use Flake on fresh install
+/* Setup SSH key on Github */
+# sudo su
+# nix-env -iA nixos.git
+# git clone git@github.com:PedroZappa/.dotfiles.git
+# nixos-install --flake ".dotfiles/nixos#<host>"
+# reboot
+/* Log back in */
+# sudo rm -fr /etc/nixos/configuration.nix
+/* Create symlinks */
+
 { config, pkgs, inputs, ... }:
 let
   stateVersion = "24.11";
