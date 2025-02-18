@@ -13,7 +13,7 @@ in
 {
   imports =
     [ # Include the results of the hardware scan.
-      /etc/nixos/hardware-configuration.nix
+      ./hardware-configuration.nix
       # inputs.home-manager.nixosModules.default
     ];
 
@@ -310,6 +310,7 @@ in
       discord = super.discord.overrideAttrs (
         _: { src = builtins.fetchTarball {
           url = "http://discord.com/api/download?platform=linux&format=tar.gz";
+          sha256 = "0000000000000000000000000000000000000000000000000000";
         }; }
       );
     })
