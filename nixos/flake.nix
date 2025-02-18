@@ -11,14 +11,21 @@
 
   outputs = { self, nixpkgs, home-manager }: 
     let
-      system = "x86_64-linux";
+      # Variables Used In Flake
+      vars = {
+        system = "x86_64-linux";
+        user = "zedro";
+        location = "$HOME/.dotfiles/nixos";
+        terminal = "ghostty";
+        editor = "nvim";
+      };
+      system = vars.system;
       pkgs = import nixpkgs {
         inherit system;  
         config.allowUnfree = true;
       };
       lib = nixpkgs.lib;
       user = "zedro";
-      # home = "/home/${user}";
     in {
       # System Wide Config
       nixosConfigurations = {
@@ -31,7 +38,7 @@
       homeConfig = {
         ${user} = home-manager.lib.homeManagerConfiguration {
           # inherit system pkgs;
-          pkgs = nixpkgs.legacyPackages.${system};
+          pkgs = nixpkgs.legacyPackages.${vars.system};
           modules = [
             ../home-manager/home.nix
           ];
