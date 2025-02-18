@@ -2,11 +2,12 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, inputs, ... }: 
+{ config, pkgs, inputs, ... }:
 let
 # Import the unstable channel
   unstable = import (builtins.fetchTarball "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz") {};
   hostname = "znix";
+  user = "zedro";
 in
 {
   imports =
@@ -36,7 +37,7 @@ in
     };
   };
 
-  # UEFI 
+  # UEFI
   # boot.loader.systemd-boot.enable = true;
   # boot.loader.canTouchEfiVariables = true;
   # boot.loader = {
@@ -52,26 +53,25 @@ in
   # };
 
   # Networking
-  networking.hostName = hostname; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  networking = {
+    hostName = hostname; # Define your hostname
+    networkmanager.enable = true; # Enable networking
+    # wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+    # Configure network proxy if necessary
+    # proxy.default = "http://user:password@proxy:port/";
+    # proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+  };
+
+  # Internationalizations (Locales)
+  time.timeZone = "Europe/Lisbon";
 
   # nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  nix.extraOptions = ''
-    experimental-features = nix-command flakes
-  '';
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Enable networking
-  networking.networkmanager.enable = true;
-
-  # Set your time zone.
-  time.timeZone = "Europe/Lisbon";
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
+  console = {
+    # keyMap = "qwerty";
+  };
 
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "pt_PT.UTF-8";
@@ -85,23 +85,25 @@ in
     LC_TIME = "pt_PT.UTF-8";
   };
 
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
-
-  # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
-
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
+  # GUI
+  services = {
+    displayManager.defaultSession = "gnome";
+    xserver = {
+      enable = true; # Enable the X11 windowing system.
+      # Enable the GNOME Desktop Environment.
+      displayManager.gdm.enable = true;
+      desktopManager.gnome.enable = true;
+      xkb = { # Configure keymap in X11
+        layout = "us";
+        variant = "";
+      };
+    };
+    printing = { # Enable CUPS to print documents.
+      enable = true;
+    };
   };
 
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-
+  # AUDIO
   # Enable sound with pipewire.
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
@@ -118,15 +120,28 @@ in
     #media-session.enable = true;
   };
 
+  hardware = {
+    # Bluetooth Config
+    bluetooth = {
+      enable = true;
+      # hsphfpd.enable = true;
+      settings = {
+        General = {
+          Enable = "Source,Sink,Media,Socket";
+        };
+      };
+    };
+  };
+
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.zedro = {
+  users.users.${user} = {
     isNormalUser = true;
     description = "Zedro";
     shell = pkgs.zsh;
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "" ];
     packages = with pkgs; [
       dwt1-shell-color-scripts
       cowsay
@@ -266,7 +281,7 @@ in
   # system.activationScripts.createBoostHeaderLinks = {
   #   text = ''
   #     BOOST_INCLUDE_DIR="/run/current-system/sw/includes/boost"
-  #     
+  #
   #     if [ ! -e /usr/include/boost ]; then
   #       ln -s $BOOST_INCLUDE_DIR /usr/include/boost
   #     fi
