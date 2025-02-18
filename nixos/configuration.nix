@@ -293,9 +293,10 @@ in
   services.flatpak.enable = true;
 
   # Configure Auto System Update
-  # system.autoUpgrade = {
-  #   enable = true;
-  # }
+  system.autoUpgrade = {
+    enable = true;
+    channel = "https://nixos.org/channels/nixos-unstable";
+  };
 
   # Configure Automatic Weekly Garbage Collection
   nix.gc = {
@@ -304,7 +305,7 @@ in
     options = "--delete-older-than 7d";
   };
 
-  # Overlays
+  # Overlays (Advanced Biz)
   nixpkgs.overlays = [
     (self: super: {
       discord = super.discord.overrideAttrs (
