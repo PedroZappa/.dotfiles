@@ -16,10 +16,24 @@ in
     ];
 
   # Bootloader.
-  boot.loader.grub = {
-    enable = true;
-    device = "/dev/sda";
-    # useOSProber = true; # search for bootble partitions
+  boot = {
+    kernelPackages = pkgs.linuxPackages_latest; # Get latest kernel
+    # Load NVIDIA kernel modules during initrd stage : https://nixos.wiki/wiki/Nvidia
+    # initrd.kernelModules = ["nvidia"];
+    loader = {
+      # efi = {
+      #   canTouchEfiVariables = true;
+      #   efiSysMountPoint = "boot/efi";
+      # };
+      grub = {
+        enable = true;
+        device = "/dev/sda";
+        # efiSupport = true;
+        # useOSProber = true;
+        configurationLimit = 5; # Limit stored system configs
+      };
+      timeout = 5; # Applied to both GRUB and EFI
+    };
   };
 
   networking.hostName = hostname; # Define your hostname.
