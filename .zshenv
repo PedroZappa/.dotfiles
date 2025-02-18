@@ -52,6 +52,12 @@ export PAGER="bat"
 export TERMINAL="ghostty"
 export BROWSER="chromium"
 
+###########
+### Nix ###
+###########
+
+# export NIX_BUILD_SHELL=$(which zsh)
+
 
 ###################
 ### zsh History ###

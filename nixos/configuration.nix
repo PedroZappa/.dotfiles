@@ -52,6 +52,9 @@ in
     };
   };
 
+  # Open ports in the firewall.
+  # networking.firewall.allowedTCPPorts = [ 22 ];
+  # networking.firewall.allowedUDPPorts = [ 22 ];
   # networking
   networking = {
     hostName = hostname; # Define your hostname
@@ -64,9 +67,6 @@ in
 
   # Internationalizations (Locales)
   time.timeZone = "Europe/Lisbon";
-
-  # Enable Flakes
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
@@ -86,8 +86,8 @@ in
     LC_TIME = "pt_PT.UTF-8";
   };
 
-  # GUI
   services = {
+    # GUI
     displayManager.defaultSession = "gnome";
     xserver = {
       enable = true; # Enable the X11 windowing system.
@@ -99,10 +99,23 @@ in
         variant = "";
       };
     };
-    printing = { # Enable CUPS to print documents.
+    # Enable CUPS to print documents.
+    printing = { 
       enable = true;
     };
+    # Enable the OpenSSH daemon.
+    openssh = {
+      enable = true;
+      ports = [ 22 ];
+    };
   };
+
+  # Enable mDNS responder to resolve IP addresses
+  # services.avahi.enable = true;
+
+  services.openssh = {
+  };
+
 
   # AUDIO
   # Enable sound with pipewire.
@@ -121,6 +134,7 @@ in
     #media-session.enable = true;
   };
 
+  # Bluetooth
   hardware = {
     # Bluetooth Config
     bluetooth = {
@@ -235,6 +249,18 @@ in
 
   ];
 
+  fonts.packages = with pkgs; [
+    carlito # NixOS
+    vegur # NixOS
+    source-code-pro
+    jetbrains-mono
+    font-awesome # Icons
+    corefonts # MS
+    noto-fonts # Google + Unicode
+    noto-fonts-cjk-sans
+    noto-fonts-cjk-serif
+    noto-fonts-emoji
+  ];
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -242,23 +268,6 @@ in
   #   enable = true;
   #   enableSSHSupport = true;
   # };
-
-  # List services that you want to enable:
-
-  # Enable mDNS responder to resolve IP addresses
-  # services.avahi.enable = true;
-
-  # Enable the OpenSSH daemon.
-  services.openssh = {
-    enable = true;
-    ports = [ 22 ];
-  };
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ 22 ];
-  # networking.firewall.allowedUDPPorts = [ 22 ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
@@ -301,7 +310,11 @@ in
 
   # Configure Automatic Weekly Garbage Collection
   nix = {
-    settings.auto-optimise-store = true;
+    settings = { 
+      auto-optimise-store = true;
+      # Enable Flakes
+      experimental-features = [ "nix-command" "flakes" ];
+    };
     gc = {
       automatic = true;
       dates = "weekly";

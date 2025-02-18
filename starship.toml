@@ -4,7 +4,7 @@
 # https://starship.rs/config/#prompt
 # Default Prompt for reference
 format = '''
-$virtualenv$directory$git_branch$git_commit$git_status$c$cmd_duration$python$shlvl
+$virtualenv$directory$git_branch$git_commit$git_status$c$cmd_duration$python$nix_shell$shlvl
 $jobs$hostname$username $shell $character
 '''
 right_format = "$status${custom.minitalk}${custom.valgrind}$localip$time $battery$os"
@@ -231,7 +231,14 @@ symbol = "󰔷 "
 symbol = "󰆥 "
 
 [nix_shell]
-symbol = " "
+symbol = "  "
+impure_msg = '[💩](bold red)'
+pure_msg = '[😇](bold green)'
+unknown_msg = '[unknown](bold yellow)'
+format = 'via [$symbol$state( \($name\))](bold blue) '
+style = 'bold blue'
+disabled = false
+# heuristic = true
 
 [nodejs]
 symbol = " "
