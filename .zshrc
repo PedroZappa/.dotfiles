@@ -93,6 +93,11 @@ zemoji() {
 
 # NixOS
 alias nixre="sudo nixos-rebuild switch"
+# nix-collect-garbage -> Removes undeclared packaged/deps and symliks
+# nix-store --gc -> Optimized Nix Store
+alias nixcg="nix-collect-garbage && nix-store --gc"
+alias nixlg="nix-env --list-generations"
+alias nixdg="nix-env --delete-generations"
 
 # Compiling
 alias ccw='cc -Wall -Wextra -Werror -g'
