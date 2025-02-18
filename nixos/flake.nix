@@ -4,7 +4,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-24.11";
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager?ref=release-24.11";
       inputs.nixpkgs.follows = "nixpkgs"; # Use nixpkgs
     };
   };
@@ -18,7 +18,7 @@
       };
       lib = nixpkgs.lib;
       user = "zedro";
-      home = "/home/${user}";
+      # home = "/home/${user}";
     in {
       # System Wide Config
       nixosConfigurations = {
@@ -28,16 +28,13 @@
         };
       };
       # Home Manager cxonfig
-      hmConfig = {
-        znix = home-manager.lib.homeManagerConfiguration {
-          inherit system pkgs;
-          username = user;
-          homeDirectory = "${home}";
-          configuration = {
-            imports = [
-              "${home}".dotfiles/home-manager/home.nix
-            ];
-          };
+      homeConfig = {
+        ${user} = home-manager.lib.homeManagerConfiguration {
+          # inherit system pkgs;
+          pkgs = nixpkgs.legacyPackages.${system};
+          modules = [
+            ../home-manager/home.nix
+          ];
         };
       };
     };
