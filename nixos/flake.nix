@@ -9,7 +9,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager }: 
+  outputs = inputs@{ self, nixpkgs, home-manager }: 
     let
       # Variables Used In Flake
       vars = {
@@ -24,13 +24,13 @@
         inherit system;  
         config.allowUnfree = true;
       };
-      lib = nixpkgs.lib;
       user = "zedro";
     in {
       # System Wide Config
       nixosConfigurations = {
-        znix = lib.nixosSystem {
+        znix = nixpkgs.lib.nixosSystem {
           inherit system;
+          specialArgs = { inherit inputs; };
           modules = [ ./configuration.nix ];
         };
       };

@@ -168,7 +168,7 @@ alias rstream="~/.dotfiles/scripts/audio/read-stream.sh"
  	eval "zshcow"
  fi
  
- ############################
+ # ##########################
  ### Load Starship Prompt ###
  ############################
  
