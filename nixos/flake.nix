@@ -32,7 +32,7 @@
         znix = home-manager.lib.homeManagerConfiguration {
           inherit system pkgs;
           username = user;
-          homeDirectory = "/home/zedro/";
+          homeDirectory = "${home}";
           configuration = {
             imports = [
               "${home}".dotfiles/home-manager/home.nix
