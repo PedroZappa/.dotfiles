@@ -2,7 +2,7 @@
   description = "A very basic flake";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-24.11";
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs"; # Use nixpkgs
@@ -18,6 +18,7 @@
       };
       lib = nixpkgs.lib;
       user = "zedro";
+      home = "/home/${user}";
     in {
       # System Wide Config
       nixosConfigurations = {
@@ -34,7 +35,7 @@
           homeDirectory = "/home/zedro/";
           configuration = {
             imports = [
-              /home/zedro/.dotfiles/home-manager/home.nix
+              "${home}".dotfiles/home-manager/home.nix
             ];
           };
         };
