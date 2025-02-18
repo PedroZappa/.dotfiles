@@ -4,9 +4,12 @@
 
 { config, pkgs, inputs, ... }:
 let
-# Import the unstable channel
   stateVersion = "24.11";
-  unstable = import (builtins.fetchTarball "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz") {};
+  system = "x86_64-linux";
+  unstable = import (builtins.fetchTarball { 
+    url = "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz";
+    sha256 = "sha256:1k16pj24gzp3dw76dw1pihij7hh5hic0hkmr00rc5kk4s0c7dqyc";
+  }) { system = system; };
   hostname = "znix";
   user = "zedro";
 in
@@ -107,7 +110,7 @@ in
 
   # AUDIO
   # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -206,7 +209,7 @@ in
     unstable.boost.dev
     unstable.boost
     websocketpp
-    libnghttp2_asio
+    # libnghttp2_asio
     unstable.juce
     readline
     # Debug & Heuristics
@@ -305,20 +308,14 @@ in
   };
 
   # Overlays (Advanced Biz)
-  nixpkgs.overlays = [
-    (self: super: {
-      discord = super.discord.overrideAttrs (
-        _: { src = builtins.fetchTarball {
-          url = "http://discord.com/api/download?platform=linux&format=tar.gz";
-          sha256 = "0000000000000000000000000000000000000000000000000000";
-        }; }
-      );
-    })
-  ];
-
-  # Enabling Flakes
-  # nix = {
-  #   package = pkgs.nixFlakes;
-  #   extraOptions = "experimental-features = nix-command flake";
-  # };
+  # nixpkgs.overlays = [
+  #   (self: super: {
+  #     discord = super.discord.overrideAttrs (
+  #       _: { src = builtins.fetchTarball {
+  #         url = "http://discord.com/api/download?platform=linux&format=tar.gz";
+  #         sha256 = "1lfrnkq7qavlcbyjzn2m8kq39wn82z40dkpn6l5aijy12c775x7s";
+  #       }; }
+  #     );
+  #   })
+  # ];
 }
