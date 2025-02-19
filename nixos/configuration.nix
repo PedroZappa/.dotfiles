@@ -13,7 +13,7 @@
 # sudo rm -fr /etc/nixos/configuration.nix
 /* Create symlinks */
 
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, zap-zsh, inputs, ... }:
 let
   stateVersion = "24.11";
   system = "x86_64-linux";
@@ -51,7 +51,7 @@ in
         enable = true;
         device = "nodev";
         efiSupport = true;
-        useOSProber = true;
+        # useOSProber = true;
         configurationLimit = 5; # Limit stored system configs (backups)
       };
       timeout = 5; # Applied to both GRUB and EFI
@@ -204,20 +204,6 @@ in
 
   programs.zsh = { # Enable Zsh
     enable = true;
-   # initExtra = ''
-   #     # Install zap if it's not installed
-   #     [[ ! -f "$HOME/.local/share/zap/zap.zsh" ]] && mkdir -p "$HOME/.local/share/zap" && \
-   #     curl -fsSL https://raw.githubusercontent.com/zap-zsh/zap/master/install.sh | zsh
-
-   #     # Source zap
-   #     source "$HOME/.local/share/zap/zap.zsh"
-
-   #     # Install or update plugins
-   #     plug "zsh-users/zsh-autosuggestions"
-   #     plug "zsh-users/zsh-syntax-highlighting"
-   #     # Add more plugins here as needed
-   #   '';
-   # };
   };
 
   programs.starship.enable = true;
@@ -270,6 +256,7 @@ in
     tmux
     # Shell
     zsh
+    # zap-zsh
     nushell
     atuin
     starship

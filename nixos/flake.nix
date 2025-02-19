@@ -24,7 +24,7 @@
         inherit system;  
         config.allowUnfree = true;
       };
-      user = "zedro";
+      zap-zsh = import ./zap-zsh.nix { inherit (pkgs) lib stdenv fetchFromGitHub; };
     in {
       # System Wide Config
       nixosConfigurations = {
@@ -33,10 +33,11 @@
           specialArgs = { inherit inputs; };
           modules = [ ./configuration.nix ];
         };
+        specialArgs = { inherit zap-zsh; };
       };
       # Home Manager cxonfig
       homeConfig = {
-        ${user} = home-manager.lib.homeManagerConfiguration {
+        ${vars.user} = home-manager.lib.homeManagerConfiguration {
           # inherit system pkgs;
           pkgs = nixpkgs.legacyPackages.${vars.system};
           modules = [
