@@ -101,6 +101,15 @@ nixr() {
   echo "${GREEN}Activating Home Manager${NC}"
   ~/.dotfiles/nixos/result/activate
 }
+# Rebuild w/ Debug traces
+nixdbg() {
+  echo "${GREEN}Rebuilding NixOS from Flake${NC} ${CWD}"
+  sudo nixos-rebuild switch --flake '.#' --show-trace --print-build-logs --verbose || return 1
+  echo "${GREEN}Configuring Home Manager${NC}"
+  nix build '.#homeConfig.zedro.activationPackage'
+  echo "${GREEN}Activating Home Manager${NC}"
+  ~/.dotfiles/nixos/result/activate
+}
 # nix-collect-garbage -> Removes undeclared packaged/deps and symliks
 # nix-store --gc -> Optimized Nix Store
 alias nixcg="sudo nix-collect-garbage -d && nix-store --gc"

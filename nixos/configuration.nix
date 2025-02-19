@@ -37,6 +37,7 @@ in
     # Load NVIDIA kernel modules during initrd stage : https://nixos.wiki/wiki/Nvidia
     # initrd.kernelModules = ["nvidia"];
     loader = {
+      systemd-boot.configurationLimit = 10;
       # efi = {
       #   canTouchEfiVariables = true;
       #   efiSysMountPoint = "boot/efi";
