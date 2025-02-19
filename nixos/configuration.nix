@@ -279,6 +279,27 @@ in
     vlc # Media Player
     cifs-utils # Samba
     appimage-run # Runs AppImages on NixOS
+    juust # make grand-son
+
+    # Create an FHS environment using the command `fhs`, enabling the execution of non-NixOS packages in NixOS!
+    (let base = pkgs.appimageTools.defaultFhsEnvArgs; in
+      pkgs.buildFHSUserEnv (base // {
+      name = "fhs";
+      targetPkgs = pkgs: 
+        # pkgs.buildFHSUserEnv provides only a minimal FHS environment,
+        # lacking many basic packages needed by most software.
+        # Therefore, we need to add them manually.
+        #
+        # pkgs.appimageTools provides basic packages required by most software.
+        (base.targetPkgs pkgs) ++ (with pkgs; [
+          pkg-config
+          ncurses
+        ]
+      );
+      profile = "export FHS=1";
+      runScript = "bash";
+      extraOutputsToInstall = ["dev"];
+    }))
 
   ];
 
