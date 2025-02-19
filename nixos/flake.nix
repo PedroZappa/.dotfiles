@@ -28,7 +28,7 @@
     in {
       # System Wide Config
       nixosConfigurations = {
-        znix = nixpkgs.lib.nixosSystem {
+        nixos = nixpkgs.lib.nixosSystem {
           inherit system;
           specialArgs = { inherit inputs; };
           modules = [ ./configuration.nix ];

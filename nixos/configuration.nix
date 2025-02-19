@@ -19,7 +19,7 @@ let
   system = "x86_64-linux";
   unstable = import (builtins.fetchTarball { 
     url = "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz";
-    sha256 = "sha256:1k16pj24gzp3dw76dw1pihij7hh5hic0hkmr00rc5kk4s0c7dqyc";
+    sha256 = "1blzcjd13srns4f5b4sl5ad2qqr8wh0p7pxbyl1c15lrsa075v8h";
   }) { system = system; };
   hostname = "znix";
   user = "zedro";
@@ -31,6 +31,11 @@ in
       # inputs.home-manager.nixosModules.default
     ];
 
+  fileSystems."/boot" = {
+    device = "/dev/nvme0n1p1";
+    fsType = "vfat";
+  };
+
   # Bootloader.
   boot = {
     kernelPackages = pkgs.linuxPackages_latest; # Get latest kernel
@@ -38,15 +43,15 @@ in
     # initrd.kernelModules = ["nvidia"];
     loader = {
       systemd-boot.configurationLimit = 10;
-      # efi = {
-      #   canTouchEfiVariables = true;
-      #   efiSysMountPoint = "boot/efi";
-      # };
+      efi = {
+        canTouchEfiVariables = true;
+        efiSysMountPoint = "/boot/efi";
+      };
       grub = {
         enable = true;
-        device = "/dev/sda";
-        # efiSupport = true;
-        # useOSProber = true;
+        device = "nodev";
+        efiSupport = true;
+        useOSProber = true;
         configurationLimit = 5; # Limit stored system configs (backups)
       };
       timeout = 5; # Applied to both GRUB and EFI
@@ -87,11 +92,58 @@ in
     LC_TIME = "pt_PT.UTF-8";
   };
 
+  # Hardware
+  hardware = {
+    # Bluetooth Config
+    bluetooth = {
+      enable = true;
+      # hsphfpd.enable = true;
+      settings = {
+        General = {
+          Enable = "Source,Sink,Media,Socket";
+        };
+      };
+    };
+    # VIDEO
+    graphics = {
+        enable = true; # Enable OpenGL
+    };
+    nvidia = {
+      package = config.boot.kernelPackages.nvidiaPackages.stable;
+      modesetting.enable = true;
+      # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
+      # Enable this if you have graphical corruption issues or application crashes after waking
+      # up from sleep. This fixes it by saving the entire VRAM memory to /tmp/ instead 
+      # of just the bare essentials.
+      powerManagement.enable = false;
+
+      # Fine-grained power management. Turns off GPU when not in use.
+      # Experimental and only works on modern Nvidia GPUs (Turing or newer).
+      powerManagement.finegrained = false;
+
+      # Use the NVidia open source kernel module (not to be confused with the
+      # independent third-party "nouveau" open source driver).
+      # Support is limited to the Turing and later architectures. Full list of 
+      # supported GPUs is at: 
+      # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus 
+      # Only available from driver 515.43.04+
+      open = false;
+
+      # Enable the Nvidia settings menu,
+      # accessible via `nvidia-settings`.
+      nvidiaSettings = true;
+    };
+    # AUDIO
+    pulseaudio.enable = false;
+  };
+
+
   services = {
     # GUI
     displayManager.defaultSession = "gnome";
     xserver = {
       enable = true; # Enable the X11 windowing system.
+      #videoDrivers = ["nvidia"];
       # Enable the GNOME Desktop Environment.
       displayManager.gdm.enable = true;
       desktopManager.gnome.enable = true;
@@ -109,19 +161,12 @@ in
       enable = true;
       ports = [ 22 ];
     };
+    # Enable mDNS responder to resolve IP addresses
+    avahi.enable = true;
   };
 
-  # Enable mDNS responder to resolve IP addresses
-  # services.avahi.enable = true;
-
-  services.openssh = {
-  };
-
-
-  # AUDIO
-  # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
+  # Enable sound with pipewire.
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -135,23 +180,12 @@ in
     #media-session.enable = true;
   };
 
-  # Bluetooth
-  hardware = {
-    # Bluetooth Config
-    bluetooth = {
-      enable = true;
-      # hsphfpd.enable = true;
-      settings = {
-        General = {
-          Enable = "Source,Sink,Media,Socket";
-        };
-      };
-    };
-  };
-
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
+  # Set Zsh as default shell for all users
+  users.defaultUserShell = pkgs.zsh;
+  
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${user} = {
     isNormalUser = true;
@@ -168,8 +202,24 @@ in
     ];
   };
 
-  # Install programs.
-  programs.zsh.enable = true;
+  programs.zsh = { # Enable Zsh
+    enable = true;
+   # initExtra = ''
+   #     # Install zap if it's not installed
+   #     [[ ! -f "$HOME/.local/share/zap/zap.zsh" ]] && mkdir -p "$HOME/.local/share/zap" && \
+   #     curl -fsSL https://raw.githubusercontent.com/zap-zsh/zap/master/install.sh | zsh
+
+   #     # Source zap
+   #     source "$HOME/.local/share/zap/zap.zsh"
+
+   #     # Install or update plugins
+   #     plug "zsh-users/zsh-autosuggestions"
+   #     plug "zsh-users/zsh-syntax-highlighting"
+   #     # Add more plugins here as needed
+   #   '';
+   # };
+  };
+
   programs.starship.enable = true;
 
   # Allow unfree packages
