@@ -1,4 +1,4 @@
-p# Nushell Environment Config File
+# Nushell Environment Config File
 #
 # version = "0.99.1"
 
