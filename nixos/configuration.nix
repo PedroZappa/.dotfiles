@@ -179,7 +179,6 @@ in {
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
     jack.enable = true;
 
     # use the example session manager (no others are packaged yet so this is enabled by default,
@@ -209,6 +208,10 @@ in {
 
 
   programs = {
+    hyprland = {
+      enable = true;
+      xwayland.enable = true;
+    };
     zsh = {
       enable = true;
     };
@@ -221,6 +224,14 @@ in {
     };
   };
 
+  environment = {
+    sessionVariables = {
+      # if cursor becomes invisible
+      WLR_NO_HARDWARE_CURSORS = "1";
+      # Hint electron apps to use wayland
+      NIXOS_OZONE_WL = "1";
+    };
+  };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -237,6 +248,7 @@ in {
 
     # Terminal
     ghostty # Terminal Emulator
+    kitty
     tmux # Multiplexer
     coreutils # GNU Utilities
     xdg-utils # Environment integration
@@ -353,6 +365,24 @@ in {
     cifs-utils # Samba
     appimage-run # Runs AppImages on NixOS
     just # make grand-son
+    # ScreenShots
+    grim
+    slurp
+
+    # Hyprland
+    waybar # Desktop bar
+    (pkgs.waybar.overrideAttrs (oldAttrs: {
+        mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
+      })
+    )
+    dunst # Notification daemon
+    libnotify #dunst dep
+    swww # wallpaper daemon
+    rofi-wayland # App launcher
+    dolphin # file manager
+    networkmanagerapplet # network manager applet
+    clipse
+
 
     # Create an FHS environment using the command `fhs`, enabling the execution of non-NixOS packages in NixOS!
     (let
@@ -379,6 +409,13 @@ in {
           extraOutputsToInstall = ["dev"];
         }))
   ];
+
+  xdg = {
+    portal = { # Enable desktop programs interactions
+      enable = true;
+      extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    };
+  };
 
   fonts.packages = with pkgs; [
     carlito # NixOS
