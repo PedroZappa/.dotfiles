@@ -3,15 +3,11 @@
 # &, are used to make the line sof the script non-blocking
 #
 
-# Initialize wallpaper Daemon
-swww init &
 # Set wallpaper
-swww img ~/.dotfiles/wallpaper/nixos.png &
-
+hyprpaper &
 # Add network manager applet
 nm-applet --indicator &
-
-# Setup waybar
-waybar &
-
-dunst &
+# Setup widgets
+eww &
+# Setup notifications
+swaync &
