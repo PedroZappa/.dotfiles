@@ -42,18 +42,19 @@ in
     # Load NVIDIA kernel modules during initrd stage : https://nixos.wiki/wiki/Nvidia
     # initrd.kernelModules = ["nvidia"];
     loader = {
-      systemd-boot.configurationLimit = 10;
+      systemd-boot.enable = true;
+      #systemd-boot.configurationLimit = 10;
       efi = {
         canTouchEfiVariables = true;
-        efiSysMountPoint = "/boot/efi";
+      #  efiSysMountPoint = "/boot/efi";
       };
-      grub = {
-        enable = true;
-        device = "nodev";
-        efiSupport = true;
-        # useOSProber = true;
-        configurationLimit = 5; # Limit stored system configs (backups)
-      };
+      # grub = {
+      #   enable = true;
+      #   device = "nodev";
+      #   efiSupport = true;
+      #   # useOSProber = true;
+      #   configurationLimit = 5; # Limit stored system configs (backups)
+      # };
       timeout = 5; # Applied to both GRUB and EFI
     };
   };
