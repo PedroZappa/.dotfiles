@@ -262,6 +262,7 @@ in {
     coreutils # GNU Utilities
     xdg-utils # Environment integration
     git
+    gh
     tmux
     # Shell
     zsh
