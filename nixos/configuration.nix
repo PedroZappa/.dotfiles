@@ -31,33 +31,31 @@ in
       # inputs.home-manager.nixosModules.default
     ];
 
-  fileSystems."/boot" = {
-    device = "/dev/nvme0n1p1";
-    fsType = "vfat";
-  };
-
   # Bootloader.
   boot = {
     kernelPackages = pkgs.linuxPackages_latest; # Get latest kernel
     # Load NVIDIA kernel modules during initrd stage : https://nixos.wiki/wiki/Nvidia
     # initrd.kernelModules = ["nvidia"];
     loader = {
-      systemd-boot.enable = true;
-      #systemd-boot.configurationLimit = 10;
       efi = {
         canTouchEfiVariables = true;
-      #  efiSysMountPoint = "/boot/efi";
+        #efiSysMountPoint = "/boot/efi";
       };
-      # grub = {
-      #   enable = true;
-      #   device = "nodev";
-      #   efiSupport = true;
-      #   # useOSProber = true;
-      #   configurationLimit = 5; # Limit stored system configs (backups)
-      # };
+      grub = {
+        enable = true;
+        device = "nodev"; # "nodev" for EFI
+        #efiSupport = true;
+        # useOSProber = true;
+        configurationLimit = 5; # Limit stored system configs (backups)
+      };
       timeout = 5; # Applied to both GRUB and EFI
     };
   };
+
+#  fileSystems."/boot" = {
+#    device = "/dev/nvme0n1p1";
+#    fsType = "vfat";
+#  };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ 22 ];
@@ -370,16 +368,16 @@ in
   system.stateVersion = stateVersion; # Did you read the comment?
 
   # Create Symlinks to interpreters
-  system.activationScripts.createInterpreterLinks = {
-    text = ''
-      if [ ! -e /usr/bin/env ]; then
-        ln -s /run/current-system/sw/bin/env /usr/bin/env
-      fi
-      if [ ! -e /bin/bash ]; then
-        ln -s /run/current-system/sw/bin/bash /bin/bash
-      fi
-    '';
-  };
+ #  system.activationScripts.createInterpreterLinks = {
+ #    text = ''
+ #      if [ ! -e /usr/bin/env ]; then
+ #        ln -s /run/current-system/sw/bin/env /usr/bin/env
+ #      fi
+ #      if [ ! -e /bin/bash ]; then
+ #        ln -s /run/current-system/sw/bin/bash /bin/bash
+ #      fi
+ #    '';
+ #  };
   # Create Symlinks to Boost headers
   # system.activationScripts.createBoostHeaderLinks = {
   #   text = ''
