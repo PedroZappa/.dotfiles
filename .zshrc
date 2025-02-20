@@ -182,10 +182,6 @@ else
 	echo "[Running ${YELLOW}ls${NC}! ]"
 	alias ll='ls -al --color'
 fi
-# ls with preferred arguments
-ls() {
-  command ls --group-directories-first --color=auto -F1 "$@"
-}
 # Load Cowsay
 if command -v clolcat > /dev/null 2>&1; then
 	eval "zshcow" | clolcat

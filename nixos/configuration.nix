@@ -98,7 +98,6 @@ in {
     LC_TELEPHONE = "pt_PT.UTF-8";
     LC_TIME = "pt_PT.UTF-8";
   };
-
   # Hardware
   hardware = {
     # Bluetooth Config
@@ -143,6 +142,9 @@ in {
     # AUDIO
     pulseaudio.enable = false;
   };
+
+  # Load nvidia driver for Xorg and Wayland
+  # services.xserver.videoDrivers = ["nvidia"];
 
   services = {
     # GUI
@@ -304,11 +306,6 @@ in {
     lcov
     vcpkg
     vcpkg-tool
-    # unstable.boost.dev
-    # unstable.boost
-    # websocketpp
-    # libnghttp2_asio
-    # unstable.juce
     readline
 
     # Go

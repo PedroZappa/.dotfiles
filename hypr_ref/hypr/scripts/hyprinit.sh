@@ -8,6 +8,6 @@ hyprpaper &
 # Add network manager applet
 nm-applet --indicator &
 # Setup widgets
-eww &
+eww daemon &
 # Setup notifications
 swaync &
