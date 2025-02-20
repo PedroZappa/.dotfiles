@@ -30,7 +30,7 @@ Create symlinks
     url = "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz";
     sha256 = "1blzcjd13srns4f5b4sl5ad2qqr8wh0p7pxbyl1c15lrsa075v8h";
   }) {system = system;};
-   hostname = "znix";
+  hostname = "znix";
   user = "zedro";
 in {
   imports = [
@@ -240,7 +240,7 @@ in {
     nix-output-monitor
     nil
     alejandra
-    nixfmt
+    nixfmt-classic
 
     # Terminal
     ghostty # Terminal Emulator

@@ -35,17 +35,20 @@
       ${vars.hostname} = nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = {inherit inputs;};
-        modules = [ ./configuration.nix ];
+        modules = [ 
+          ./configuration.nix 
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.${vars.user} = import ./home.nix;
+
+            # Optionally, use home-manager.extraSpecialArgs to pass
+            # arguments to home.nix
+          }
+        ];
       };
       specialArgs = {inherit zap-zsh;};
-    };
-    # Home Manager cxonfig
-    homeConfig = {
-      ${vars.user} = home-manager.lib.homeManagerConfiguration {
-        # inherit system pkgs;
-        pkgs = nixpkgs.legacyPackages.${vars.system};
-        modules = [ ./home.nix ];
-      };
     };
   };
 }

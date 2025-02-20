@@ -110,7 +110,6 @@ update_env() {
 # Rebuild NixOS
 nixr () {
   sudo nixos-rebuild switch --flake '.#znix'
-  # nix build '.#homeConfig.zedro.activatePackage'
 }
 # Rebuild w/ Debug traces
 nixdbg() {
