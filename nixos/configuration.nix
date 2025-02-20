@@ -310,6 +310,9 @@ in {
     # unstable.juce
     readline
 
+    # Go
+    go
+
     # Lua
     lua
     lua-language-server
@@ -383,6 +386,7 @@ in {
     slurp
 
     # Hyprland
+    hyprls
     (pkgs.hyprland.override { # or inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland
       enableXWayland = true;  # whether to enable XWayland
       legacyRenderer = false; # whether to use the legacy renderer (for old GPUs)

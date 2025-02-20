@@ -23,6 +23,16 @@ return {
       end
     end
 
+    -- New Nix shell function
+    local nix_shell = function()
+      -- Check if we're in a Nix shell by looking for NIX_PATH or IN_NIX_SHELL env vars
+      if os.getenv('IN_NIX_SHELL') then
+        local shell_name = os.getenv('name') or 'nix'
+        return string.format("❄ %s", shell_name) -- Using snowflake emoji for Nix
+      end
+      return ""
+    end
+
     -- OLLAMA
     -- Define the Ollama component
     local ollama_component = {
@@ -89,6 +99,7 @@ return {
             color = { fg = "#ff9e64" },
           },
           { virtual_env, color = { fg = "#e8eb34" } },
+          { nix_shell, color = { fg = "#7ab0df" } },
           ollama_component,
         },
         -- Right side
