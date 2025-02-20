@@ -19,12 +19,13 @@
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
-  home.packages = [
-    # # Adds the 'hello' command to your environment. It prints a friendly
-    # # "Hello, world!" when run.
-    # pkgs.hello
-    pkgs.htop
-    pkgs.eza
+  home.packages = with pkgs; [
+    # All that silly shit
+    dwt1-shell-color-scripts
+    fastfetch
+    clolcat
+    htop
+    eza
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -77,6 +78,18 @@
   };
 
   # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
+  programs = { 
+    home-manager.enable = true;
+    # Gnome Shell
+    gnome-shell = {
+      enable = true;
+    };
+    neovim = {
+      enable = true;
+    };
+    starship = {
+      enable = true;
+    };
+  };
 }
 

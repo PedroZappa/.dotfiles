@@ -200,34 +200,27 @@ in {
     shell = pkgs.zsh;
     extraGroups = ["networkmanager" "wheel" "audio"];
     packages = with pkgs; [
-      dwt1-shell-color-scripts
-      fastfetch
       cowsay
       neo-cowsay
       fortune
       fortune-kind
-      clolcat
     ];
   };
 
-  programs.zsh = {
-    # Enable Zsh
-    enable = true;
+
+  programs = {
+    zsh = {
+      enable = true;
+    };
+
+    nix-ld = {
+      enable = true;
+      libraries = with pkgs; [
+        lua-language-server
+      ];
+    };
   };
 
-  programs.neovim = {
-    enable = true;
-  };
-
-  programs.starship.enable = true;
-
-  # 
-  programs.nix-ld = {
-    enable = true;
-    libraries = with pkgs; [
-      lua-language-server
-    ];
-  };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -437,7 +430,7 @@ in {
   #   '';
   # };
 
-  # Enable SSH
+  # Enable Flatpal
   services.flatpak.enable = true;
 
   # Configure Auto System Update
