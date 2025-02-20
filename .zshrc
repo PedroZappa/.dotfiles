@@ -82,6 +82,7 @@ zemoji() {
     cd ~/.dotfiles/
 }
 
+# Update Projects
 update_env() {
     # Navigate to the project directory
     cd ~/.dotfiles/scripts/env/zEnv_projects || return
@@ -94,6 +95,11 @@ update_env() {
     # Deactivate the virtual environment after the script completes
     deactivate
     cd ~/.dotfiles/
+}
+
+# Show top 21 Commands used (thanks totoro
+toppy() {
+    history | awk '{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] " " CMD[a]/count*100 "% " a;}' | grep -v "./" | column -c3 -s " " -t | sort -nr | nl |  head -n 21
 }
 
 ################
@@ -157,32 +163,35 @@ alias ghostty='~/.local/bin/ghostty.AppImage'
 alias sstream="~/.dotfiles/scripts/audio/send-stream.sh"
 alias rstream="~/.dotfiles/scripts/audio/read-stream.sh"
  
- # File system Navigation
- # cd || zoxide
- if command -v zoxide > /dev/null 2>&1; then
- 	eval "$(zoxide init --cmd cd zsh)"
- 	echo "[Running ${GREEN}zoxide${NC}! 📂]"
- else 
- 	echo "[Running ${YELLOW}cd${NC}! 📂]"
- fi
- # ls || eza
- if command -v eza > /dev/null 2>&1; then
- 	echo "[Running ${GREEN}eza${NC}! 📊]"
- 	alias ls='eza'
- 	alias ll='ls -al'
- 	alias llx='eza -laZ --total-size'
- 	alias llg='eza -laZ --total-size --git --git-repos'
- else
- 	echo "[Running ${YELLOW}ls${NC}! ]"
- 	alias ll='ls -al --color'
- fi
- 
- # Load Cowsay
- if command -v clolcat > /dev/null 2>&1; then
- 	eval "zshcow" | clolcat
- else
- 	eval "zshcow"
- fi
+# File system Navigation
+# cd || zoxide
+if command -v zoxide > /dev/null 2>&1; then
+	eval "$(zoxide init --cmd cd zsh)"
+	echo "[Running ${GREEN}zoxide${NC}! 📂]"
+else 
+	echo "[Running ${YELLOW}cd${NC}! 📂]"
+fi
+# ls || eza
+if command -v eza > /dev/null 2>&1; then
+	echo "[Running ${GREEN}eza${NC}! 📊]"
+	alias ls='eza'
+	alias ll='ls -al'
+	alias llx='eza -laZ --total-size'
+	alias llg='eza -laZ --total-size --git --git-repos'
+else
+	echo "[Running ${YELLOW}ls${NC}! ]"
+	alias ll='ls -al --color'
+fi
+# ls with preferred arguments
+ls() {
+  command ls --group-directories-first --color=auto -F1 "$@"
+}
+# Load Cowsay
+if command -v clolcat > /dev/null 2>&1; then
+	eval "zshcow" | clolcat
+else
+	eval "zshcow"
+fi
  
  # ##########################
  ### Load Starship Prompt ###

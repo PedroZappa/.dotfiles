@@ -267,6 +267,7 @@ in {
     lazygit
     
     # Shell
+    beautysh
     zsh
     # zap-zsh
     nushell
