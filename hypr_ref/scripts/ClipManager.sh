@@ -19,7 +19,11 @@ while true; do
             exit
             ;;
         0)
-            case "$result" i
+            case "$result" in
+                "")
+                    continue
+                    ;;
+                *)
                     cliphist decode <<<"$result" | wl-copy
                     exit
                     ;;
