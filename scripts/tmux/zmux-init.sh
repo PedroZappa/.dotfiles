@@ -94,7 +94,7 @@ tmux new-session	-d -s $SESH2
 # Create Working Project window
 tmux rename-window	-t DEV:1 "$PROJECT_NAME"
 tmux send-keys		-t DEV:1 'cd '$DEV_DIR C-m
-tmux send-keys		-t DEV:1 '' C-m
+tmux send-keys		-t DEV:1 'update_env' C-m
 # Create Debug window
 tmux new-window		-t DEV:2 -n 'GDB'
 tmux split-window	-t DEV:2 -h

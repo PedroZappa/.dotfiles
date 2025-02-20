@@ -1,3 +1,6 @@
 [submodule "scripts/zemoji"]
 	path = scripts/zemoji
 	url = git@github.com:PedroZappa/zEmoji_Picker.git
+[submodule "scripts/env/zEnv_projects"]
+	path = scripts/env/zEnv_projects
+	url = git@github.com:PedroZappa/zEnv_projects.git

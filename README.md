@@ -22,6 +22,10 @@ ___
 
 ```shell
 git clone https://github.com/PedroZappa/zedro-dotfiles.git ~/.dotfiles
+git submodule update --init --recursive --progress
+
+# to update submodules
+git submodule update --remote --merge
 ``` 
 
 #### Create symlinks to .dotfiles in home directory.

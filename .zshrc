@@ -65,7 +65,7 @@
  greet $HOST
  
  #############
- ### Enoji ###
+ ### Emoji ###
  #############
 
 zemoji() {
@@ -79,6 +79,21 @@ zemoji() {
     python app.py
     # Deactivate the virtual environment after the script completes
     deactivate
+    cd ~/.dotfiles/
+}
+
+update_env() {
+    # Navigate to the project directory
+    cd ~/.dotfiles/scripts/env/zEnv_projects || return
+    # Run the make command to set up the virtual environment and database
+    make
+    # Activate the virtual environment
+    source .venv/bin/activate
+    # Execute the Python script
+    python app.py
+    # Deactivate the virtual environment after the script completes
+    deactivate
+    cd ~/.dotfiles/
 }
 
 ################
