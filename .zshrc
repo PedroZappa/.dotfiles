@@ -95,7 +95,7 @@ zemoji() {
 # Rebuild NixOS & Home Manager from Flake 
 nixr() {
   echo "${GREEN}Rebuilding NixOS from Flake${NC} ${CWD}"
-  sudo nixos-rebuild switch --flake '.#' || return 1
+  sudo nixos-rebuild switch --flake '.#nixos' || return 1
   echo "${GREEN}Configuring Home Manager${NC}"
   nix build '.#homeConfig.zedro.activationPackage'
   echo "${GREEN}Activating Home Manager${NC}"
@@ -104,7 +104,7 @@ nixr() {
 # Rebuild w/ Debug traces
 nixdbg() {
   echo "${GREEN}Rebuilding NixOS from Flake${NC} ${CWD}"
-  sudo nixos-rebuild switch --flake '.#' --show-trace --print-build-logs --verbose || return 1
+  sudo nixos-rebuild switch --flake '.#nixos' --show-trace --print-build-logs --verbose || return 1
   echo "${GREEN}Configuring Home Manager${NC}"
   nix build '.#homeConfig.zedro.activationPackage'
   echo "${GREEN}Activating Home Manager${NC}"
