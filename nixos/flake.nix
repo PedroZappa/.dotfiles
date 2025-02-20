@@ -35,7 +35,7 @@
       ${vars.hostname} = nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = {inherit inputs;};
-        modules = [./configuration.nix];
+        modules = [ ./configuration.nix ];
       };
       specialArgs = {inherit zap-zsh;};
     };
@@ -44,9 +44,7 @@
       ${vars.user} = home-manager.lib.homeManagerConfiguration {
         # inherit system pkgs;
         pkgs = nixpkgs.legacyPackages.${vars.system};
-        modules = [
-          ../home-manager/home.nix
-        ];
+        modules = [ ./home.nix ];
       };
     };
   };

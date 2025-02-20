@@ -133,7 +133,7 @@ return {
         end,
         clangd = function()
           require("lspconfig").clangd.setup({
-            cmd = { "clangd",
+            cmd = { "/run/current-system/sw/bin/clangd",
               "--compile-commands-dir=" .. vim.loop.cwd(),
               "--background-index",
               "--clang-tidy",

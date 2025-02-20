@@ -19,6 +19,7 @@ return {
         -- null_ls.builtins.diagnostics.eslint,
         null_ls.builtins.diagnostics.codespell,
         null_ls.builtins.diagnostics.cmake_lint,
+        null_ls.builtins.formatting.prettier,
         null_ls.builtins.formatting.stylua,
       },
       border = nil,

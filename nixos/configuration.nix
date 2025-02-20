@@ -6,7 +6,7 @@
 Setup SSH key on Github
 */
 # sudo su
-# nix-env -iA nixos.git
+# nix-env -iA nixos.git nixos.vim
 # git clone git@github.com:PedroZappa/.dotfiles.git
 # nixos-install --flake ".dotfiles/nixos#<host>"
 # reboot
@@ -215,6 +215,10 @@ in {
     enable = true;
   };
 
+  programs.neovim = {
+    enable = true;
+  };
+
   programs.starship.enable = true;
 
   # Allow unfree packages
@@ -259,36 +263,39 @@ in {
 
     # Terminal
     ghostty # Terminal Emulator
+    tmux # Multiplexer
     coreutils # GNU Utilities
     xdg-utils # Environment integration
+
+    # Git
     git
     gh
-    tmux
+    lazygit
+    
     # Shell
     zsh
     # zap-zsh
     nushell
     atuin
     starship
+    
     # Editors
     vim
     unstable.neovim
-    # Interpreters
-    lua
-    luajitPackages.luarocks
-    python3Full
-    # Compilers
-    unstable.clang
-    unstable.gcc
+
     # Build Tools
     gnumake42
     cmake
+
     # Libs
     llvmPackages_19.libllvm
+    
+    # C/C++
+    unstable.clang
+    unstable.gcc
+    clang-tools
     libgcc
     libgccjit
-    # C/C++
-    clang-tools
     codespell
     conan
     cppcheck
@@ -297,12 +304,22 @@ in {
     lcov
     vcpkg
     vcpkg-tool
-    unstable.boost.dev
-    unstable.boost
-    websocketpp
+    # unstable.boost.dev
+    # unstable.boost
+    # websocketpp
     # libnghttp2_asio
-    unstable.juce
+    # unstable.juce
     readline
+
+    # Lua
+    lua
+    lua-language-server
+    luajitPackages.luarocks
+
+    # Python
+    python3Full
+    ruff
+
     # Debug & Heuristics
     valgrind
     gdb

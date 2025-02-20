@@ -109,10 +109,15 @@ update_env() {
 # NixOS
 # Rebuild NixOS
 # Rebuild w/ Debug traces
-alias nixr="sudo nixos-rebuild switch --flake"
+# alias nixr="sudo nixos-rebuild switch --flake"
+nixr() {
+  sudo nixos-rebuild switch --flake '.#znix'
+  # nix build '.#homeConfig.zedro.activatePackage'
+}
 nixdbg() {
   echo "${GREEN}Rebuilding NixOS from Flake${NC} ${CWD}"
   sudo nixos-rebuild switch --flake '.#' --show-trace --print-build-logs --verbose || return 1
+  ~/.dotfiles/nixos/result/activate
 }
 # nix-collect-garbage -> Removes undeclared packaged/deps and symliks
 # nix-store --gc -> Optimized Nix Store
