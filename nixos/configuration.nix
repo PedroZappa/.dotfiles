@@ -201,6 +201,7 @@ in {
     extraGroups = ["networkmanager" "wheel" "audio"];
     packages = with pkgs; [
       dwt1-shell-color-scripts
+      fastfetch
       cowsay
       neo-cowsay
       fortune
