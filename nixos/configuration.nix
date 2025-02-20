@@ -172,7 +172,15 @@ in {
     avahi.enable = true;
   };
 
-  security.rtkit.enable = true;
+  security = {
+    rtkit.enable = true;  
+    sudo = {
+      enable = true;
+      extraConfig = ''
+        Defaults timestamp_timeout=-1
+      '';
+    };
+  };
   # Enable sound with pipewire.
   services.pipewire = {
     enable = true;
@@ -272,6 +280,8 @@ in {
     # Build Tools
     gnumake42
     cmake
+    ninja
+    meson
 
     # Libs
     llvmPackages_19.libllvm
@@ -354,6 +364,9 @@ in {
     usbutils # lsusb
 
     # Utils
+    zoxide
+    ranger
+    eza
     unzip
     fzf
     ripgrep
@@ -370,18 +383,26 @@ in {
     slurp
 
     # Hyprland
-    waybar # Desktop bar
-    (pkgs.waybar.overrideAttrs (oldAttrs: {
-        mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
-      })
-    )
-    dunst # Notification daemon
-    libnotify #dunst dep
-    swww # wallpaper daemon
-    rofi-wayland # App launcher
-    dolphin # file manager
+    (pkgs.hyprland.override { # or inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland
+      enableXWayland = true;  # whether to enable XWayland
+      legacyRenderer = false; # whether to use the legacy renderer (for old GPUs)
+      withSystemd = true;     # whether to build with systemd support
+    })
+    eww # Desktop widgets
+    hyprpaper # wallpaper daemon
     networkmanagerapplet # network manager applet
-    clipse
+    swaynotificationcenter # Notification daemon ()
+    libnotify
+    clipse # Clipboard Manager
+    fuzzel # App launcher/fuzzy finder
+    # pixman
+    # wayland
+    # cairo
+    # libpng
+    # librsvg
+    # fcft
+    nautilus # file manager
+
 
 
     # Create an FHS environment using the command `fhs`, enabling the execution of non-NixOS packages in NixOS!
