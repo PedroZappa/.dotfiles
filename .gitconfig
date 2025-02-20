@@ -9,3 +9,5 @@
 	submodule = log
 [credential]
 	helper = cache
+[submodule]
+	recurse = true
