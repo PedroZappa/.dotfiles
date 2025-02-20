@@ -30,7 +30,7 @@ Create symlinks
     url = "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz";
     sha256 = "1blzcjd13srns4f5b4sl5ad2qqr8wh0p7pxbyl1c15lrsa075v8h";
   }) {system = system;};
-  hostname = "znix";
+   hostname = "znix";
   user = "zedro";
 in {
   imports = [
@@ -221,6 +221,14 @@ in {
 
   programs.starship.enable = true;
 
+  # 
+  programs.nix-ld = {
+    enable = true;
+    libraries = with pkgs; [
+      lua-language-server
+    ];
+  };
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -230,6 +238,85 @@ in {
     # it provides the command `nom` works just like `nix`
     # with more details log output
     nix-output-monitor
+    nil
+    alejandra
+    nixfmt
+
+    # Terminal
+    ghostty # Terminal Emulator
+    tmux # Multiplexer
+    coreutils # GNU Utilities
+    xdg-utils # Environment integration
+
+    # Git
+    git
+    gh
+    lazygit
+    
+    # Shell
+    zsh
+    # zap-zsh
+    nushell
+    atuin
+    starship
+    
+    # Editors
+    vim
+    unstable.neovim
+
+    # Build Tools
+    gnumake42
+    cmake
+
+    # Libs
+    llvmPackages_19.libllvm
+    
+    # Bash
+    bash-language-server 
+
+    # C/C++
+    unstable.clang
+    unstable.gcc
+    clang-tools
+    libgcc
+    libgccjit
+    codespell
+    conan
+    cppcheck
+    doxygen
+    gtest
+    lcov
+    vcpkg
+    vcpkg-tool
+    # unstable.boost.dev
+    # unstable.boost
+    # websocketpp
+    # libnghttp2_asio
+    # unstable.juce
+    readline
+
+    # Lua
+    lua
+    lua-language-server
+    stylua
+    luajitPackages.luarocks
+
+    # Python
+    python3Full
+    ruff
+    pyright
+
+    # Debug & Heuristics
+    valgrind
+    gdb
+    # Package Managers
+    cargo
+    uv
+    # Web
+    google-chrome
+    nodejs_23
+    wget
+    curl
 
     # networking tools
     mtr # A network diagnostic tool
@@ -261,76 +348,6 @@ in {
     pciutils # lspci
     usbutils # lsusb
 
-    # Terminal
-    ghostty # Terminal Emulator
-    tmux # Multiplexer
-    coreutils # GNU Utilities
-    xdg-utils # Environment integration
-
-    # Git
-    git
-    gh
-    lazygit
-    
-    # Shell
-    zsh
-    # zap-zsh
-    nushell
-    atuin
-    starship
-    
-    # Editors
-    vim
-    unstable.neovim
-
-    # Build Tools
-    gnumake42
-    cmake
-
-    # Libs
-    llvmPackages_19.libllvm
-    
-    # C/C++
-    unstable.clang
-    unstable.gcc
-    clang-tools
-    libgcc
-    libgccjit
-    codespell
-    conan
-    cppcheck
-    doxygen
-    gtest
-    lcov
-    vcpkg
-    vcpkg-tool
-    # unstable.boost.dev
-    # unstable.boost
-    # websocketpp
-    # libnghttp2_asio
-    # unstable.juce
-    readline
-
-    # Lua
-    lua
-    lua-language-server
-    luajitPackages.luarocks
-
-    # Python
-    python3Full
-    ruff
-
-    # Debug & Heuristics
-    valgrind
-    gdb
-    # Package Managers
-    cargo
-    uv
-    # Web
-    google-chrome
-    nodejs_23
-    wget
-    curl
     # Utils
     unzip
     fzf
@@ -339,7 +356,6 @@ in {
     bat
     fx
     tree
-    alejandra
     vlc # Media Player
     cifs-utils # Samba
     appimage-run # Runs AppImages on NixOS

@@ -108,12 +108,11 @@ update_env() {
 
 # NixOS
 # Rebuild NixOS
-# Rebuild w/ Debug traces
-# alias nixr="sudo nixos-rebuild switch --flake"
-nixr() {
+nixr () {
   sudo nixos-rebuild switch --flake '.#znix'
   # nix build '.#homeConfig.zedro.activatePackage'
 }
+# Rebuild w/ Debug traces
 nixdbg() {
   echo "${GREEN}Rebuilding NixOS from Flake${NC} ${CWD}"
   sudo nixos-rebuild switch --flake '.#' --show-trace --print-build-logs --verbose || return 1

@@ -22,6 +22,8 @@ export GIT_USER="PedroZappa"
 export DOTFILES="$HOME/.dotfiles"
 export SCRIPTS="$DOTFILES/scripts"
 
+# Add NixOS bin/ to PATH
+# export PATH="$PATH:/run/current-system/sw/bin"
 # Add ~/.local/bin to PATH
 export PATH="$HOME/.local/bin:$PATH"
 # Add 42's ~/homebrew/bin to PATH
