@@ -92,23 +92,12 @@ zemoji() {
 #######################
 
 # NixOS
-# Rebuild NixOS & Home Manager from Flake 
-nixr() {
-  echo "${GREEN}Rebuilding NixOS from Flake${NC} ${CWD}"
-  sudo nixos-rebuild switch --flake '.#nixos' || return 1
-  echo "${GREEN}Configuring Home Manager${NC}"
-  nix build '.#homeConfig.zedro.activationPackage'
-  echo "${GREEN}Activating Home Manager${NC}"
-  ~/.dotfiles/nixos/result/activate
-}
+# Rebuild NixOS
 # Rebuild w/ Debug traces
+alias nixr="sudo nixos-rebuild switch --flake"
 nixdbg() {
   echo "${GREEN}Rebuilding NixOS from Flake${NC} ${CWD}"
-  sudo nixos-rebuild switch --flake '.#nixos' --show-trace --print-build-logs --verbose || return 1
-  echo "${GREEN}Configuring Home Manager${NC}"
-  nix build '.#homeConfig.zedro.activationPackage'
-  echo "${GREEN}Activating Home Manager${NC}"
-  ~/.dotfiles/nixos/result/activate
+  sudo nixos-rebuild switch --flake '.#' --show-trace --print-build-logs --verbose || return 1
 }
 # nix-collect-garbage -> Removes undeclared packaged/deps and symliks
 # nix-store --gc -> Optimized Nix Store

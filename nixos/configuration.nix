@@ -1,35 +1,43 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-
 # Use Flake on fresh install
-/* Setup SSH key on Github */
+/*
+Setup SSH key on Github
+*/
 # sudo su
 # nix-env -iA nixos.git
 # git clone git@github.com:PedroZappa/.dotfiles.git
 # nixos-install --flake ".dotfiles/nixos#<host>"
 # reboot
-/* Log back in */
+/*
+Log back in
+*/
 # sudo rm -fr /etc/nixos/configuration.nix
-/* Create symlinks */
-
-{ config, pkgs, zap-zsh, inputs, ... }:
-let
+/*
+Create symlinks
+*/
+{
+  config,
+  pkgs,
+  zap-zsh,
+  inputs,
+  ...
+}: let
   stateVersion = "24.11";
   system = "x86_64-linux";
-  unstable = import (builtins.fetchTarball { 
+  unstable = import (builtins.fetchTarball {
     url = "https://github.com/NixOS/nixpkgs/archive/nixos-unstable.tar.gz";
     sha256 = "1blzcjd13srns4f5b4sl5ad2qqr8wh0p7pxbyl1c15lrsa075v8h";
-  }) { system = system; };
-  hostname = "nixos";
+  }) {system = system;};
+  hostname = "znix";
   user = "zedro";
-in
-{
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      # inputs.home-manager.nixosModules.default
-    ];
+in {
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    # inputs.home-manager.nixosModules.default
+  ];
 
   # Bootloader.
   boot = {
@@ -52,10 +60,10 @@ in
     };
   };
 
-#  fileSystems."/boot" = {
-#    device = "/dev/nvme0n1p1";
-#    fsType = "vfat";
-#  };
+   fileSystems."/boot" = {
+     device = "/dev/nvme0n1p1";
+     fsType = "vfat";
+   };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ 22 ];
@@ -105,14 +113,14 @@ in
     };
     # VIDEO
     graphics = {
-        enable = true; # Enable OpenGL
+      enable = true; # Enable OpenGL
     };
     nvidia = {
       package = config.boot.kernelPackages.nvidiaPackages.stable;
       modesetting.enable = true;
       # Nvidia power management. Experimental, and can cause sleep/suspend to fail.
       # Enable this if you have graphical corruption issues or application crashes after waking
-      # up from sleep. This fixes it by saving the entire VRAM memory to /tmp/ instead 
+      # up from sleep. This fixes it by saving the entire VRAM memory to /tmp/ instead
       # of just the bare essentials.
       powerManagement.enable = false;
 
@@ -122,9 +130,9 @@ in
 
       # Use the NVidia open source kernel module (not to be confused with the
       # independent third-party "nouveau" open source driver).
-      # Support is limited to the Turing and later architectures. Full list of 
-      # supported GPUs is at: 
-      # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus 
+      # Support is limited to the Turing and later architectures. Full list of
+      # supported GPUs is at:
+      # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
       # Only available from driver 515.43.04+
       open = false;
 
@@ -136,7 +144,6 @@ in
     pulseaudio.enable = false;
   };
 
-
   services = {
     # GUI
     displayManager.defaultSession = "gnome";
@@ -146,19 +153,20 @@ in
       # Enable the GNOME Desktop Environment.
       displayManager.gdm.enable = true;
       desktopManager.gnome.enable = true;
-      xkb = { # Configure keymap in X11
+      xkb = {
+        # Configure keymap in X11
         layout = "us";
         variant = "";
       };
     };
     # Enable CUPS to print documents.
-    printing = { 
+    printing = {
       enable = true;
     };
     # Enable the OpenSSH daemon.
     openssh = {
       enable = true;
-      ports = [ 22 ];
+      ports = [22];
     };
     # Enable mDNS responder to resolve IP addresses
     avahi.enable = true;
@@ -184,13 +192,13 @@ in
 
   # Set Zsh as default shell for all users
   users.defaultUserShell = pkgs.zsh;
-  
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${user} = {
     isNormalUser = true;
     description = "Zedro";
     shell = pkgs.zsh;
-    extraGroups = [ "networkmanager" "wheel" "audio" ];
+    extraGroups = ["networkmanager" "wheel" "audio"];
     packages = with pkgs; [
       dwt1-shell-color-scripts
       cowsay
@@ -201,7 +209,8 @@ in
     ];
   };
 
-  programs.zsh = { # Enable Zsh
+  programs.zsh = {
+    # Enable Zsh
     enable = true;
   };
 
@@ -220,17 +229,17 @@ in
     # networking tools
     mtr # A network diagnostic tool
     iperf3
-    dnsutils  # `dig` + `nslookup`
+    dnsutils # `dig` + `nslookup`
     ldns # replacement of `dig`, it provide the command `drill`
     aria2 # A lightweight multi-protocol & multi-source command-line download utility
     socat # replacement of openbsd-netcat
     nmap # A utility for network discovery and security auditing
-    ipcalc  # it is a calculator for the IPv4/v6 addresses
+    ipcalc # it is a calculator for the IPv4/v6 addresses
 
     # productivity
     hugo # static site generator
     glow # markdown previewer in terminal
-    btop  # replacement of htop/nmon
+    btop # replacement of htop/nmon
     iotop # io monitoring
     iftop # network monitoring
     stow
@@ -267,7 +276,7 @@ in
     luajitPackages.luarocks
     python3Full
     # Compilers
-		unstable.clang
+    unstable.clang
     unstable.gcc
     # Build Tools
     gnumake42
@@ -318,25 +327,29 @@ in
     just # make grand-son
 
     # Create an FHS environment using the command `fhs`, enabling the execution of non-NixOS packages in NixOS!
-    (let base = pkgs.appimageTools.defaultFhsEnvArgs; in
-      pkgs.buildFHSUserEnv (base // {
-      name = "fhs";
-      targetPkgs = pkgs: 
-        # pkgs.buildFHSUserEnv provides only a minimal FHS environment,
-        # lacking many basic packages needed by most software.
-        # Therefore, we need to add them manually.
-        #
-        # pkgs.appimageTools provides basic packages required by most software.
-        (base.targetPkgs pkgs) ++ (with pkgs; [
-          pkg-config
-          ncurses
-        ]
-      );
-      profile = "export FHS=1";
-      runScript = "bash";
-      extraOutputsToInstall = ["dev"];
-    }))
-
+    (let
+      base = pkgs.appimageTools.defaultFhsEnvArgs;
+    in
+      pkgs.buildFHSUserEnv (base
+        // {
+          name = "fhs";
+          targetPkgs = pkgs:
+          # pkgs.buildFHSUserEnv provides only a minimal FHS environment,
+          # lacking many basic packages needed by most software.
+          # Therefore, we need to add them manually.
+          #
+          # pkgs.appimageTools provides basic packages required by most software.
+            (base.targetPkgs pkgs)
+            ++ (
+              with pkgs; [
+                pkg-config
+                ncurses
+              ]
+            );
+          profile = "export FHS=1";
+          runScript = "bash";
+          extraOutputsToInstall = ["dev"];
+        }))
   ];
 
   fonts.packages = with pkgs; [
@@ -368,16 +381,16 @@ in
   system.stateVersion = stateVersion; # Did you read the comment?
 
   # Create Symlinks to interpreters
- #  system.activationScripts.createInterpreterLinks = {
- #    text = ''
- #      if [ ! -e /usr/bin/env ]; then
- #        ln -s /run/current-system/sw/bin/env /usr/bin/env
- #      fi
- #      if [ ! -e /bin/bash ]; then
- #        ln -s /run/current-system/sw/bin/bash /bin/bash
- #      fi
- #    '';
- #  };
+  system.activationScripts.createInterpreterLinks = {
+    text = ''
+      if [ ! -e /usr/bin/env ]; then
+        ln -s /run/current-system/sw/bin/env /usr/bin/env
+      fi
+      if [ ! -e /bin/bash ]; then
+        ln -s /run/current-system/sw/bin/bash /bin/bash
+      fi
+    '';
+  };
   # Create Symlinks to Boost headers
   # system.activationScripts.createBoostHeaderLinks = {
   #   text = ''
@@ -400,10 +413,10 @@ in
 
   # Configure Automatic Weekly Garbage Collection
   nix = {
-    settings = { 
+    settings = {
       auto-optimise-store = true;
       # Enable Flakes
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = ["nix-command" "flakes"];
     };
     gc = {
       automatic = true;
