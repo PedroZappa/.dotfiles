@@ -126,6 +126,7 @@ FILES=(
     ["$HOME/.dotfiles/.clang-format"]="$HOME/.clang-format"
     ["$HOME/.dotfiles/.tmux.conf.local"]="$HOME/.tmux.conf.local"
     # ["$HOME/.dotfiles/kitty/"]="$HOME/.config/"
+    ["$HOME/.dotfiles/ghostty/"]="$HOME/.config/"
     ["$HOME/.dotfiles/btop/"]="$HOME/.config/"
     ["$HOME/.dotfiles/bat/"]="$HOME/.config/"
     ["$HOME/.dotfiles/atuin/"]="$HOME/.config/"
