@@ -3,7 +3,7 @@
 // https://github.com/Alexays/Waybar/wiki/Configuration
 {
 "layer": "top",
-"position": "bottom",
+"position": "top",
 "height": 10,
 "margin-bottom":0,
 "margin-top":0,
@@ -63,7 +63,7 @@
   "format-linked": " {ipaddr}",
   "format-disconnected": " Disconnected",
   "format-disabled": "",
-  "tooltip": false,
+  "tooltip": true,
   "max-length": 20,
   "min-length": 6,
   "format-alt": "{essid}",
