@@ -2,117 +2,145 @@
 // vim: fdm=marker fmr={,} 
 // https://github.com/Alexays/Waybar/wiki/Configuration
 {
-  "layer": "bottom",
-  "position": "top",
-  "height": 40,
-  "spacing": 2,
-  "exclusive": true,
-  "gtk-layer-shell": true,
-  "passthrough": false,
-  "fixed-center": true,
-  "modules-left": ["hyprland/workspaces", "hyprland/window"],
-  "modules-center": ["mpris"],
-  "modules-right": [
-    "cpu",
-    "memory",
-    "pulseaudio",
-    "clock",
-    "clock#simpleclock",
-    "tray",
-    "custom/notification",
-    "custom/power",
-  ],
-  "custom/spotify": {
-    "format": "  {}",
-    "return-type": "json",
-    "on-click": "playerctl -p spotify play-pause",
-    "on-click-right": "spotifatius toggle-liked",
-    "on-click-middle": "playerctl -p spotify next",
-    "exec": "spotifatius monitor",
+"layer": "top",
+"position": "bottom",
+"height": 10,
+"margin-bottom":0,
+"margin-top":0,
+
+"modules-left": ["sway/mode","cpu","memory","network","mpd"],
+"modules-center": ["sway/workspaces","hyprland/workspaces"],
+"modules-right":  ["tray","idle_inhibitor","pulseaudio","backlight","battery","clock"],
+
+"battery": {
+  "states": {
+  "warning": 30,
+  "critical": 15
   },
-  "mpris": {
-    "player": "spotify",
-    "dynamic-order": ["artist", "title"],
-    "format": "{player_icon} {dynamic}",
-    "format-paused": "{status_icon} <i>{dynamic}</i>",
-    "status-icons": {
-      "paused": "",
-    },
-    "player-icons": {
-      "default": "",
-    },
-  },
-  "hyprland/workspaces": {
-    "on-click": "activate",
-    "format": "{id}",
-    "all-outputs": true,
-    "disable-scroll": false,
-    "active-only": false,
-  },
-  "hyprland/window": {
-    "format": "{title}",
-  },
-  "tray": {
-    "show-passive-items": true,
-    "spacing": 10,
-  },
-  "clock#simpleclock": {
+  "format": "{icon}&#8239;{capacity}%",
+  "format-charging": "&#8239;{capacity}%",
+  "format-plugged": "&#8239;{capacity}%",
+  "format-alt": "{icon} {time}",
+  "format-icons": ["", "", "", "", "", "", ""]
+},
+"hyprland/workspaces": {
+     "sort-by-name": true,
+     "on-click": "activate"
+},
+"hyprland/window": {
+    "max-length": 200,
+    "separate-outputs": true
+},
+"sway/mode": {
+    "format": "<span style=\"italic\">{}</span>"
+},
+"tray": {
+    "icon-size": 16,
+    "spacing": 6
+},
+"clock": {
+    "locale": "C", 
+    "format": "  {:%I:%M %p}",
+    "format-alt": " {:%a,%b %d}" // Icon: calendar-alt
+},
+"cpu": {
+    "format": "  &#8239;{usage}%",
     "tooltip": false,
-    "format": "  {:%H:%M}",
-  },
-  "clock": {
-    "format": "  {:L%a %d %b}",
-    "calendar": {
-      "format": {
-        "days": "<span weight='normal'>{}</span>",
-        "months": "<span color='#cdd6f4'><b>{}</b></span>",
-        "today": "<span color='#f38ba8' weight='700'><u>{}</u></span>",
-        "weekdays": "<span color='#f9e2af'><b>{}</b></span>",
-        "weeks": "<span color='#a6e3a1'><b>W{}</b></span>",
-      },
-      "mode": "month",
-      "mode-mon-col": 1,
-      "on-scroll": 1,
-    },
-    "tooltip-format": "<span color='#cdd6f4' font='Lexend 16'><tt><small>{calendar}</small></tt></span>",
-  },
-  "cpu": {
-    "format": "  {usage}%",
-    "tooltip": true,
-    "interval": 1,
-  },
-  "memory": {
-    "format": "  {used:0.1f}Gi",
-  },
-  "pulseaudio": {
-    "format": "{icon} {volume}%",
-    "format-muted": "  muted",
-    "format-icons": {
-      "headphone": "",
-      "default": [" ", " ", " "],
-    },
-    "on-click": "pavucontrol",
-  },
-  "custom/sep": {
-    "format": "|",
+    "on-click": "kitty -e 'htop'"
+},
+"memory": {
+    "interval": 30,
+    "format": " {used:0.2f}GB",
+    "max-length": 10,
     "tooltip": false,
-  },
-  "custom/power": {
-    "tooltip": false,
-    "on-click": "wlogout -p layer-shell &",
-    "format": "⏻",
-  },
-  "custom/notification": {
-    "escape": true,
-    "exec": "swaync-client -swb",
-    "exec-if": "which swaync-client",
+    "warning": 70,
+    "critical": 90
+},
+"network": {
+  "interval": 2,
+  "format-wifi": "  {signalStrength}%",
+  "format-ethernet": "",
+  "format-linked": " {ipaddr}",
+  "format-disconnected": " Disconnected",
+  "format-disabled": "",
+  "tooltip": false,
+  "max-length": 20,
+  "min-length": 6,
+  "format-alt": "{essid}",
+},
+"idle_inhibitor": {
     "format": "{icon}",
     "format-icons": {
-      "none": " 󰅺 ",
-      "notification": "󰡟",
-    },
-    "on-click": "sleep 0.1 && swaync-client -t -sw",
-    "return-type": "json",
-    "tooltip": false,
+        "activated": "",
+        "deactivated": ""
+    }
+},
+"backlight": {
+    // "device": "acpi_video1",
+    "format": "{icon}&#8239;{percent}%",
+    "format-icons": ["", ""],
+    "on-scroll-down": "brightnessctl -c backlight set 1%-",
+    "on-scroll-up": "brightnessctl -c backlight set +1%"
+},
+"pulseaudio": {
+  // "scroll-step": 1, // %, can be a float
+  "format": "{icon} {volume}% {format_source}",
+  "format-bluetooth": "{icon} {volume}% {format_source}",
+  "format-bluetooth-muted": " {format_source}",
+  "format-muted": "  {format_source}",
+  "format-source": " {volume}%",
+  "format-source-muted": "",
+  "format-icons": {
+    "headphone": "",
+    "hands-free": "",
+    "headset": "🎧",
+    "phone": "",
+    "portable": "",
+    "car": "",
+    "default": ["", "", ""]
   },
+  "on-click": "pavucontrol"
+},
+"mpd": {
+  "format": "{stateIcon} {artist} - {title}",
+  "format-disconnected": "🎶",
+  "format-stopped": "♪",
+  "interval": 10,
+  "consume-icons": {
+    "on": " " // Icon shows only when "consume" is on
+  },
+  "random-icons": {
+    "off": "<span color=\"#f53c3c\"></span> ", // Icon grayed out when "random" is off
+    "on": " "
+  },
+  "repeat-icons": {
+    "on": " "
+  },
+  "single-icons": {
+    "on": "1 "
+  },
+  "state-icons": {
+    "paused": "",
+    "playing": ""
+  },
+  "tooltip-format": "MPD (connected)",
+  "tooltip-format-disconnected": "MPD (disconnected)",
+  "max-length": 35
+},
+"custom/recorder": {
+    "format": " Rec",
+    "format-disabled": " Off-air", //An empty format will hide the module.
+    "return-type": "json",
+    "interval": 1,
+    "exec": "echo '{\"class\": \"recording\"}'",
+    "exec-if": "pgrep wf-recorder",
+},
+"custom/audiorec": {
+    "format": "♬ Rec",
+    "format-disabled": "♬ Off-air", //An empty format will hide the module.
+    "return-type": "json",
+    "interval": 1,
+    "exec": "echo '{\"class\": \"audio recording\"}'",
+    "exec-if": "pgrep ffmpeg",
+},
 }
