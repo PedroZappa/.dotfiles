@@ -69,6 +69,8 @@
  #############
 
 zemoji() {
+    # Store the original working directory
+    local OG_DIR=$(pwd)
     # Navigate to the project directory
     cd ~/.dotfiles/scripts/zemoji/ || return
     # Run the make command to set up the virtual environment and database
@@ -79,11 +81,13 @@ zemoji() {
     python app.py
     # Deactivate the virtual environment after the script completes
     deactivate
-    cd ~/.dotfiles/
+    cd "$OG_DIR"
 }
 
 # Update Projects
 update_env() {
+    # Store the original working directory
+    local OG_DIR=$(pwd)
     # Navigate to the project directory
     cd ~/.dotfiles/scripts/env/zEnv_projects || return
     # Run the make command to set up the virtual environment and database
@@ -94,7 +98,7 @@ update_env() {
     python app.py
     # Deactivate the virtual environment after the script completes
     deactivate
-    cd ~/.dotfiles/
+    cd "$OG_DIR"
 }
 
 # Show top 21 Commands used (thanks totoro

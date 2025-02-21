@@ -22,6 +22,10 @@ function M.add_boxed_comment()
     comment_start = "-- "
     comment_end = " --"
     fill_char = "-"
+  elseif filetype == "conf" then
+    comment_start = "# "
+    comment_end = "# "
+    fill_char = "-"
   else
     comment_start = "// "
     comment_end = " //"

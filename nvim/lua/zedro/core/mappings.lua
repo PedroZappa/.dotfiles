@@ -165,12 +165,12 @@ keymap.set("n", "<leader>tq", function()
 end, { desc = "Toggle quote style" })
 
 -- PATH OPERATIONS --
-vim.keymap.set(
-  "n",
-  "<leader>cpf",
-  ':let @+ = expand("%:p")<cr>:lua print("Copied path to: " .. vim.fn.expand("%:p"))<cr>',
-  { desc = "Copy current file name and path", silent = false }
-)
+-- vim.keymap.set(
+--   "n",
+--   "<leader>cpf",
+--   ':let @+ = expand("%:p")<cr>:lua print("Copied path to: " .. vim.fn.expand("%:p"))<cr>',
+--   { desc = "Copy current file name and path", silent = false }
+-- )
 
 -- GREATEST MAPPING EVER : djunho
 -- preserves the buffer when pasting over a highlighted selection

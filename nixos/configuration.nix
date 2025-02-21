@@ -60,10 +60,10 @@ in {
     };
   };
 
-   fileSystems."/boot" = {
-     device = "/dev/nvme0n1p1";
-     fsType = "vfat";
-   };
+  fileSystems."/boot" = {
+    device = "/dev/nvme0n1p1";
+    fsType = "vfat";
+  };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ 22 ];
@@ -179,7 +179,7 @@ in {
     sudo = {
       enable = true;
       extraConfig = ''
-        Defaults timestamp_timeout=-1
+        Defaults timestamp_timeout=666
       '';
     };
   };
@@ -383,27 +383,30 @@ in {
     grim
     slurp
 
-    # Hyprland
-    hyprls
+    ############
+    # Hyprland #
+    ############
     (pkgs.hyprland.override { # or inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland
       enableXWayland = true;  # whether to enable XWayland
       legacyRenderer = false; # whether to use the legacy renderer (for old GPUs)
       withSystemd = true;     # whether to build with systemd support
     })
+    hyprls
+    waybar # Status bar
     eww # Desktop widgets
     hyprpaper # wallpaper daemon
+    hyprshot # screenshot daemon
+    hyprlock # Lock
+    hypridle # Idle
+    hyprpicker # color picker daemon
     networkmanagerapplet # network manager applet
     swaynotificationcenter # Notification daemon ()
     libnotify
     clipse # Clipboard Manager
     fuzzel # App launcher/fuzzy finder
-    # pixman
-    # wayland
-    # cairo
-    # libpng
-    # librsvg
-    # fcft
-    nautilus # file manager
+    wofi
+    walker # app launcher
+    dolphin # file manager
 
 
 
