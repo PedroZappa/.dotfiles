@@ -46,6 +46,10 @@ fi
 export OBSIDIAN_VAULT_PATH
 
 # I3SOCK=$(ls /run/user/1000/i3/ipc-socket.*)
+# ME/.dotfiles
+# git pull
+# update_env
+#
 # export I3SOCK
 
 # Command line argument for working directory
@@ -73,6 +77,7 @@ tmux new-session	-d -s $SESH1
 tmux rename-window	-t RC:1 '.dotfiles'
 tmux send-keys		-t RC:1 'cd $HOME/.dotfiles' C-m
 tmux send-keys		-t RC:1 'git pull' C-m
+tmux send-keys		-t RC:1 'update_env' C-m
 # tmux send-keys		-t RC:1 $EDITOR C-m
 # Create obsidian RC window
 tmux new-window		-t RC:2 -n 'obsidian' -c $OBSIDIAN_VAULT_PATH
@@ -94,7 +99,6 @@ tmux new-session	-d -s $SESH2
 # Create Working Project window
 tmux rename-window	-t DEV:1 "$PROJECT_NAME"
 tmux send-keys		-t DEV:1 'cd '$DEV_DIR C-m
-tmux send-keys		-t DEV:1 'update_env' C-m
 # Create Debug window
 tmux new-window		-t DEV:2 -n 'GDB'
 tmux split-window	-t DEV:2 -h
