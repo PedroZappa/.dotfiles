@@ -8,7 +8,7 @@ local get_neovim_version = function()
   return string.format("%d.%d.%d", v.major, v.minor, v.patch)
 end
 
--- All custom headers
+-- All custo
 Headers = {
   {
     [[      ⣿⣿⣿⡟⠁⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠙⣿⣿⣿⣿                ]],
@@ -636,7 +636,7 @@ return {
       zindex = 50,
     },
     notifier = {
-      enabled = true,
+      enabled = false,
       timeout = 3000,
       width = { min = 40, max = 0.4 },
       height = { min = 1, max = 0.6 },
@@ -705,7 +705,7 @@ return {
           ft = nil, ---@type string? filetype for highlighting
         },
         file = {
-          filename_first = false, -- display filename before the file path
+          filename_first = true, -- display filename before the file path
           truncate = 40, -- truncate the file path to (roughly) this length
           filename_only = false, -- only show the filename
           icon_width = 2, -- width of the icon (in characters)
@@ -717,7 +717,7 @@ return {
         },
         severity = {
           icons = true, -- show severity icons
-          level = false, -- show severity level
+          level = true, -- show severity level
           ---@type "left"|"right"
           pos = "left", -- position of the diagnostics
         },

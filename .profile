@@ -1,3 +1,4 @@
+# # vim: ft=bash
 # ~/.profile: executed by the command interpreter for login shells.
 # This file is not read by bash(1), if ~/.bash_profile or ~/.bash_login
 # exists.
@@ -12,19 +13,20 @@
 if [ -n "$BASH_VERSION" ]; then
     # include .bashrc if it exists
     if [ -f "$HOME/.bashrc" ]; then
-	. "$HOME/.bashrc"
+	      . "$HOME/.bashrc"
     fi
 fi
 
-# set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/bin" ] ; then
-    PATH="$HOME/bin:$PATH"
+# set path so it includes user's private bin if it exists
+if [ -d "$home/bin" ] ; then
+    path="$home/bin:$path"
 fi
 
-# set PATH so it includes user's private bin if it exists
-if [ -d "$HOME/.local/bin" ] ; then
-    PATH="$HOME/.local/bin:$PATH"
+# set path so it includes user's private bin if it exists
+if [ -d "$home/.local/bin" ] ; then
+    path="$home/.local/bin:$path"
+    path="/run/current-system/sw/bin:$path"
 fi
+#
+# Find cargo
 . "$HOME/.cargo/env"
-
-. "$HOME/.local/share/../bin/env"

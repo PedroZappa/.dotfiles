@@ -7,6 +7,7 @@ return {
   lazy = false,
   config = function()
     local lsp_zero = require("lsp-zero")
+    local lspconfig = require("lspconfig")
     local mason = require("mason")                     -- import mason
     local mason_lspconfig = require("mason-lspconfig") -- import mason-lspconfig
     local mason_tool_installer = require("mason-tool-installer")
@@ -66,11 +67,11 @@ return {
         -- "debugpy",  -- python debugger
       },
     })
-    vim.api.nvim_command("MasonToolsInstall")
+    -- vim.api.nvim_command("MasonToolsInstall")
 
     mason_lspconfig.setup({
       ensure_installed = {
-        "clangd",
+        -- "clangd",
         "lua_ls",
         -- "jsonls",                    -- json
         -- "html",                      -- html
@@ -86,7 +87,7 @@ return {
       },
       lsp_zero.default_setup,
       lua_ls = function()
-        require("lspconfig").lua_ls.setup({
+        lspconfig.lua_ls.setup({
           cmd = { "/run/current-system/sw/bin/lua-language-server" },
           settings = {
             Lua = {
@@ -118,32 +119,51 @@ return {
         })
       end,
       clangd = function()
-        require("lspconfig").clangd.setup({
+        lspconfig.opts = {
+          servers = {
+            clangd = {
+              mason = false,
+            },
+          },
+        }
+        lspconfig.clangd.setup({
           cmd = {
-            "/run/current-system/sw/bin/clangd",
+            "clangd",
             "--compile-commands-dir=" .. vim.loop.cwd(),
             "--background-index",
             "--clang-tidy",
+            "--header-insertion=iwyu",
+            "--completion-style=detailed",
+            "--function-arg-placeholders",
+            "--fallback-style=llvm",
             "--suggest-missing-includes",
+            "--query-driver=/nix/store/*/bin/*", -- Allow clangd to find Nix compilers
           },
           init_options = {
+            offset_encoding = "utf-16",
             clangdFileStatus = true,
             additionalIncludes = { project_include_dir },
             -- clangdFileWatched = true,
             fallbackFlags = {
-              "-I" .. vim.loop.cwd() .. "/include", -- Custom include path
-              "-I/usr/local/lib",                   -- System-wide include
+              "-I" .. vim.loop.cwd() .. "/inc",
+              "-I" .. vim.loop.cwd() .. "/include",
+              "-I/usr/local/include", -- Common system-wide include path
+              -- "-I/run/current-system/sw/lib", -- Nix system include path
+              -- "-I/run/current-system/sw/bin", -- Nix system include path
             },
           },
           filetypes = { "c", "h", "hpp", "cpp", "objc", "objcpp" },
-          cmd_env = {
-            CXXFLAGS = "-I/sgoinfre/homebrew/include",
-            LDFLAGS = "-L/sgoinfre/homebrew/lib",
+          -- cmd_env = {
+          --   CXXFLAGS = "-I/sgoinfre/homebrew/include",
+          --   LDFLAGS = "-L/sgoinfre/homebrew/lib",
+          -- },
+          capabilities = {
+            offsetEncoding = { "utf-8" }, -- Ensure Neovim tells Clangd to use utf-8
           },
         })
       end,
       pyright = function()
-        require("lspconfig").pyright.setup({
+        lspconfig.pyright.setup({
           cmd = { "/run/current-system/sw/bin/pyright" },
           filetypes = { "python" },
           single_file_support = false,
@@ -162,13 +182,29 @@ return {
         })
       end,
       ruff = function()
-        require("lspconfig").ruff.setup({
+        lspconfig.ruff.setup({
           cmd = { "/run/current-system/sw/bin/ruff", "server" },
         })
       end,
       bashls = function()
-        require("lspconfig").bashls.setup({
+        lspconfig.bashls.setup({
           cmd = { "/run/current-system/sw/bin/bash-language-server", "start" },
+          filetypes = { "bash", "sh" },
+          root_dir = function(fname)
+            return vim.fs.dirname(vim.fs.find(".git", { path = fname, upward = true })[1])
+          end,
+          settings = {
+            bashIde = {
+              -- Glob pattern for finding and parsing shell script files in the workspace.
+              -- Used by the background analysis features across files.
+
+              -- Prevent recursive scanning which will cause issues when opening a file
+              -- directly in the home directory (e.g. ~/foo.sh).
+              --
+              -- Default upstream pattern is "**/*@(.sh|.inc|.bash|.command)".
+              globPattern = vim.env.GLOB_PATTERN or "*@(.sh|.inc|.bash|.command)",
+            },
+          },
         })
       end,
       -- Nix
@@ -190,19 +226,13 @@ return {
           root_dir = util.root_pattern("flake.nix", ".git"),
           settings = {
             ["nil"] = {
-              testSetting = 42,
               formatting = {
-                command = { "/run/current-system/sw/bin/nixfmt" },
+                command = { "/run/current-system/sw/bin/alejandra" },
               },
             },
           },
         })
       end,
-      -- alejandra = function()
-      --   require("lspconfig").alejandra.setup({
-      --     cmd = { "/run/current-system/sw/bin/alejandra" },
-      --   })
-      -- end,
     })
   end,
 }
