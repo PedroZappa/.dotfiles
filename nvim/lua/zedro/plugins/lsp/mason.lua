@@ -8,7 +8,7 @@ return {
   config = function()
     local lsp_zero = require("lsp-zero")
     local lspconfig = require("lspconfig")
-    local mason = require("mason")                     -- import mason
+    local mason = require("mason") -- import mason
     local mason_lspconfig = require("mason-lspconfig") -- import mason-lspconfig
     local mason_tool_installer = require("mason-tool-installer")
     -- Python virtual env detection
@@ -58,11 +58,11 @@ return {
 
     mason_tool_installer.setup({
       ensure_installed = {
-        -- "nixfmt",   -- nix formatter
+        "alejandra", -- nix formatter
         "prettier", -- prettier formatter
-        "stylua",   -- lua formatter
+        "stylua", -- lua formatter
         -- "eslint_d", -- js linter
-        "ruff",     -- python formatter
+        "ruff", -- python formatter
         -- "isort",    -- python import sorter
         -- "debugpy",  -- python debugger
       },
@@ -71,11 +71,12 @@ return {
 
     mason_lspconfig.setup({
       ensure_installed = {
-        -- "clangd",
+        "clangd",
         "lua_ls",
+        "nil", -- nix
         -- "jsonls",                    -- json
         -- "html",                      -- html
-        "pyright",                   -- python
+        "pyright", -- python
       },
       automatic_installation = true, -- not the same as ensure_installed
       handlers = {
@@ -148,8 +149,8 @@ return {
               "-I" .. vim.loop.cwd() .. "/inc",
               "-I" .. vim.loop.cwd() .. "/include",
               "-I/usr/local/include", -- Common system-wide include path
-              -- "-I/run/current-system/sw/lib", -- Nix system include path
-              -- "-I/run/current-system/sw/bin", -- Nix system include path
+              "-I/run/current-system/sw/lib", -- Nix system include path
+              "-I/run/current-system/sw/bin", -- Nix system include path
             },
           },
           filetypes = { "c", "h", "hpp", "cpp", "objc", "objcpp" },
