@@ -49,8 +49,14 @@ packages=(
     "c-lolcat"
     "cowsay"
     "fortune-mod"
+    # C/C++
+    "gdb"
+    "valgrind"
+    # Python
+    "uv"
     # Web
     "google-chrome"
+    "nodejs"
 )
 
 # Loop through the array and install each package

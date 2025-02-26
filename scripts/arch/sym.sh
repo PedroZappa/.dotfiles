@@ -58,7 +58,7 @@ FILES=(
     ["$HOME/.dotfiles/posting/"]="$HOME/.config"
     ["$HOME/.dotfiles/hypr"]="$HOME/.config"
 )
-#
+
 # Define the backup directory and create it if it doesn't exist
 BACKUP_DIR="$HOME/.dotfiles_bak"
 mkdir -p "$BACKUP_DIR"
@@ -81,7 +81,7 @@ create_symlink() {
     ln -s "$SRC" "$DEST"
     echo "${YEL}Created symlink from ${GRN}$SRC ${YEL}to ${PRP}$DEST${D}"
 }
-#
+
 # Create symlinks
 for SRC in "${!FILES[@]}"; do
     DEST=${FILES[$SRC]}
