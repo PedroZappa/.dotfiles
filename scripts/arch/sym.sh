@@ -30,15 +30,6 @@ if [ "${BASH_VERSINFO:-0}" -lt 4 ]; then
     exit 1
 fi
 
-# Ensure git, curl and wget are installed
-command_exists() {
-    if [ ! command -v "$1" &> /dev/null ]; then
-        echo "${RED}Error: You do not have ${command} installed, Exiting...${D}" >&2
-        exit 1
-    fi
-}
-
-
 # Associative array defining source and target FILES
 declare -A FILES
 FILES=(
@@ -48,24 +39,24 @@ FILES=(
     ["$HOME/.dotfiles/.zshrc"]="$HOME/.zshrc"
     ["$HOME/.dotfiles/.zshenv"]="$HOME/.zshenv"
     ["$HOME/.dotfiles/.bashrc"]="$HOME/.bashrc"
-    ["$HOME/.dotfiles/nushell"]="$HOME/.config/"
+    ["$HOME/.dotfiles/nushell"]="$HOME/.config"
     ["$HOME/.dotfiles/.gitconfig"]="$HOME/.gitconfig"
     ["$HOME/.dotfiles/starship.toml"]="$HOME/.config/starship.toml"
     ["$HOME/.dotfiles/.gitconfig"]="$HOME/.gitconfig"
     ["$HOME/.dotfiles/.gdbinit"]="$HOME/.gdbinit"
-    ["$HOME/.dotfiles/.lnav"]="$HOME/.config/"
+    ["$HOME/.dotfiles/.lnav"]="$HOME/.config"
     ["$HOME/.dotfiles/.editorconfig"]="$HOME/.editorconfig"
     ["$HOME/.dotfiles/.vimrc"]="$HOME/.vimrc"
-    ["$HOME/.dotfiles/nvim"]="$HOME/.config/"
+    ["$HOME/.dotfiles/nvim"]="$HOME/.config"
     ["$HOME/.dotfiles/.clang-format"]="$HOME/.clang-format"
     ["$HOME/.dotfiles/.tmux.conf.local"]="$HOME/.tmux.conf.local"
-    ["$HOME/.dotfiles/kitty/"]="$HOME/.config/"
-    ["$HOME/.dotfiles/ghostty/"]="$HOME/.config/"
-    ["$HOME/.dotfiles/btop/"]="$HOME/.config/"
-    ["$HOME/.dotfiles/bat/"]="$HOME/.config/"
-    ["$HOME/.dotfiles/atuin/"]="$HOME/.config/"
-    ["$HOME/.dotfiles/posting/"]="$HOME/.config/"
-    ["$HOME/.dotfiles/hypr"]="$HOME/.config/"
+    ["$HOME/.dotfiles/kitty/"]="$HOME/.config"
+    ["$HOME/.dotfiles/ghostty/"]="$HOME/.config"
+    ["$HOME/.dotfiles/btop/"]="$HOME/.config"
+    ["$HOME/.dotfiles/bat/"]="$HOME/.config"
+    ["$HOME/.dotfiles/atuin/"]="$HOME/.config"
+    ["$HOME/.dotfiles/posting/"]="$HOME/.config"
+    ["$HOME/.dotfiles/hypr"]="$HOME/.config"
 )
 #
 # Define the backup directory and create it if it doesn't exist

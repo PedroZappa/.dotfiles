@@ -32,17 +32,31 @@ else
     echo "yay is already installed."
 fi
 
-# Now that yay is installed, proceed to install other packages
-# Example: Install Google Chrome from the AUR
-yay -S ghostty
-yay -S zsh
-yay -S tmux
-yay -S lnav
-yay -S btop
-yay -S neovim
-yay -S ranger
-yay -S ripgrep
-yay -S clolcat
-yay -S cowsay
-yay -S fortune-mod
-yay -s google-chrome
+# Array of packages to install
+packages=(
+    # Build tools
+    "clang"
+    "cmake"
+    # Terminal biz
+    "ghostty"
+    "zsh"
+    "tmux"
+    "lnav"
+    "btop"
+    "neovim"
+    "ranger"
+    "ripgrep"
+    "c-lolcat"
+    "cowsay"
+    "fortune-mod"
+    # Web
+    "google-chrome"
+)
+
+# Loop through the array and install each package
+for pkg in "${packages[@]}"; do
+    echo "Installing $pkg..."
+    yay -S --noconfirm "$pkg"
+done
+
+echo "All packages installed successfully!"
