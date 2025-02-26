@@ -64,7 +64,7 @@ timezone = "local"
 
 ## the maximum number of lines the interface should take up
 ## set it to 0 to always go full screen
-inline_height = 7
+inline_height = 13
 
 ## Invert the UI - put the search bar at the top , Default to `false`
 invert = true
