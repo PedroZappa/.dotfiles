@@ -29,10 +29,20 @@ BWHI=$(tput setaf 15)
 D=$(tput sgr0)
 BEL=$(tput bel)
 
-./zap.sh
+# Store the current directory path
+SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 
-./tmux.sh
+# Execute scripts with echo statements
+echo "${B}${CYA}Starting zap.sh execution...${D}"
+"${SCRIPT_DIR}/zap.sh" || { echo "${B}${RED}Error: zap.sh failed${D}"; exit 1; }
 
-./sym.sh
+echo "${B}${GRN}Starting tmux.sh execution...${D}"
+"${SCRIPT_DIR}/tmux.sh" || { echo "${B}${RED}Error: tmux.sh failed${D}"; exit 1; }
 
-./yay.sh
+echo "${B}${YEL}Starting sym.sh execution...${D}"
+"${SCRIPT_DIR}/sym.sh" || { echo "${B}${RED}Error: sym.sh failed${D}"; exit 1; }
+
+echo "${B}${MAG}Starting yay.sh execution...${D}"
+"${SCRIPT_DIR}/yay.sh" || { echo "${B}${RED}Error: yay.sh failed${D}"; exit 1; }
+
+echo "${B}${BGRN}All scripts executed successfully!${D}"
