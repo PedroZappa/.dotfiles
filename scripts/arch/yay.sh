@@ -40,6 +40,7 @@ packages=(
     # Terminal biz
     "ghostty"
     "zsh"
+    "neovim"
     "tmux"
     "lnav"
     "btop"
