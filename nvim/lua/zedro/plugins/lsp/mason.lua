@@ -8,7 +8,7 @@ return {
   config = function()
     local lsp_zero = require("lsp-zero")
     local lspconfig = require("lspconfig")
-    local mason = require("mason") -- import mason
+    local mason = require("mason")                     -- import mason
     local mason_lspconfig = require("mason-lspconfig") -- import mason-lspconfig
     local mason_tool_installer = require("mason-tool-installer")
     -- Python virtual env detection
@@ -59,12 +59,12 @@ return {
     mason_tool_installer.setup({
       ensure_installed = {
         "alejandra", -- nix formatter
-        "prettier", -- prettier formatter
-        "stylua", -- lua formatter
+        "prettier",  -- prettier formatter
+        "stylua",    -- lua formatter
         -- "eslint_d", -- js linter
-        "ruff", -- python formatter
+        "ruff",      -- python formatter
         -- "isort",    -- python import sorter
-        "debugpy",  -- python debugger
+        "debugpy",   -- python debugger
       },
     })
     -- vim.api.nvim_command("MasonToolsInstall")
@@ -76,7 +76,8 @@ return {
         "nil", -- nix
         -- "jsonls",                    -- json
         -- "html",                      -- html
-        "pyright", -- python
+        "pyright",                   -- python
+        "hyprls",                    -- Hyprland
       },
       automatic_installation = true, -- not the same as ensure_installed
       handlers = {
@@ -148,7 +149,7 @@ return {
             fallbackFlags = {
               "-I" .. vim.loop.cwd() .. "/inc",
               "-I" .. vim.loop.cwd() .. "/include",
-              "-I/usr/local/include", -- Common system-wide include path
+              "-I/usr/local/include",         -- Common system-wide include path
               "-I/run/current-system/sw/lib", -- Nix system include path
               "-I/run/current-system/sw/bin", -- Nix system include path
             },
