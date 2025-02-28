@@ -78,7 +78,6 @@ create_symlink() {
     # Create the symlink
     ln -sf "$SRC" "$DEST"
     echo "${YEL}Created symlink from ${GRN}$SRC ${YEL}to ${PRP}$DEST${D}"
-}
 
 # Create symlinks with error tracking
 ERRORS=0
