@@ -61,14 +61,12 @@ create_symlink() {
     if [ ! -e "$SRC" ]; then
         echo "${RED}Error: Source $SRC does not exist${D}" >&2
         return 1
-    }
 
     # Check if destination directory exists, create if it doesn't
     local DEST_DIR=$(dirname "$DEST")
     if [ ! -d "$DEST_DIR" ]; then
         mkdir -p "$DEST_DIR"
         echo "${YEL}Created directory ${PRP}$DEST_DIR${D}"
-    }
 
     # Check if the destination file/directory exists
     if [ -e "$DEST" ]; then
