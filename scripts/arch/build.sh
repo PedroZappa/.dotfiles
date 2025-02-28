@@ -38,4 +38,10 @@ echo "${B}${MAG}Starting yay.sh execution...${D}"
 echo "${B}${MAG}Starting chsh.sh execution...${D}"
 "${SCRIPT_DIR}/chsh.sh" || { echo "${B}${RED}Error: chsh.sh failed${D}"; exit 1; }
 
+# Remove the colors script
+if [ -f "~/colors.sh" ]; then
+    rm ~/colors.sh
+fi
+
 echo "${B}${BGRN}All scripts executed successfully!${D}"
+
