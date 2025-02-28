@@ -23,6 +23,13 @@ fi
 # Enable error handling
 # set -euo pipefail
 
+# Get $USER home directory
+if [ -n "$SUDO_USER" ]; then
+    HOME=$(eval echo ~$SUDO_USER)
+else
+    HOME=$HOME
+fi
+
 # Associative array defining source and target FILES
 declare -A FILES=(
     ["$HOME/.dotfiles/nixos"]="$HOME/etc/"
@@ -96,5 +103,5 @@ if [ $ERRORS -eq 0 ]; then
     echo "${B}${GRN}󰄬 ${PRP}${USER}${YEL}'s .dotfiles symlinking completed successfully. ${GRN}💻${D}"
 else
     echo "${B}${RED}󰄮 ${PRP}${USER}${YEL}'s .dotfiles symlinking completed with $ERRORS errors. ${RED}⚠${D}" >&2
-    exit 1
+    # exit 1
 fi
