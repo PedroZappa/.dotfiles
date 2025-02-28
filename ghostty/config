@@ -1,3 +1,6 @@
+ME/.dotfiles
+git pull
+
 # # Ghostty Config
 title = 
 
@@ -14,7 +17,7 @@ foreground = #ffffff
 # Get All available fonts
 # ghostty +list-fonts
 font-family = FiraCode Nerd Font
-font-size = 10
+font-size = 12
 
 # Mouse
 mouse-hide-while-typing = true
