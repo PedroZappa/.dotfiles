@@ -4,14 +4,6 @@
 # -u : Treat unset variables as an error and exit;
 # -o pipeline : Set the exit status to the last command in the pipeline that failed.
 
-# Check for sudo privileges
-if [ "$EUID" -ne 0 ]; then
-    echo "This script requires sudo privileges"
-    echo "Please run it again with sudo:"
-    echo "sudo $0"
-    exit 1
-fi
-
 # Color Codes
 # Run the following command to get list of available colors
 # bash -c 'for c in {0..255}; do tput setaf $c; tput setaf $c | cat -v; echo =$c; done'
