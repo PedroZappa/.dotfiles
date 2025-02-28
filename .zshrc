@@ -187,8 +187,8 @@ else
 	alias ll='ls -al --color'
 fi
 # Load Cowsay
-if command -v clolcat > /dev/null 2>&1; then
-	eval "zshcow" | clolcat
+if command -v lolcat > /dev/null 2>&1; then
+	eval "zshcow" | lolcat
 else
 	eval "zshcow"
 fi

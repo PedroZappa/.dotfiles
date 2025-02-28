@@ -28,6 +28,7 @@
   "gitmoji.nvim": { "branch": "main", "commit": "326ddf01cbf3425566a089126ece7e8bd2560601" },
   "gitsigns.nvim": { "branch": "main", "commit": "4c40357994f386e72be92a46f41fc1664c84c87d" },
   "hardtime.nvim": { "branch": "main", "commit": "48689c55f1204427206afc4ea1b9461a587d4558" },
+  "hererocks": { "branch": "master", "commit": "c9c5444dea1e07e005484014a8231aa667be30b6" },
   "hologram.nvim": { "branch": "main", "commit": "f5194f71ec1578d91b2e3119ff08e574e2eab542" },
   "image.nvim": { "branch": "master", "commit": "6ffafab2e98b5bda46bf227055aa84b90add8cdc" },
   "img-clip.nvim": { "branch": "main", "commit": "11f068e3deea5643330146bdda2e852779dcd19c" },
