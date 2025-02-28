@@ -41,6 +41,7 @@ packages=(
     # # Essentials
     "man-db"
     "tzdata" # time sync
+    "ncdu"
     # Essential Lulz
     "c-lolcat"
     "cowsay"
@@ -67,9 +68,12 @@ packages=(
     "lnav"
     "btop"
     "eza"
+    "zoxide"
     "ranger"
     "atuin"
     "ripgrep"
+    "boxes"
+    "toilet"
     # C/C++
     "gdb"
     "valgrind"

@@ -64,7 +64,7 @@ return {
         -- "eslint_d", -- js linter
         "ruff", -- python formatter
         -- "isort",    -- python import sorter
-        -- "debugpy",  -- python debugger
+        "debugpy",  -- python debugger
       },
     })
     -- vim.api.nvim_command("MasonToolsInstall")

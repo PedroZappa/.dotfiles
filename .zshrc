@@ -62,7 +62,7 @@
  ### Greetings ###
  #################
  
- greet $HOST
+ # greet $HOST
  
  #############
  ### Emoji ###
@@ -167,6 +167,12 @@ alias ghostty='~/.local/bin/ghostty.AppImage'
 alias sstream="~/.dotfiles/scripts/audio/send-stream.sh"
 alias rstream="~/.dotfiles/scripts/audio/read-stream.sh"
  
+
+# Fast Fetch
+if command -v fastfetch > /dev/null 2>&1; then
+  fastfetch
+fi
+
 # File system Navigation
 # cd || zoxide
 if command -v zoxide > /dev/null 2>&1; then
