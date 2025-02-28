@@ -4,6 +4,14 @@
 # -u : Treat unset variables as an error and exit;
 # -o pipeline : Set the exit status to the last command in the pipeline that failed.
 
+# Check for sudo privileges
+if [ "$EUID" -ne 0 ]; then
+    echo "This script requires sudo privileges"
+    echo "Please run it again with sudo:"
+    echo "sudo $0"
+    exit 1
+fi
+
 # Color Codes
 # Run the following command to get list of available colors
 # bash -c 'for c in {0..255}; do tput setaf $c; tput setaf $c | cat -v; echo =$c; done'
@@ -34,5 +42,8 @@ echo "${B}${YEL}Starting sym.sh execution...${D}"
 
 echo "${B}${MAG}Starting yay.sh execution...${D}"
 "${SCRIPT_DIR}/yay.sh" || { echo "${B}${RED}Error: yay.sh failed${D}"; exit 1; }
+
+echo "${B}${MAG}Starting chsh.sh execution...${D}"
+"${SCRIPT_DIR}/chsh.sh" || { echo "${B}${RED}Error: chsh.sh failed${D}"; exit 1; }
 
 echo "${B}${BGRN}All scripts executed successfully!${D}"
