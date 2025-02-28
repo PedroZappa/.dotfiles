@@ -70,15 +70,22 @@ create_symlink() {
         return 1
     fi
 
-    # Check if destination directory exists, create if it doesn't
-    local DEST_DIR=$(dirname "$DEST")
-    if [ ! -d "$DEST_DIR" ]; then
-        mkdir -p "$DEST_DIR"
-        echo "${YEL}Created directory ${PRP}$DEST_DIR${D}"
+    # Handle cases where DEST is a directory
+    if [[ "$DEST" == */ ]]; then
+        # If DEST ends with a '/', ensure it's a directory
+        mkdir -p "$DEST"
+        DEST="$DEST$(basename "$SRC")"  # Append source filename if DEST is a directory
+    else
+        # Ensure the parent directory exists
+        local DEST_DIR=$(dirname "$DEST")
+        if [ ! -d "$DEST_DIR" ]; then
+            mkdir -p "$DEST_DIR"
+            echo "${YEL}Created directory ${PRP}$DEST_DIR${D}"
+        fi
     fi
 
-    # Check if the destination file/directory exists
-    if [ -e "$DEST" ]; then
+    # Backup existing destination if it exists
+    if [ -e "$DEST" ] || [ -L "$DEST" ]; then
         local BASENAME=$(basename "$DEST")
         mv "$DEST" "$BACKUP_DIR/${BASENAME}_bak"
         echo "${YEL}Moved existing ${PRP}$DEST ${YEL}to ${PRP}$BACKUP_DIR/${BASENAME}_bak${D}"
