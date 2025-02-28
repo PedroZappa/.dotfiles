@@ -38,15 +38,26 @@ fi
 
 # Array of packages to install
 packages=(
+    # # Essentials
+    "man-db"
+    "tzdata" # time sync
+    # Essential Lulz
+    "c-lolcat"
+    "cowsay"
+    "fortune-mod"
+    # Hyprland
+    "hyprland"
+    "hyprlock"
+    "hypridle"
+    "hyprshot" # Scheenshort Manager
+    "fuzzel" # App Launcher
+    "clipse" # clipboard Manager
+    "swaync" # Notifications
     # Font
     "ttf-firacode-nerd"
     # Build tools
     "clang"
     "cmake"
-    # Essential Lulz
-    "c-lolcat"
-    "cowsay"
-    "fortune-mod"
     # Terminal biz
     "ghostty"
     "zsh"
