@@ -78,7 +78,7 @@ create_symlink() {
     fi
 
     # Create the symlink
-    ln -sf "$SRC" "$DEST"
+    ln -s "$SRC" "$DEST"
     echo "${YEL}Created symlink from ${GRN}$SRC ${YEL}to ${PRP}$DEST${D}"
 }
 
