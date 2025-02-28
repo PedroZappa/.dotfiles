@@ -77,21 +77,23 @@ tmux new-session	-d -s $SESH1
 tmux rename-window	-t RC:1 '.dotfiles'
 tmux send-keys		-t RC:1 'cd $HOME/.dotfiles' C-m
 tmux send-keys		-t RC:1 'git pull' C-m
-tmux send-keys		-t RC:1 'update_env' C-m
+# Create update window 
+tmux new-window		-t RC:2 -n 'update'
+tmux send-keys		-t RC:2 'update_env' C-m
 # tmux send-keys		-t RC:1 $EDITOR C-m
 # Create obsidian RC window
-tmux new-window		-t RC:2 -n 'obsidian' -c $OBSIDIAN_VAULT_PATH
-tmux send-keys		-t RC:2 'cd '$OBSIDIAN_VAULT_PATH C-m
+tmux new-window		-t RC:3 -n 'obsidian' -c $OBSIDIAN_VAULT_PATH
+tmux send-keys		-t RC:3 'cd '$OBSIDIAN_VAULT_PATH C-m
 if command -v eza &> /dev/null; then
-	tmux send-keys	-t RC:2 'eza -al' C-m
+	tmux send-keys	-t RC:3 'eza -al' C-m
 else
-	tmux send-keys		-t RC:2 'll' C-m
+	tmux send-keys		-t RC:3 'll' C-m
 fi
 if command -v obsidian &> /dev/null; then
-	tmux split-window	-t RC:2 -h 
-	tmux send-keys		-t RC:2 'cd '$OBSIDIAN_VAULT_PATH C-m
-	tmux send-keys		-t RC:2 'git pull' C-m
-	tmux send-keys		-t RC:2 'obsidian' C-m
+	tmux split-window	-t RC:3 -h 
+	tmux send-keys		-t RC:3 'cd '$OBSIDIAN_VAULT_PATH C-m
+	tmux send-keys		-t RC:3 'git pull' C-m
+	tmux send-keys		-t RC:3 'obsidian' C-m
 fi
 
 # Create DEV session
@@ -109,8 +111,8 @@ tmux send-keys		-t DEV:2.1 ":e .vgdbinit" C-m
 tmux send-keys		-t DEV:2.1 ":split .gdbinit" C-m
 tmux resize-pane	-L 160
 # Create SYNC window
-tmux new-window		-t DEV:3 -n 'DAP'
-tmux send-keys		-t DEV:3 'cd '$DEV_DIR C-m
+# tmux new-window		-t DEV:3 -n 'DAP'
+# tmux send-keys		-t DEV:3 'cd '$DEV_DIR C-m
 
 # Attach to DEV session
 tmux attach-session -t DEV:1

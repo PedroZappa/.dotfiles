@@ -17,7 +17,7 @@ return {
         null_ls.builtins.code_actions.refactoring,
         null_ls.builtins.completion.spell,
         -- Diagnostics
-        null_ls.builtins.diagnostics.codespell,       -- Spell checker
+        -- null_ls.builtins.diagnostics.codespell,       -- Spell checker
         null_ls.builtins.diagnostics.write_good,      -- markdown
         null_ls.builtins.diagnostics.markdownlint,    -- markdown
         null_ls.builtins.diagnostics.vint,            -- Vimscript

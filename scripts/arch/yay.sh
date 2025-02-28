@@ -66,6 +66,7 @@ packages=(
     "tmux"
     "lnav"
     "btop"
+    "eza"
     "ranger"
     "atuin"
     "ripgrep"
