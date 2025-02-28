@@ -32,26 +32,26 @@ fi
 
 # Associative array defining source and target FILES
 declare -A FILES=(
-    ["$HOME/.dotfiles/ghostty"]="$HOME/.config"
+    ["$HOME/.dotfiles/ghostty"]="$HOME/.config/ghostty"
     ["$HOME/.dotfiles/.zshrc"]="$HOME/.zshrc"
     ["$HOME/.dotfiles/.zshenv"]="$HOME/.zshenv"
-    ["$HOME/.dotfiles/nushell"]="$HOME/.config"
+    ["$HOME/.dotfiles/nushell"]="$HOME/.config/nushell"
     ["$HOME/.dotfiles/.gitconfig"]="$HOME/.gitconfig"
     ["$HOME/.dotfiles/starship.toml"]="$HOME/.config/starship.toml"
     ["$HOME/.dotfiles/.gdbinit"]="$HOME/.gdbinit"
-    ["$HOME/.dotfiles/.lnav"]="$HOME/.config"
+    ["$HOME/.dotfiles/.lnav"]="$HOME/.config/.lnav"
     ["$HOME/.dotfiles/.editorconfig"]="$HOME/.editorconfig"
     ["$HOME/.dotfiles/.vimrc"]="$HOME/.vimrc"
-    ["$HOME/.dotfiles/nvim"]="$HOME/.config"
+    ["$HOME/.dotfiles/nvim"]="$HOME/.config/nvim"
     ["$HOME/.dotfiles/.clang-format"]="$HOME/.clang-format"
     ["$HOME/.dotfiles/.tmux.conf.local"]="$HOME/.tmux.conf.local"
-    ["$HOME/.dotfiles/kitty/"]="$HOME/.config"
-    ["$HOME/.dotfiles/ghostty/"]="$HOME/.config"
-    ["$HOME/.dotfiles/btop/"]="$HOME/.config"
-    ["$HOME/.dotfiles/bat/"]="$HOME/.config"
-    ["$HOME/.dotfiles/atuin/"]="$HOME/.config"
-    ["$HOME/.dotfiles/posting/"]="$HOME/.config"
-    ["$HOME/.dotfiles/hypr"]="$HOME/.config"
+    ["$HOME/.dotfiles/kitty/"]="$HOME/.config/kitty"
+    ["$HOME/.dotfiles/ghostty/"]="$HOME/.config/ghostty"
+    ["$HOME/.dotfiles/btop/"]="$HOME/.config/btop"
+    ["$HOME/.dotfiles/bat/"]="$HOME/.config/bat"
+    ["$HOME/.dotfiles/atuin/"]="$HOME/.config/atuin"
+    ["$HOME/.dotfiles/posting/"]="$HOME/.config/posting"
+    ["$HOME/.dotfiles/hypr"]="$HOME/.config/hypr"
 )
 
 # Define the backup directory with timestamp
