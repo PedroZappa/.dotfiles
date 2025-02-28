@@ -139,7 +139,7 @@ alias ccw='cc -Wall -Wextra -Werror -g'
 # Neovim
 alias v='nvim'
 alias sv='sudo -E nvim'
-alias vc='vim | clolcat'
+alias vc='vim | lolcat'
 alias clear_nvim='rm -rf ~/.local/share/nvim'
  
 # git
