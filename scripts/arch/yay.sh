@@ -53,6 +53,7 @@ packages=(
     "fuzzel" # App Launcher
     "clipse" # clipboard Manager
     "swaync" # Notifications
+    "waybar" # navbar
     # Font
     "ttf-firacode-nerd"
     # Build tools

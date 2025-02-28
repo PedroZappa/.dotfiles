@@ -52,6 +52,8 @@ declare -A FILES=(
     ["$HOME/.dotfiles/atuin/"]="$HOME/.config/atuin"
     ["$HOME/.dotfiles/posting/"]="$HOME/.config/posting"
     ["$HOME/.dotfiles/hypr"]="$HOME/.config/hypr"
+    ["$HOME/.dotfiles/fuzzel.ini"]="$HOME/.config/fuzzel"
+    ["$HOME/.dotfiles/waybar"]="$HOME/.config/waybar"
 )
 
 # Define the backup directory with timestamp
