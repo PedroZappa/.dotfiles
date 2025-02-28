@@ -50,6 +50,7 @@ packages=(
     "btop"
     "neovim"
     "ranger"
+    "atuin"
     "ripgrep"
     "c-lolcat"
     "cowsay"
