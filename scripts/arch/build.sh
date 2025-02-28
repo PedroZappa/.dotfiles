@@ -8,7 +8,6 @@
 # Run the following command to get list of available colors
 # bash -c 'for c in {0..255}; do tput setaf $c; tput setaf $c | cat -v; echo =$c; done'
 
-
 # Load Colors
 if [ -d ~/.dotfiles ]; then
     source ~/.dotfiles/scripts/colors.sh

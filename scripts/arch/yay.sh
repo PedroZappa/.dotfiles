@@ -3,6 +3,17 @@
 # Exit the script if any command fails
 set -e
 
+# Load Colors
+if [ -d ~/.dotfiles ]; then
+    source ~/.dotfiles/scripts/colors.sh
+else
+    if [ ! -f ~/colors.sh ]; then
+        echo -e "${YEL}Colors script not found, downloading: ${D}"
+        wget https://raw.githubusercontent.com/PedroZappa/.dotfiles.min/refs/heads/main/scripts/colors.sh
+    fi
+    source ./colors.sh
+fi
+
 # Check if yay is installed
 if ! command -v yay > /dev/null 2>&1; then
     echo "yay is not installed. Installing yay..."
