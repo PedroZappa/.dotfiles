@@ -38,9 +38,15 @@ fi
 
 # Array of packages to install
 packages=(
+    # Font
+    "ttf-firacode-nerd"
     # Build tools
     "clang"
     "cmake"
+    # Essential Lulz
+    "c-lolcat"
+    "cowsay"
+    "fortune-mod"
     # Terminal biz
     "ghostty"
     "zsh"
@@ -48,13 +54,9 @@ packages=(
     "tmux"
     "lnav"
     "btop"
-    "neovim"
     "ranger"
     "atuin"
     "ripgrep"
-    "c-lolcat"
-    "cowsay"
-    "fortune-mod"
     # C/C++
     "gdb"
     "valgrind"

@@ -23,6 +23,11 @@ fi
 SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 
 # Execute scripts with echo statements
+echo "${B}${CYA}Getting git submodules...${D}"
+git submodule update --init --recursive --progress || { 
+    echo "${B}${RED}Error: git submodules failed${D}"; exit 1; 
+}
+
 echo "${B}${CYA}Starting zap.sh execution...${D}"
 "${SCRIPT_DIR}/zap.sh" || { echo "${B}${RED}Error: zap.sh failed${D}"; exit 1; }
 
