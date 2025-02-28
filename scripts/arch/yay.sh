@@ -60,9 +60,12 @@ packages=(
     "valgrind"
     # Python
     "uv"
+    # Rust
+    "cargo"
     # Web
     "google-chrome"
     "nodejs"
+    "yarn"
 )
 
 # Loop through the array and install each package
