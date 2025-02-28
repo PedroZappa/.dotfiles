@@ -32,8 +32,7 @@ fi
 
 # Associative array defining source and target FILES
 declare -A FILES=(
-    ["$HOME/.dotfiles/nixos"]="$HOME/etc/"
-    ["$HOME/.dotfiles/ghostty"]="$HOME/.config/"
+    ["$HOME/.dotfiles/ghostty"]="$HOME/.config"
     ["$HOME/.dotfiles/.zshrc"]="$HOME/.zshrc"
     ["$HOME/.dotfiles/.zshenv"]="$HOME/.zshenv"
     ["$HOME/.dotfiles/nushell"]="$HOME/.config"
