@@ -21,7 +21,7 @@ if [ "${BASH_VERSINFO:-0}" -lt 4 ]; then
 fi
 
 # Enable error handling
-set -euo pipefail
+# set -euo pipefail
 
 # Associative array defining source and target FILES
 declare -A FILES=(
