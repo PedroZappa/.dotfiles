@@ -19,14 +19,24 @@ else
     source ./colors.sh
 fi
 
-# Store the current directory path
-SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+# Save the current working directory
+ORIG_DIR="$(pwd)"
+# Change to .dotfiles directory if not already there
+if [ "$(basename "$ORIG_DIR")" != ".dotfiles" ]; then
+    cd ~/.dotfiles || { echo "Error: Failed to cd into ~/.dotfiles"; exit 1; }
+fi
 
-# Execute scripts with echo statements
+# Execute command
 echo "${B}${CYA}Getting git submodules...${D}"
 git submodule update --init --recursive --progress || { 
-    echo "${B}${RED}Error: git submodules failed${D}"; exit 1; 
+    echo "${B}${RED}Error: git submodules failed${D}"; 
+    cd "$ORIG_DIR" && exit 1
 }
+
+# Return to the original directory
+cd "$ORIG_DIR"
+# Store the current directory path
+SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 
 echo "${B}${CYA}Starting zap.sh execution...${D}"
 "${SCRIPT_DIR}/zap.sh" || { echo "${B}${RED}Error: zap.sh failed${D}"; exit 1; }
