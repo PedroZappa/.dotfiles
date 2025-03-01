@@ -85,6 +85,9 @@ packages=(
     "uv"
     # Rust
     "cargo"
+    # Ruby
+    "ruby"
+    "ruby-rails"
     # Web
     "google-chrome"
     "nodejs"
