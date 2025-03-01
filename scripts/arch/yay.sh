@@ -46,6 +46,8 @@ packages=(
     "c-lolcat"
     "cowsay"
     "fortune-mod"
+    "toilet"
+    "boxes"
     # Hyprland
     "hyprland"
     "hyprlock"
@@ -68,12 +70,14 @@ packages=(
     "lnav"
     "btop"
     "eza"
+    "atuin"
     "zoxide"
     "ranger"
-    "atuin"
     "ripgrep"
-    "boxes"
-    "toilet"
+    "fzf"
+    # Terminal Tools
+    "lazygit"
+    "lazydocker"
     # C/C++
     "gdb"
     "valgrind"
