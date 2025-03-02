@@ -12,4 +12,5 @@ nushell/history.txt
 toGepeto
 weechat/irc.conf
 weechat/sec.conf
-./weechat/plugins*
+weechat/plugins.conf
+weechat/relay.conf

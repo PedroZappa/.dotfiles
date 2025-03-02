@@ -42,12 +42,76 @@ packages=(
     "man-db"
     "tzdata" # time sync
     "ncdu"
+    "btop"
+    "iotop" # I/O monitoring
     # Essential Lulz
     "c-lolcat"
     "cowsay"
     "fortune-mod"
     "toilet"
     "boxes"
+    # Networking
+    "iftop" # Network Monitoring
+    "mtr" # Network diagnostics
+    "iperf3"
+    "dnsutils" # dig $ nslookup
+    "ldns" # Provides drill
+    "aria2" # download protocol
+    "socat" # replacement for openbsd-netcat
+    "nmap" # Netwrk Discovery and Auditing
+    "ipcalc" # IPv4/v6 address calculator
+    # System Call Monitoring
+    "strace" # System call monitoring
+    "ltrace" # Library Call monitoring
+    "lsof" # List ofpen files
+    # System Tools
+    "sysstat"
+    "lm_sensors" # sensors cmd
+    "ethtool" # network tools
+    "pciutils" # PCI bus tools
+    "usbutils" # USB tools
+    # Terminal Tools
+    "ghostty"
+    "zsh"
+    "neovim"
+    "tmux"
+    "lnav"
+    # Navigation
+    "lazygit"
+    "lazydocker"
+    "ripgrep"
+    "eza"
+    "atuin"
+    "zoxide"
+    "ranger"
+    "fzf"
+    # Font
+    "ttf-firacode-nerd"
+
+    # Build tools
+    "clang"
+    "cmake"
+    # C/C++
+    "gdb"
+    "valgrind"
+    # Python
+    "uv"
+    # Rust
+    "cargo"
+    # Web
+    "google-chrome"
+    "nodejs"
+    "yarn"
+    # Markdown
+    "glow"
+    # Bluetooth
+    "bluez"
+    "bluez-utils"
+    "bluetui"
+    # IRC
+    "weechat"
+    "python-websocket-client"
+
     # Hyprland
     "hyprland"
     "hyprlock"
@@ -57,54 +121,21 @@ packages=(
     "clipse" # clipboard Manager
     "swaync" # Notifications
     "waybar" # navbar
-    # Font
-    "ttf-firacode-nerd"
-    # Build tools
-    "clang"
-    "cmake"
-    # Terminal biz
-    "ghostty"
-    "zsh"
-    "neovim"
-    "tmux"
-    "lnav"
-    "btop"
-    "eza"
-    "atuin"
-    "zoxide"
-    "ranger"
-    "ripgrep"
-    "fzf"
-    # Terminal Tools
-    "lazygit"
-    "lazydocker"
-    # C/C++
-    "gdb"
-    "valgrind"
-    # Python
-    "uv"
-    # Rust
-    "cargo"
-    # Ruby
-    "ruby"
-    "ruby-rails"
-    # Web
-    "google-chrome"
-    "nodejs"
-    "yarn"
-    # Bluetooth
-    "bluez"
-    "bluez-utils"
-    "bluetui"
-    # IRC
-    "weechat"
-    "python-websocket-client"
+)
+
+packages_uv=(
+    "posting"
 )
 
 # Loop through the array and install each package
 for pkg in "${packages[@]}"; do
     echo "Installing $pkg..."
     yay -S --noconfirm "$pkg"
+done
+
+for pkg in "${packages_uv[@]}"; do
+    echo "Installing $pkg..."
+    uv tool install "$pkg"
 done
 
 echo "All packages installed successfully!"
