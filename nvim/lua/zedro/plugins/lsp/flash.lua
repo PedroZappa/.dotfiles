@@ -24,7 +24,7 @@ return {
       --   end,
       mode = "fuzzy",
       -- behave like `incsearch`
-      incremental = false,
+      incremental = true,
       -- Excluded filetypes and custom window filters
       ---@type (string|fun(win:window))[]
       exclude = {
@@ -142,7 +142,7 @@ return {
       search = {
         -- when `true`, flash will be activated during regular search by default.
         -- You can always toggle when searching with `require("flash").toggle()`
-        enabled = true,
+        enabled = false,
         highlight = { backdrop = false },
         jump = { history = true, register = true, nohlsearch = true },
         search = {
@@ -171,7 +171,7 @@ return {
           -- opts.jump_labels = vim.v.count == 0 and vim.fn.mode(true):find("o")
         end,
         -- hide after jump when not using jump labels
-        autohide = false,
+        autohide = true,
         -- show jump labels
         jump_labels = true,
         -- set to `false` to use the current line only

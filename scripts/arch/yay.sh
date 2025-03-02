@@ -92,6 +92,13 @@ packages=(
     "google-chrome"
     "nodejs"
     "yarn"
+    # Bluetooth
+    "bluez"
+    "bluez-utils"
+    "bluetui"
+    # IRC
+    "weechat"
+    "python-websocket-client"
 )
 
 # Loop through the array and install each package

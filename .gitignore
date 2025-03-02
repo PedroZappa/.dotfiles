@@ -10,3 +10,5 @@ nixos/result
 nushell/*.txt
 nushell/history.txt
 toGepeto
+weechat/irc.conf
+weechat/sec.conf
