@@ -39,6 +39,7 @@ fi
 # Array of packages to install
 packages=(
     # # Essentials
+    "ufw" # firewall
     "man-db"
     "tzdata" # time sync
     "ncdu"
@@ -76,9 +77,10 @@ packages=(
     "neovim"
     "tmux"
     "lnav"
-    # Navigation
+    # Git
+    "git"
     "lazygit"
-    "lazydocker"
+    # Navigation
     "ripgrep"
     "eza"
     "atuin"
@@ -98,9 +100,14 @@ packages=(
     "uv"
     # Rust
     "cargo"
+    # Docker
+    "docker"
+    "docker-compose"
+    "lazydocker"
     # Web
     "google-chrome"
     "nodejs"
+    "npm"
     "yarn"
     # Markdown
     "glow"

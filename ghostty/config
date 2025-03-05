@@ -6,8 +6,8 @@ title =
 theme = Dracula
 fullscreen = true
 
-background-opacity = 0.9
-background-blur = true
+background-opacity = 0.8
+background-blur = false
 background = #000000
 foreground = #ffffff
 
@@ -29,3 +29,10 @@ cursor-style-blink = true
 window-vsync = true
 window-inherit-working-directory = true
 window-decoration = false
+
+# Shell
+shell-integration = detect
+shell-integration-features = cursor
+
+bold-is-bright = true
+

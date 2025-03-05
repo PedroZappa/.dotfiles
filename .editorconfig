@@ -6,7 +6,7 @@ indent_style = space
 indent_size = 2
 
 [*.{sh,html,md}]
-indent_size = 4
+indent_size = 2
 
 [*.{c,h,cpp,hpp}]
 indent_style = tab
