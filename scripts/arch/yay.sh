@@ -90,6 +90,7 @@ packages=(
     "fzf"
     # Font
     "ttf-firacode-nerd"
+    "ttf-liberation"
 
     # Build tools
     "clang"
