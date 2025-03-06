@@ -50,6 +50,7 @@ if (( RANDOM % 2 )); then
   if command -v fortune > /dev/null 2>&1 && command -v boxes > /dev/null 2>&1; then
     DESIGN=${DESIGNS[$RANDOM % ${#DESIGNS[@]}]}
     echo "$(echo "$message" | boxes --align=c --color --design=$DESIGN)"
+    printf "fortune | boxes --align=c --color --design=$DESIGN\n"
   fi
 else
   if command -v fortune > /dev/null 2>&1 && command -v cowsay > /dev/null 2>&1; then
