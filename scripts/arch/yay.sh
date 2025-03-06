@@ -74,6 +74,7 @@ packages=(
     # Terminal Tools
     "ghostty"
     "zsh"
+    "starship"
     "neovim"
     "tmux"
     "lnav"
