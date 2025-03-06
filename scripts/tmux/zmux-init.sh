@@ -48,6 +48,8 @@ tmux new-session	-d -s $SESH1
 tmux rename-window	-t RC:1 '.dotfiles'
 tmux send-keys		-t RC:1 'cd $HOME/.dotfiles' C-m
 tmux send-keys		-t RC:1 'git pull' C-m
+tmux send-keys		-t RC:1 'git submodule update --remote --merge' C-m
+
 # Create update window 
 tmux new-window		-t RC:2 -n 'update'
 tmux send-keys		-t RC:2 'update_env' C-m
