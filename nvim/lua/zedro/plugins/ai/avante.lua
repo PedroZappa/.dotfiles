@@ -5,9 +5,13 @@ return {
     lazy = false,
     version = false, -- set this if you want to always pull the latest change
     opts = {
-      -- provider = "copilot",
       provider = "perplexity",
       vendors = {
+        copilot = {
+          __inherited_from = "openai",
+          api_key_name = "COPILOT_API_KEY",
+          model = "gpt-4",
+        },
         perplexity = {
           __inherited_from = "openai",
           api_key_name = "PERPLEXITY_API_KEY",
@@ -15,7 +19,7 @@ return {
           model = 'sonar-reasoning-pro',
         },
         ollama = {
-          __inherited_from = "ollama",
+          __inherited_from = "openai",
           model = "deepseek-r1:14b"
         },
       },
