@@ -14,3 +14,4 @@ weechat/irc.conf
 weechat/sec.conf
 weechat/plugins.conf
 weechat/relay.conf
+weechat/ecdsa.pem

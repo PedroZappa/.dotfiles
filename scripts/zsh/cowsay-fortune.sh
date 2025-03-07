@@ -28,7 +28,7 @@ DESIGNS=(
   headline html html-cmt
   ian_jones important important2 important3 info
   java-cmt java-doc js-tone lisp-cmp
-  mouuse normand nuke parchment peek
+  mouse normand nuke parchment peek
   pound-cmt right santa scroll scroll-akn
   shell simple spring stark1 stark2 stone sunset
   tex-box tex-cmt tux twisted underline 

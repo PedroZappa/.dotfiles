@@ -5,13 +5,20 @@ return {
     lazy = false,
     version = false, -- set this if you want to always pull the latest change
     opts = {
-      provider = "copilot",
-      -- vendors = {
-      --   ollama = {
-      --     __inherited_from = "ollama",
-      --     model = "deepseek-r1:32b"
-      --   },
-      -- },
+      -- provider = "copilot",
+      provider = "perplexity",
+      vendors = {
+        perplexity = {
+          __inherited_from = "openai",
+          api_key_name = "PERPLEXITY_API_KEY",
+          endpoint = "https://api.perplexity.ai",
+          model = 'sonar-reasoning-pro',
+        },
+        ollama = {
+          __inherited_from = "ollama",
+          model = "deepseek-r1:14b"
+        },
+      },
       behaviour = {
         auto_suggestions = false, -- Experimental stage
         auto_set_highlight_group = true,
@@ -73,7 +80,7 @@ return {
           start_insert = true, -- Start insert mode when opening the edit window
         },
         ask = {
-          floating = false,    -- Open the 'AvanteAsk' prompt in a floating window
+          floating = false,     -- Open the 'AvanteAsk' prompt in a floating window
           start_insert = false, -- Start insert mode when opening the ask window
           border = "rounded",
           ---@type "ours" | "theirs"
@@ -112,8 +119,12 @@ return {
       "nvim-lua/plenary.nvim",
       "MunifTanjim/nui.nvim",
       --- The below dependencies are optional,
-      "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
-      "zbirenbaum/copilot.lua",      -- for providers='copilot'
+      "echasnovski/mini.pick",         -- for file_selector provider mini.pick
+      "nvim-telescope/telescope.nvim", -- for file_selector provider telescope
+      "hrsh7th/nvim-cmp",              -- autocompletion for avante commands and mentions
+      "ibhagwan/fzf-lua",              -- for file_selector provider fzf
+      "nvim-tree/nvim-web-devicons",   -- or echasnovski/mini.icons
+      "zbirenbaum/copilot.lua",        -- for providers='copilot'
       {
         -- support for image pasting
         "HakonHarnes/img-clip.nvim",
@@ -133,7 +144,7 @@ return {
       },
       {
         -- Make sure to set this up properly if you have lazy=true
-        'MeanderingProgrammer/render-markdown.nvim',
+        "MeanderingProgrammer/render-markdown.nvim",
         opts = {
           file_types = { "markdown", "Avante" },
         },

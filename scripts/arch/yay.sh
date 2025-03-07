@@ -120,6 +120,8 @@ packages=(
     # IRC
     "weechat"
     "python-websocket-client"
+    # Docker
+    "ggshield" # vulnerability scanner
 
     # Hyprland
     "hyprland"

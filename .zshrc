@@ -58,12 +58,6 @@
  alias greet=~/.dotfiles/scripts/zsh/zsh-greet.sh
  alias zshcow=~/.dotfiles/scripts/zsh/cowsay-fortune.sh
  
- #################
- ### Greetings ###
- #################
- 
- # greet $HOST
- 
  #############
  ### Emoji ###
  #############
@@ -173,6 +167,12 @@ if command -v fastfetch > /dev/null 2>&1; then
   fastfetch
 fi
 
+ #################
+ ### Greetings ###
+ #################
+ 
+ greet $HOST
+
 # File system Navigation
 # cd || zoxide
 if command -v zoxide > /dev/null 2>&1; then
@@ -238,4 +238,5 @@ fi
  # source /usr/share/doc/fzf/examples/key-bindings.zsh
  # source /usr/share/doc/fzf/examples/completion.zsh
 
-# . "$HOME/.local/share/../bin/env"
+# Load .env
+source ~/.dotfiles/.env
