@@ -99,6 +99,7 @@ packages=(
     "gdb"
     "valgrind"
     # Python
+    "python-pip"
     "uv"
     # Rust
     "cargo"
@@ -148,5 +149,7 @@ for pkg in "${packages_uv[@]}"; do
     echo "Installing $pkg..."
     uv tool install "$pkg"
 done
+
+pip install gcop --break-system-packages
 
 echo "All packages installed successfully!"

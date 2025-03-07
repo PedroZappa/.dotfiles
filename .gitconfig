@@ -11,3 +11,16 @@
 	helper = cache
 [submodule]
 	recurse = true
+[alias]
+	p = push
+	pf = push --force
+	undo = reset --soft HEAD^
+	gcommit = !gcop commit
+	c = !gcop commit
+	ac = !git add . && gcop commit
+	acp = !git add . && gcop commit && git push
+	cp = !gcop commit && git push
+	info = !gcop info
+	gconfig = !gcop config
+	ghelp = !gcop help
+	amend = commit --amend
