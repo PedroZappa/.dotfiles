@@ -248,12 +248,19 @@ local function toggle_hardmode()
 end
 keymap.set("n", "<leader>ht", toggle_hardmode, { desc = "Toggle Hardmode" })
 
+-- Auto Sectioner
 vim.keymap.set('n', '<leader>;', function()
     require('zedro.funkz.commenter').add_boxed_comment()
 end, { desc = "Create Separator" })
 
+-- Auto Git Commiter
 vim.keymap.set('n', '<leader>ga', function()
-    require('zedro.funkz.commiter').commit()
+  vim.cmd(":Git add .")
+  vim.cmd(":Git commit --verbose")
+  vim.cmd(":AvanteAsk 'Write a Conventional Commit message describing the changes in this diff'")
 end, { desc = "Generate Git Commit" })
 
+vim.keymap.set('n', '<leader>gD', function()
+    vim.cmd ":AvanteAsk 'Please fill this document with all the standard Doxygen Comments needed to generate a full complete Doxygen documentation'"
+end, { desc = "Generate Doxygen Commit" })
 
