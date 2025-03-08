@@ -252,3 +252,8 @@ vim.keymap.set('n', '<leader>;', function()
     require('zedro.funkz.commenter').add_boxed_comment()
 end, { desc = "Create Separator" })
 
+vim.keymap.set('n', '<leader>ga', function()
+    require('zedro.funkz.commiter').commit()
+end, { desc = "Generate Git Commit" })
+
+
