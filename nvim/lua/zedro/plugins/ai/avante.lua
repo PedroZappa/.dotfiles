@@ -5,13 +5,8 @@ return {
     lazy = false,
     version = false, -- set this if you want to always pull the latest change
     opts = {
-      provider = "perplexity",
+      provider = "copilot",
       vendors = {
-        copilot = {
-          __inherited_from = "openai",
-          api_key_name = "COPILOT_API_KEY",
-          model = "gpt-4",
-        },
         perplexity = {
           __inherited_from = "openai",
           api_key_name = "PERPLEXITY_API_KEY",
