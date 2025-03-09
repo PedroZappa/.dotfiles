@@ -239,9 +239,9 @@ keymap.set(
   "n",
   "<leader>pl",
   ":term curl parrot.live<CR>:set nonu<CR>:set nornu<CR>:vs<CR>"
-    .. ":term curl parrot.live<CR>:set nonu<CR>:set nornu<CR>:spl<CR><C-w>2h"
-    .. ":term curl parrot.live<CR>:set nonu<CR>:set nornu<CR>:spl<CR>"
-    .. ':term curl parrot.live<CR>:set winbar=""<CR>:set nonu<CR>:set nornu<CR>',
+  .. ":term curl parrot.live<CR>:set nonu<CR>:set nornu<CR>:spl<CR><C-w>2h"
+  .. ":term curl parrot.live<CR>:set nonu<CR>:set nornu<CR>:spl<CR>"
+  .. ':term curl parrot.live<CR>:set winbar=""<CR>:set nonu<CR>:set nornu<CR>',
   { desc = "Parrot Party!!!" }
 )
 -- Summon Pet
@@ -306,95 +306,56 @@ conflicting flex properties.
 
 Fixes #456"
 ]]
+    -- Escape single quotes in the prompt string
+    local escaped_prompt = commit_prompt:gsub("'", "\\'")
 
-    -- Pass the complete prompt including diff content safely escaped
-    vim.cmd(":AvanteAsk '" .. commit_prompt:gsub("'", "\\'") .. "'")
+    -- Pass the complete prompt safely escaped
+    vim.cmd(":AvanteAsk '" .. escaped_prompt .. "'")
   end, 100) -- Small delay to ensure buffer is loaded
+  -- Pass the complete prompt including diff content safely escaped
 end, { desc = "Generate Git Commit" })
 
-
+-- Doxygen Commenter
 vim.keymap.set("n", "<leader>gD", function()
+  -- Get current buffer content (diff) as context
+  local diff_content = table.concat(vim.api.nvim_buf_get_lines(0, 0, -1, false), "\n")
+
+  -- Explicit prompt focused on direct Doxygen generation
   local doxy_prompt = [[
-  You are an AI agent specialized in generating complete and accurate Doxygen documentation comments for source code. Your goal is to produce thorough, structured, and informative comments that enable the generation of comprehensive Doxygen documentation.
+GENERATE COMPLETE AND ACCURATE DOXYGEN COMMENTS FOR THE FOLLOWING CODE DIFF:
 
-Follow these guidelines strictly when generating Doxygen for the current diff bufffer:
+]] .. diff_content .. [[
 
-General Guidelines:
-Every source file (.cpp, .h, .hpp, etc.) must contain at least one @file block clearly describing the file's purpose.
+IMPORTANT INSTRUCTIONS:
+- Generate ONLY the complete Doxygen comment blocks themselves.
+- DO NOT provide explanations or instructions about how to write Doxygen.
+- Correct or update existing incorrect or incomplete Doxygen comments if necessary.
+- Strictly adhere to these formatting rules:
 
-Every class, struct, union, enum, function, method, variable, macro, typedef, namespace, and module must be documented explicitly.
-
-Correct or update existing incomplete or incorrect Doxygen comments as necessary.
-
-Comment Block Structure
-Use the following standard format for multi-line comments:
-
-cpp
+COMMENT BLOCK STRUCTURE EXAMPLE:
 /**
  * @brief Short description (one concise sentence).
  *
- * Detailed description explaining clearly the purpose and usage.
- * Include separate paragraphs for clarity by inserting blank lines.
+ * Detailed description clearly explaining purpose and usage.
+ * Separate paragraphs with blank lines for readability.
  *
  * @param param_name Clear description of each parameter (if applicable).
  * @return Description of return value(s) or possible error conditions.
+ * @throws ExceptionType Explanation of when exception is thrown (if applicable).
  */
-For single-line descriptions of class members or variables placed after declaration:
 
-cpp
+SINGLE-LINE MEMBER COMMENT EXAMPLE:
 int field; /**< Brief description of field */
-Essential Guidelines
-Brief Description (@brief):
 
-Provide a concise one-line summary clearly stating the purpose or functionality.
+FILE COMMENT EXAMPLE:
+/**
+ * @file filename.cpp
+ *
+ * Brief description clearly stating the file's purpose and contents.
+ */
 
-Use imperative mood (e.g., "Initialize", "Compute", "Return").
+EXAMPLES OF GOOD RESPONSES:
 
-Capitalize only the first letter; do not end with a period.
-
-Detailed Description (@details):
-
-Separate from brief description by an empty line.
-
-Clearly explain what the entity does, its purpose, and how it integrates into the overall system.
-
-Include important implementation details or usage constraints where relevant.
-
-Start new paragraphs with empty lines.
-
-Parameters (@param):
-
-Clearly describe each parameter's purpose and expected values or constraints.
-
-Return Values (@return):
-
-Explicitly state what values are returned or possible error conditions.
-
-Exceptions (@throws):
-
-Document exceptions thrown by functions/methods explicitly if applicable.
-
-Examples (@code ... @endcode):
-
-Include code examples demonstrating typical usage when beneficial for clarity.
-
-Cross-references:
-
-Use @ref to link to related documentation sections or pages clearly.
-
-File Documentation (@file):
-
-Every file must have a @file block briefly describing its contents and purpose.
-
-Formatting & Readability
-Clearly distinguish code symbols (code) and filenames visually using backticks.
-
-Use Markdown formatting within comment blocks (@a italics, @b bold, @c monospace) to enhance readability.
-
-Wrap comment lines at approximately 72 characters to ensure readability across documentation tools.
-
-Example Comment Block
-cpp
 /**
  * @brief Calculate factorial of an integer.
  *
@@ -402,17 +363,22 @@ cpp
  * Handles negative input by returning an error code.
  *
  * @param n Integer whose factorial is computed. Must be non-negative.
- *
  * @return Factorial of n if successful; -1 if input is negative.
- *
  * @throws std::overflow_error If result exceeds integer limits.
  */
 int factorial(int n);
-Always adhere strictly to these guidelines to ensure generated Doxygen documentation is comprehensive, accurate, easy-to-read, and fully navigable.
 
-Now generate Doxygen comments for the current diff buffer please.
-    ]]
+OR
 
-  vim.cmd(":AvanteAsk '" .. doxy_prompt .. "'")
-  -- vim.cmd(":AvanteAsk 'Please fill this document with all the standard Doxygen comments needed to generate a full complete Doxygen documentation. For wrong or incomplete Doxygen comments, feel free to update and fix existing comments. Give me small update chunks.'")
-end, { desc = "Generate Doxygen Commit" })
+/**
+ * @file math_utils.cpp
+ *
+ * Utility functions for mathematical computations used across modules.
+ */
+
+NOW GENERATE THE DOXYGEN COMMENTS DIRECTLY BELOW:
+]]
+
+  -- Pass prompt safely escaped to your AI command
+  vim.cmd(":AvanteAsk '" .. doxy_prompt:gsub("'", "\\'") .. "'")
+end, { desc = "Generate Doxygen Comments" })
