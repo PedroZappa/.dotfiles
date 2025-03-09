@@ -1,7 +1,7 @@
 local keymap = vim.keymap -- for conciseness
 
 -- General Mappings --
-keymap.set(({ "n", "v" }), "<Space>", "<Nop>", { silent = true })
+keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
 keymap.set("n", "gx", ":!open <c-r><c-a><CR>") -- open URL under cursor
 
 -- Get Help
@@ -9,10 +9,10 @@ keymap.set("n", "<leader>h", ":vertical help ", { desc = "Get Help on..." })
 keymap.set("n", "<leadeo", ":vert options<CR>", { desc = "Open Options in a vertical split" })
 keymap.set("n", "<leader>mas", ":Man ascii<CR>", { desc = "Get ASCII Man Page" })
 -- Diagnostic keymaps
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
-vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)
+vim.keymap.set("n", "[d", vim.diagnostic.goto_prev)
+vim.keymap.set("n", "]d", vim.diagnostic.goto_next)
+vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float)
+vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist)
 ---- Quickfix keymaps
 -- vim.keymap.set("n", "<leader>qf", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
 keymap.set("n", "<leader>qo", ":copen<CR>", { desc = "[Q]uickfix : list [O]pen" })
@@ -25,8 +25,7 @@ keymap.set("n", "<leader>qc", ":cclose<CR>", { desc = "[Q]uickfix : [C]lose" })
 keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
 -- Change Permissions
 keymap.set("n", "<leader>cx", ":!chmod +x %<CR>", { desc = "Make file executable" })
-keymap.set("n", "<leader>wf", ":w !sudo tee % >/dev/null<CR>",
-  { desc = "Write Read-only file with sudo" })
+keymap.set("n", "<leader>wf", ":w !sudo tee % >/dev/null<CR>", { desc = "Write Read-only file with sudo" })
 -- Diff keymaps
 keymap.set("n", "<leader>dp", ":diffput<CR>", { desc = "DIFF : put diff from current to other" })
 keymap.set("n", "<leader>dg", ":diffget 1<CR>", { desc = "DIFF : get diff from left (local) during merge" })
@@ -50,8 +49,7 @@ keymap.set(
 )
 keymap.set("n", "<leader>_", "5<c-w>-", { remap = true, silent = false })
 keymap.set("n", "<leader>+", "5<c-w>+", { remap = true, silent = false })
-keymap.set("n", "<C-q>", ":bp<bar>sp<bar>bn<bar>bd<CR><CR>",
-  { desc = "Close active buffer" })
+keymap.set("n", "<C-q>", ":bp<bar>sp<bar>bn<bar>bd<CR><CR>", { desc = "Close active buffer" })
 keymap.set("n", "<leader>xs", ":clo<CR>", { desc = "Close split" })
 keymap.set("n", "<tab>", ":bnext<CR>", { desc = "Next buffer" })
 keymap.set("n", "<S-Tab>", ":bprevious<CR>", { desc = "Previous buffer" })
@@ -92,26 +90,30 @@ keymap.set("n", "<leader>Tsh", ":sp term://", { desc = "Open terminal", noremap 
 -- Exec Command lines
 keymap.set("n", "<leader>ex", ":.w !bash -e<CR>", { desc = "Execute current line and output to command line" })
 keymap.set("n", "<leader>eX", ":%w !bash -e<CR>", { desc = "Execute all lines and output to command line" })
-keymap.set("n", "<leader>el", ":.!bash -e<CR>", { desc = "Execute current line & replace w/ result", noremap = true, silent = false })
+keymap.set(
+  "n",
+  "<leader>el",
+  ":.!bash -e<CR>",
+  { desc = "Execute current line & replace w/ result", noremap = true, silent = false }
+)
 keymap.set("n", "<leader>eL", ":% !bash %<CR>", { desc = "Execute all lines & replace w/ result" })
 
-keymap.set("n", "<leader>bm", function ()
-  vim.fn.system('bear -- make')
-  vim.cmd('write')
+keymap.set("n", "<leader>bm", function()
+  vim.fn.system("bear -- make")
+  vim.cmd("write")
 end, { desc = "Run bare -- make command and write current buffer" })
 
 -- Editing
 -- Toggle Relative numbers
-keymap.set("n", "<leader>rl", ":set relativenumber!<CR>",
-  { desc = "Toggle relative numbers" })
+keymap.set("n", "<leader>rl", ":set relativenumber!<CR>", { desc = "Toggle relative numbers" })
 -- Selecting
 keymap.set("n", "<leader>L", "vg_", { desc = "select to end of line" })
 keymap.set("n", "<leader>sa", "ggVG", { desc = "Select all" })
 keymap.set("n", "<leader>sap", "ggVGp", { desc = "Select all & paste" })
 keymap.set("n", "<leader>gp", "`[v`]", { desc = "Select last pasted text" })
 -- Remap for dealing with word wrap
-keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 -- Move text up and down
 keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 keymap.set("v", "K", ":m '<-2<CR>gv=gv")
@@ -120,8 +122,12 @@ keymap.set("i", "<C-n>", "<C-e><C-o>A;<ESC>", { desc = "insert semicolon at the 
 -- Join
 keymap.set("n", "J", "mzJ`z", { desc = "Join lines w/out spaces" })
 -- Search & Replace Scripts
-keymap.set("n", "<leader>sr", ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>",
-  { desc = "Replace word from whole file" })
+keymap.set(
+  "n",
+  "<leader>sr",
+  ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>",
+  { desc = "Replace word from whole file" }
+)
 
 local function replace_symbol_in_workspace()
   local old_symbol = vim.fn.input("Replace symbol: ")
@@ -144,13 +150,12 @@ local function replace_symbol_in_workspace()
   -- Print a message confirming completion
   print("Replaced '" .. old_symbol .. "' with '" .. new_symbol .. "' in the workspace.")
 end
-keymap.set("n", "<leader>srs", replace_symbol_in_workspace,
-  { desc = "Replace symbol in workspace" })
+keymap.set("n", "<leader>srs", replace_symbol_in_workspace, { desc = "Replace symbol in workspace" })
 
 -- Quote Toggler
 keymap.set("n", "<leader>tq", function()
   local line = vim.api.nvim_get_current_line()
-  local col = vim.fn.col "."
+  local col = vim.fn.col(".")
   local new_line = line:gsub("(['\"`])(.-[^\\])%1", function(q, content)
     if q == "'" then
       return '"' .. content .. '"'
@@ -161,7 +166,7 @@ keymap.set("n", "<leader>tq", function()
     end
   end)
   vim.api.nvim_set_current_line(new_line)
-  vim.fn.cursor(vim.fn.line ".", col)
+  vim.fn.cursor(vim.fn.line("."), col)
 end, { desc = "Toggle quote style" })
 
 -- PATH OPERATIONS --
@@ -177,7 +182,7 @@ end, { desc = "Toggle quote style" })
 keymap.set("x", "<leader>p", [["_dP]])
 -- THE OTHER GREATEST MAPPING EVER : asbjornHaland
 -- Yank to the clipboard
-keymap.set({"n", "v"}, "<leader>y", [["+y]])
+keymap.set({ "n", "v" }, "<leader>y", [["+y]])
 keymap.set("n", "<leader>Y", [["+Y]])
 
 -- Trim Trailing blanks
@@ -204,9 +209,9 @@ keymap.set("n", "<leader>W", ":lua vim.ui.open(vim.fn.expand('%'))<CR>", { desc 
 keymap.set("n", "<leader>u", ":UndotreeToggle<CR>", { desc = "Undotree Toggle" })
 -- Git
 keymap.set("n", "<leader>gg", ":LazyGit<CR>", { desc = "LazyGit" })
-keymap.set('n', '<leader>gs', ':Git<CR>')
-keymap.set('n', '<leader>gb', ':Gitsigns toggle_current_line_blame<CR>')
-keymap.set('n', '<leader>gv', ':BlameToggle virtual<CR>')
+keymap.set("n", "<leader>gs", ":Git<CR>")
+keymap.set("n", "<leader>gb", ":Gitsigns toggle_current_line_blame<CR>")
+keymap.set("n", "<leader>gv", ":BlameToggle virtual<CR>")
 -- vim-maximizer
 keymap.set("n", "<leader>sm", ":MaximizerToggle<CR>", { desc = "Toggle Maximizer" })
 -- Markdown Preview
@@ -214,26 +219,29 @@ keymap.set("n", "<leader>mp", ":MarkdownPreview<CR>", { desc = "Markdown Preview
 -- nvim-cheat
 keymap.set("n", "<leader>ch", ":Cheat<CR>", { desc = "Cheat Sheet" })
 keymap.set("n", "<leader>cl", ":CheatList<CR>", { desc = "Cheat Sheet List" })
-keymap.set("n", "<leader>cwc", ":CheatWithoutComments<CR>",
-  { desc = "Cheat Sheet w/out Comments" })
+keymap.set("n", "<leader>cwc", ":CheatWithoutComments<CR>", { desc = "Cheat Sheet w/out Comments" })
 
 -- compilin
-keymap.set("n", "<leader>mk", ":vertical terminal make<CR>G",
-  { desc = "Run Make on current dir" });
+keymap.set("n", "<leader>mk", ":vertical terminal make<CR>G", { desc = "Run Make on current dir" })
 
 --
 -- Scripts
 --
-keymap.set("n", "<leader>ccc",
+keymap.set(
+  "n",
+  "<leader>ccc",
   ":!setsid ~/.dotfiles/scripts/autocompile.sh % &<CR>",
-  { desc = "Run autocompile.sh Script" })
+  { desc = "Run autocompile.sh Script" }
+)
 
 -- Parrot Crash
-keymap.set("n", "<leader>pl",
-  ":term curl parrot.live<CR>:set nonu<CR>:set nornu<CR>:vs<CR>" ..
-  ":term curl parrot.live<CR>:set nonu<CR>:set nornu<CR>:spl<CR><C-w>2h" ..
-  ":term curl parrot.live<CR>:set nonu<CR>:set nornu<CR>:spl<CR>" ..
-  ":term curl parrot.live<CR>:set winbar=\"\"<CR>:set nonu<CR>:set nornu<CR>",
+keymap.set(
+  "n",
+  "<leader>pl",
+  ":term curl parrot.live<CR>:set nonu<CR>:set nornu<CR>:vs<CR>"
+    .. ":term curl parrot.live<CR>:set nonu<CR>:set nornu<CR>:spl<CR><C-w>2h"
+    .. ":term curl parrot.live<CR>:set nonu<CR>:set nornu<CR>:spl<CR>"
+    .. ':term curl parrot.live<CR>:set winbar=""<CR>:set nonu<CR>:set nornu<CR>',
   { desc = "Parrot Party!!!" }
 )
 -- Summon Pet
@@ -249,18 +257,162 @@ end
 keymap.set("n", "<leader>ht", toggle_hardmode, { desc = "Toggle Hardmode" })
 
 -- Auto Sectioner
-vim.keymap.set('n', '<leader>;', function()
-    require('zedro.funkz.commenter').add_boxed_comment()
+vim.keymap.set("n", "<leader>;", function()
+  require("zedro.funkz.commenter").add_boxed_comment()
 end, { desc = "Create Separator" })
 
 -- Auto Git Commiter
-vim.keymap.set('n', '<leader>ga', function()
-  vim.cmd(":Git add .")
-  vim.cmd(":Git commit --verbose")
-  vim.cmd(":AvanteAsk 'Write a Conventional Commit message describing the changes in this diff'")
+vim.keymap.set("n", "<leader>ga", function()
+  -- Stage all changes
+  vim.cmd("Git add .")
+
+  -- Open verbose commit buffer (this opens the diff buffer)
+  vim.cmd("Git commit --verbose")
+
+  -- Wait briefly for the buffer to load
+  vim.defer_fn(function()
+    -- Get current buffer content (diff) to provide context
+    local diff_content = table.concat(vim.api.nvim_buf_get_lines(0, 0, -1, false), "\n")
+
+    -- Define a direct and unambiguous prompt
+    local commit_prompt = [[
+GENERATE A COMPLETE GIT COMMIT MESSAGE BASED ON THIS DIFF:
+
+]] .. diff_content .. [[
+
+IMPORTANT: DO NOT explain how to write commit messages. DO NOT provide instructions or explanations.
+JUST WRITE THE ACTUAL COMMIT MESSAGE FOLLOWING THIS FORMAT:
+
+type(scope): subject
+
+body explaining what and why (not how)
+
+Any footer references
+
+EXAMPLES OF GOOD RESPONSES:
+"feat(auth): add JWT authentication
+
+Implement secure token-based authentication to replace session cookies.
+This improves security and enables better scaling across services.
+
+Closes #123"
+
+OR
+
+"fix(ui): resolve button alignment in mobile view
+
+Buttons were misaligned on screens smaller than 768px due to
+conflicting flex properties.
+
+Fixes #456"
+]]
+
+    -- Pass the complete prompt including diff content safely escaped
+    vim.cmd(":AvanteAsk '" .. commit_prompt:gsub("'", "\\'") .. "'")
+  end, 100) -- Small delay to ensure buffer is loaded
 end, { desc = "Generate Git Commit" })
 
-vim.keymap.set('n', '<leader>gD', function()
-    vim.cmd ":AvanteAsk 'Please fill this document with all the standard Doxygen Comments needed to generate a full complete Doxygen documentation'"
-end, { desc = "Generate Doxygen Commit" })
 
+vim.keymap.set("n", "<leader>gD", function()
+  local doxy_prompt = [[
+  You are an AI agent specialized in generating complete and accurate Doxygen documentation comments for source code. Your goal is to produce thorough, structured, and informative comments that enable the generation of comprehensive Doxygen documentation.
+
+Follow these guidelines strictly when generating Doxygen for the current diff bufffer:
+
+General Guidelines:
+Every source file (.cpp, .h, .hpp, etc.) must contain at least one @file block clearly describing the file's purpose.
+
+Every class, struct, union, enum, function, method, variable, macro, typedef, namespace, and module must be documented explicitly.
+
+Correct or update existing incomplete or incorrect Doxygen comments as necessary.
+
+Comment Block Structure
+Use the following standard format for multi-line comments:
+
+cpp
+/**
+ * @brief Short description (one concise sentence).
+ *
+ * Detailed description explaining clearly the purpose and usage.
+ * Include separate paragraphs for clarity by inserting blank lines.
+ *
+ * @param param_name Clear description of each parameter (if applicable).
+ * @return Description of return value(s) or possible error conditions.
+ */
+For single-line descriptions of class members or variables placed after declaration:
+
+cpp
+int field; /**< Brief description of field */
+Essential Guidelines
+Brief Description (@brief):
+
+Provide a concise one-line summary clearly stating the purpose or functionality.
+
+Use imperative mood (e.g., "Initialize", "Compute", "Return").
+
+Capitalize only the first letter; do not end with a period.
+
+Detailed Description (@details):
+
+Separate from brief description by an empty line.
+
+Clearly explain what the entity does, its purpose, and how it integrates into the overall system.
+
+Include important implementation details or usage constraints where relevant.
+
+Start new paragraphs with empty lines.
+
+Parameters (@param):
+
+Clearly describe each parameter's purpose and expected values or constraints.
+
+Return Values (@return):
+
+Explicitly state what values are returned or possible error conditions.
+
+Exceptions (@throws):
+
+Document exceptions thrown by functions/methods explicitly if applicable.
+
+Examples (@code ... @endcode):
+
+Include code examples demonstrating typical usage when beneficial for clarity.
+
+Cross-references:
+
+Use @ref to link to related documentation sections or pages clearly.
+
+File Documentation (@file):
+
+Every file must have a @file block briefly describing its contents and purpose.
+
+Formatting & Readability
+Clearly distinguish code symbols (code) and filenames visually using backticks.
+
+Use Markdown formatting within comment blocks (@a italics, @b bold, @c monospace) to enhance readability.
+
+Wrap comment lines at approximately 72 characters to ensure readability across documentation tools.
+
+Example Comment Block
+cpp
+/**
+ * @brief Calculate factorial of an integer.
+ *
+ * Computes factorial of a given non-negative integer using recursion.
+ * Handles negative input by returning an error code.
+ *
+ * @param n Integer whose factorial is computed. Must be non-negative.
+ *
+ * @return Factorial of n if successful; -1 if input is negative.
+ *
+ * @throws std::overflow_error If result exceeds integer limits.
+ */
+int factorial(int n);
+Always adhere strictly to these guidelines to ensure generated Doxygen documentation is comprehensive, accurate, easy-to-read, and fully navigable.
+
+Now generate Doxygen comments for the current diff buffer please.
+    ]]
+
+  vim.cmd(":AvanteAsk '" .. doxy_prompt .. "'")
+  -- vim.cmd(":AvanteAsk 'Please fill this document with all the standard Doxygen comments needed to generate a full complete Doxygen documentation. For wrong or incomplete Doxygen comments, feel free to update and fix existing comments. Give me small update chunks.'")
+end, { desc = "Generate Doxygen Commit" })

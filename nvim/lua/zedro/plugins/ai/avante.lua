@@ -7,12 +7,12 @@ return {
     opts = {
       provider = "copilot",
       vendors = {
-        perplexity = {
-          __inherited_from = "openai",
-          api_key_name = "PERPLEXITY_API_KEY",
-          endpoint = "https://api.perplexity.ai",
-          model = 'sonar-reasoning-pro',
-        },
+        -- perplexity = {
+        --   __inherited_from = "openai",
+        --   api_key_name = "PERPLEXITY_API_KEY",
+        --   endpoint = "https://api.perplexity.ai",
+        --   model = 'sonar-reasoning-pro',
+        -- },
         ollama = {
           __inherited_from = "openai",
           model = "deepseek-r1:14b"
