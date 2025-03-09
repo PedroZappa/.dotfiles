@@ -244,10 +244,6 @@ keymap.set(
   .. ':term curl parrot.live<CR>:set winbar=""<CR>:set nonu<CR>:set nornu<CR>',
   { desc = "Parrot Party!!!" }
 )
--- Summon Pet
--- keymap.set("n", "<leader>sp", ":PetsNew Z", { desc = "Summon Pet" })
--- keymap.set("n", "<leader>scp", ":PetsNewCustom slime green Z", { desc = "Summon Custom Pet" })
--- keymap.set("n", "<leader>kp", ":PetsKill Z", { desc = "Kill Pet" })
 
 -- Hardtime
 local function toggle_hardmode()
@@ -256,129 +252,28 @@ local function toggle_hardmode()
 end
 keymap.set("n", "<leader>ht", toggle_hardmode, { desc = "Toggle Hardmode" })
 
--- Auto Sectioner
-vim.keymap.set("n", "<leader>;", function()
-  require("zedro.funkz.commenter").add_boxed_comment()
-end, { desc = "Create Separator" })
-
 -- Auto Git Commiter
 vim.keymap.set("n", "<leader>ga", function()
-  -- Stage all changes
-  vim.cmd("Git add .")
-
-  -- Open verbose commit buffer (this opens the diff buffer)
-  vim.cmd("Git commit --verbose")
-
-  -- Wait briefly for the buffer to load
-  vim.defer_fn(function()
-    -- Get current buffer content (diff) to provide context
-    local diff_content = table.concat(vim.api.nvim_buf_get_lines(0, 0, -1, false), "\n")
-
-    -- Define a direct and unambiguous prompt
-    local commit_prompt = [[
-GENERATE A COMPLETE GIT COMMIT MESSAGE BASED ON THIS DIFF:
-
-]] .. diff_content .. [[
-
-IMPORTANT: DO NOT explain how to write commit messages. DO NOT provide instructions or explanations.
-JUST WRITE THE ACTUAL COMMIT MESSAGE FOLLOWING THIS FORMAT:
-
-type(scope): subject
-
-body explaining what and why (not how)
-
-Any footer references
-
-EXAMPLES OF GOOD RESPONSES:
-"feat(auth): add JWT authentication
-
-Implement secure token-based authentication to replace session cookies.
-This improves security and enables better scaling across services.
-
-Closes #123"
-
-OR
-
-"fix(ui): resolve button alignment in mobile view
-
-Buttons were misaligned on screens smaller than 768px due to
-conflicting flex properties.
-
-Fixes #456"
-]]
-    -- Escape single quotes in the prompt string
-    local escaped_prompt = commit_prompt:gsub("'", "\\'")
-
-    -- Pass the complete prompt safely escaped
-    vim.cmd(":AvanteAsk '" .. escaped_prompt .. "'")
-  end, 100) -- Small delay to ensure buffer is loaded
-  -- Pass the complete prompt including diff content safely escaped
+  require("zedro.funkz.commiter").commit()
 end, { desc = "Generate Git Commit" })
 
--- Doxygen Commenter
+-----------------
+---- Doxygen ----
+-----------------
 vim.keymap.set("n", "<leader>gD", function()
-  -- Get current buffer content (diff) as context
-  local diff_content = table.concat(vim.api.nvim_buf_get_lines(0, 0, -1, false), "\n")
-
-  -- Explicit prompt focused on direct Doxygen generation
-  local doxy_prompt = [[
-GENERATE COMPLETE AND ACCURATE DOXYGEN COMMENTS FOR THE FOLLOWING CODE DIFF:
-
-]] .. diff_content .. [[
-
-IMPORTANT INSTRUCTIONS:
-- Generate ONLY the complete Doxygen comment blocks themselves.
-- DO NOT provide explanations or instructions about how to write Doxygen.
-- Correct or update existing incorrect or incomplete Doxygen comments if necessary.
-- Strictly adhere to these formatting rules:
-
-COMMENT BLOCK STRUCTURE EXAMPLE:
-/**
- * @brief Short description (one concise sentence).
- *
- * Detailed description clearly explaining purpose and usage.
- * Separate paragraphs with blank lines for readability.
- *
- * @param param_name Clear description of each parameter (if applicable).
- * @return Description of return value(s) or possible error conditions.
- * @throws ExceptionType Explanation of when exception is thrown (if applicable).
- */
-
-SINGLE-LINE MEMBER COMMENT EXAMPLE:
-int field; /**< Brief description of field */
-
-FILE COMMENT EXAMPLE:
-/**
- * @file filename.cpp
- *
- * Brief description clearly stating the file's purpose and contents.
- */
-
-EXAMPLES OF GOOD RESPONSES:
-
-/**
- * @brief Calculate factorial of an integer.
- *
- * Computes factorial of a given non-negative integer using recursion.
- * Handles negative input by returning an error code.
- *
- * @param n Integer whose factorial is computed. Must be non-negative.
- * @return Factorial of n if successful; -1 if input is negative.
- * @throws std::overflow_error If result exceeds integer limits.
- */
-int factorial(int n);
-
-OR
-
-/**
- * @file math_utils.cpp
- *
- * Utility functions for mathematical computations used across modules.
- */
-
-NOW GENERATE THE DOXYGEN COMMENTS DIRECTLY BELOW:
-]]
-
-  -- Pass prompt safely escaped to your AI command
-  vim.cmd(":AvanteAsk '" .. doxy_prompt:gsub("'", "\\'") .. "'")
-end, { desc = "Generate Doxygen Comments" })
+  local input = vim.fn.input([[
+Select Action:
+1. Generate Defgrouper
+2. Generate/Update Comments
+3. Generate Separator
+Enter choice: ]])
+  if input == "1" then
+    require("zedro.funkz.doxygen").doxygen_defgrouper()
+  elseif input == "2" then
+    require("zedro.funkz.doxygen").document()
+  elseif input == "3" then
+    require("zedro.funkz.commenter").add_boxed_comment()
+  else
+    print("Invalid choice")
+  end
+end, { desc = "Doxygen Actions" })
