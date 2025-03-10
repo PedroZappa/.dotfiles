@@ -10,7 +10,14 @@ function M.commit()
   -- Wait briefly for the buffer to load
   vim.defer_fn(function()
     -- Get current buffer content (diff) to provide context
-    local diff_content = table.concat(vim.api.nvim_buf_get_lines(0, 0, -1, false), "\n")
+    local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+    local diff_content = {}
+    for _, line in ipairs(lines) do
+      if line:sub(1, 1) ~= "#" then
+        table.insert(diff_content, line)
+      end
+    end
+    diff_content = table.concat(diff_content, "\n")
 
     -- Define a direct and unambiguous prompt
     local commit_prompt = [[
