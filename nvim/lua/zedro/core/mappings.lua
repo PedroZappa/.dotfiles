@@ -208,7 +208,6 @@ keymap.set("n", "<leader>W", ":lua vim.ui.open(vim.fn.expand('%'))<CR>", { desc 
 -- Undotree mappings
 keymap.set("n", "<leader>u", ":UndotreeToggle<CR>", { desc = "Undotree Toggle" })
 -- Git
-keymap.set("n", "<leader>gg", ":LazyGit<CR>", { desc = "LazyGit" })
 keymap.set("n", "<leader>gs", ":Git<CR>")
 keymap.set("n", "<leader>gb", ":Gitsigns toggle_current_line_blame<CR>")
 keymap.set("n", "<leader>gv", ":BlameToggle virtual<CR>")
@@ -239,9 +238,9 @@ keymap.set(
   "n",
   "<leader>pl",
   ":term curl parrot.live<CR>:set nonu<CR>:set nornu<CR>:vs<CR>"
-  .. ":term curl parrot.live<CR>:set nonu<CR>:set nornu<CR>:spl<CR><C-w>2h"
-  .. ":term curl parrot.live<CR>:set nonu<CR>:set nornu<CR>:spl<CR>"
-  .. ':term curl parrot.live<CR>:set winbar=""<CR>:set nonu<CR>:set nornu<CR>',
+    .. ":term curl parrot.live<CR>:set nonu<CR>:set nornu<CR>:spl<CR><C-w>2h"
+    .. ":term curl parrot.live<CR>:set nonu<CR>:set nornu<CR>:spl<CR>"
+    .. ':term curl parrot.live<CR>:set winbar=""<CR>:set nonu<CR>:set nornu<CR>',
   { desc = "Parrot Party!!!" }
 )
 
@@ -252,10 +251,23 @@ local function toggle_hardmode()
 end
 keymap.set("n", "<leader>ht", toggle_hardmode, { desc = "Toggle Hardmode" })
 
--- Auto Git Commiter
-vim.keymap.set("n", "<leader>ga", function()
-  require("zedro.funkz.commiter").commit()
-end, { desc = "Generate Git Commit" })
+-----------------
+------ Git ------
+-----------------
+keymap.set("n", "<leader>ga", function()
+  local input = vim.fn.input([[
+  Select Action:
+1. LazyGit
+2. Generate Git Commit
+Enter choice: ]])
+  if input == "1" then
+    vim.cmd("LazyGit")
+  elseif input == "2" then
+    require("zedro.funkz.commiter").commit()
+  else
+    print("Invalid choice")
+  end
+end, { desc = "Git Actions" })
 
 -----------------
 ---- Doxygen ----

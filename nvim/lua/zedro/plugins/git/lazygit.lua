@@ -6,6 +6,6 @@ return {
 	},
 	event = "VeryLazy",
 	keys = {
-		{ "<leader>gg", "<cmd>LazyGit<cr>", desc = "LazyGit" },
+		{ "<leader>ggg", "<cmd>LazyGit<cr>", desc = "LazyGit" },
 	},
 }
