@@ -46,11 +46,12 @@ Fixes #456"
 ]]
     -- Escape single quotes in the prompt string
     local escaped_prompt = commit_prompt:gsub("'", "\\'")
-
+    local one_line_prompt = escaped_prompt:gsub("\n", " "):gsub("%s+", " "):gsub("^%s*(.-)%s*$", "%1")
     -- Pass the complete prompt safely escaped
-    vim.cmd(":AvanteAsk '" .. escaped_prompt .. "'")
+    vim.schedule(function()
+      vim.cmd("AvanteAsk " .. vim.fn.shellescape(one_line_prompt))
+    end)
   end, 100) -- Small delay to ensure buffer is loaded
-  -- Pass the complete prompt including diff content safely escaped
 end
 
 return M
