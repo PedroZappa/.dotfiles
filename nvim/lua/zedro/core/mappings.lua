@@ -259,11 +259,14 @@ keymap.set("n", "<leader>ga", function()
   Select Action:
 1. LazyGit
 2. Generate Git Commit
+3. Generate Summary of Commits since last PR
 Enter choice: ]])
   if input == "1" then
     vim.cmd("LazyGit")
   elseif input == "2" then
     require("zedro.funkz.commiter").commit()
+  elseif input == "3" then
+    require("zedro.funkz.puller").view_pr_logs()
   else
     print("Invalid choice")
   end

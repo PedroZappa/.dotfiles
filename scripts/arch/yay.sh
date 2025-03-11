@@ -81,6 +81,7 @@ packages=(
     # Git
     "git"
     "lazygit"
+    "github-cli"
     # Navigation
     "ripgrep"
     "eza"
