@@ -82,6 +82,18 @@ function M.doxygen_defgrouper()
   end
 end
 
+---
+function M.cross_reference()
+  local api = vim.api
+
+  local prompt = [[
+    1. Use glob tool to select all files in the Current Working Directory recursively to the Selected Files. 
+    2. Use add_file_to_context tool to add every file to the Selected Files.
+    3. Add cross-reference tags (@see) between related functions or classes, proceed with general analysis.
+  ]]
+
+  vim.schedule(api.nvim_command("AvanteAsk '" .. prompt:gsub("'", "\\'") .. "'"))
+
+end
+
 return M
-
-

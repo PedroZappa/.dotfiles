@@ -280,13 +280,16 @@ vim.keymap.set("n", "<leader>gD", function()
 Select Action:
 1. Generate Defgrouper
 2. Generate/Update Comments
-3. Generate Separator
+3. Generate Cross-References
+4. Generate Separator
 Enter choice: ]])
   if input == "1" then
     require("zedro.funkz.doxygen").doxygen_defgrouper()
   elseif input == "2" then
     require("zedro.funkz.doxygen").document()
   elseif input == "3" then
+    require("zedro.funkz.doxygen").cross_reference()
+  elseif input == "4" then
     require("zedro.funkz.commenter").add_boxed_comment()
   else
     print("Invalid choice")
