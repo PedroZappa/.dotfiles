@@ -100,10 +100,12 @@ conflicting flex properties.
 Fixes #456"
 ]] .. buffer_content
 
+  local escaped_prompt = prompt:gsub("'", "\\'")
+  local one_line_prompt = escaped_prompt:gsub("\n", " "):gsub("%s+", " "):gsub("^%s*(.-)%s*$", "%1")
   -- Schedule the command to run after the buffer is displayed
   vim.schedule(function()
     -- Escape any special characters in the prompt
-    local escaped_prompt = vim.fn.shellescape(prompt)
+    local escaped_prompt = vim.fn.shellescape(one_line_prompt)
     -- Send to your AvanteAsk command
     vim.cmd("AvanteAsk " .. escaped_prompt)
   end)
