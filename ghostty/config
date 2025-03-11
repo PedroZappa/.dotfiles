@@ -6,8 +6,8 @@ title =
 theme = Dracula
 fullscreen = true
 
-background-opacity = 0.8
-background-blur = false
+background-opacity = 0.9
+background-blur = true
 background = #000000
 foreground = #ffffff
 

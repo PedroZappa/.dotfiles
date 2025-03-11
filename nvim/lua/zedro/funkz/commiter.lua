@@ -20,6 +20,7 @@ function M.commit()
     diff_content = table.concat(diff_content, "\n")
 
     -- Define a direct and unambiguous prompt
+
     local commit_prompt = [[
 GENERATE A COMPLETE GIT COMMIT MESSAGE BASED ON THIS DIFF, COMMIT & PUSH:
 
