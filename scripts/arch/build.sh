@@ -50,6 +50,13 @@ echo "${B}${YEL}Starting sym.sh execution...${D}"
 echo "${B}${MAG}Starting yay.sh execution...${D}"
 "${SCRIPT_DIR}/yay.sh" || { echo "${B}${RED}Error: yay.sh failed${D}"; exit 1; }
 
+echo "${B}${CYA}Checking if GDM is installed...${D}"
+if pacman -Qs gdm > /dev/null; then
+    echo "${B}${GRN}GDM found! Starting gdm.sh execution...${D}"
+    "${SCRIPT_DIR}/gdm.sh" || { echo "${B}${RED}Error: gdm.sh failed${D}"; exit 1; }
+else
+    echo "${B}${YEL}GDM not installed. Skipping gdm.sh.${D}"
+fi
 echo "${B}${MAG}Starting chsh.sh execution...${D}"
 "${SCRIPT_DIR}/chsh.sh" || { echo "${B}${RED}Error: chsh.sh failed${D}"; exit 1; }
 
