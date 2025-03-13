@@ -39,11 +39,13 @@ fi
 # Array of packages to install
 packages=(
     # # Essentials
+    "grub" # bootloader
     "ufw" # firewall
     "man-db"
+    "man-pages"
     "tzdata" # time sync
-    "ncdu"
-    "btop"
+    "ncdu" # disk usage
+    "btop" # top replacement
     "iotop" # I/O monitoring
     # Essential Lulz
     "c-lolcat"
@@ -61,6 +63,7 @@ packages=(
     "socat" # replacement for openbsd-netcat
     "nmap" # Netwrk Discovery and Auditing
     "ipcalc" # IPv4/v6 address calculator
+    "iw" # wireless tools
     # System Call Monitoring
     "strace" # System call monitoring
     "ltrace" # Library Call monitoring
