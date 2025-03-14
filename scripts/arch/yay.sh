@@ -82,6 +82,7 @@ packages=(
     "neovim"
     "tmux"
     "lnav"
+    "bat"
     # Git
     "git"
     "lazygit"
