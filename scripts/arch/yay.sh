@@ -134,6 +134,7 @@ packages=(
     "hyprland"
     "hyprlock"
     "hypridle"
+    "hyprpaper"
     "hyprshot" # Scheenshort Manager
     "fuzzel" # App Launcher
     "clipse" # clipboard Manager
