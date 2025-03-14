@@ -53,6 +53,7 @@ packages=(
     "fortune-mod"
     "toilet"
     "boxes"
+    "shell-color-scripts-git"
     # Networking
     "iftop" # Network Monitoring
     "mtr" # Network diagnostics
