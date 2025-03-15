@@ -11,3 +11,9 @@ btop++ needs an interactive shell to run.
 2025/03/14 (21:13:52) | INFO: Logger set to DEBUG
 2025/03/14 (21:13:52) | INFO: Logger set to INFO
 2025/03/14 (21:13:59) | INFO: Quitting! Runtime: 00:01:44
+
+2025/03/15 (11:53:26) | ===> btop++ v.1.4.0
+2025/03/15 (11:53:26) | INFO: Logger set to INFO
+2025/03/15 (11:53:26) | ERROR: No tty detected!
+btop++ needs an interactive shell to run.
+2025/03/15 (11:53:26) | INFO: Quitting! Runtime: 00:00:00
