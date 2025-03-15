@@ -24,7 +24,7 @@ function M.document()
 
   -- Construct a stricter prompt to ensure precise AI behavior
   local doxy_prompt = [[
-ONLY OUTPUT NEW OR UPDATED DOXYGEN COMMENTS FOR THE PROVIDED CODE BELOW.
+ONLY OUTPUT NEW DOXYGEN COMMENTS FOR THE PROVIDED CODE BELOW.
 
 STRICT RULES:
 1. DO NOT include or repeat any code from the provided input.
@@ -39,7 +39,36 @@ STRICT RULES:
 INPUT CODE:
 ]] .. buffer_content .. [[
 
-OUTPUT ONLY THE NECESSARY NEW OR UPDATED DOXYGEN COMMENTS BELOW:
+OUTPUT ONLY THE NECESSARY NEW DOXYGEN COMMENTS BELOW:
+]]
+
+  -- Pass prompt safely escaped to your AI command
+  vim.cmd(":AvanteAsk '" .. doxy_prompt:gsub("'", "\\'") .. "'")
+end
+
+function M.update()
+  local buf = vim.api.nvim_get_current_buf()
+  local buffer_lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+  local buffer_content = table.concat(buffer_lines, "\n")
+
+  -- Construct a stricter prompt to ensure precise AI behavior
+  local doxy_prompt = [[
+ONLY OUTPUT UPDATED DOXYGEN COMMENTS FOR THE PROVIDED CODE BELOW.
+
+STRICT RULES:
+1. DO NOT include or repeat any code from the provided input.
+2. DO NOT output existing Doxygen comments if they are already correct and complete.
+3. VERIFY existing Doxygen comments for accuracy and completeness; output ONLY if updates are necessary.
+4. GENERATE missing Doxygen comments for:
+   - File-level documentation (@file).
+   - Group definitions (@defgroup).
+   - Functions and members.
+5. FOLLOW Doxygen standards strictly for formatting and content.
+
+INPUT CODE:
+]] .. buffer_content .. [[
+
+OUTPUT ONLY THE NECESSARY UPDATED DOXYGEN COMMENTS BELOW:
 ]]
 
   -- Pass prompt safely escaped to your AI command

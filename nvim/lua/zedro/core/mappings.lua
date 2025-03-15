@@ -254,44 +254,105 @@ keymap.set("n", "<leader>ht", toggle_hardmode, { desc = "Toggle Hardmode" })
 -----------------
 ------ Git ------
 -----------------
-keymap.set("n", "<leader>ga", function()
-  local input = vim.fn.input([[
-  Select Action:
-1. LazyGit
-2. Generate Git Commit
-3. Generate Summary of Commits since last PR
-Enter choice: ]])
-  if input == "1" then
-    vim.cmd("LazyGit")
-  elseif input == "2" then
-    require("zedro.funkz.commiter").commit()
-  elseif input == "3" then
-    require("zedro.funkz.puller").view_pr_logs()
-  else
-    print("Invalid choice")
-  end
+vim.keymap.set("n", "<leader>ga", function()
+  local Menu = require("nui.menu")
+  local menu_items = {
+    Menu.item("🚀 LazyGit", { id = "lazygit" }),
+    Menu.item("📝 Generate Git Commit", { id = "commit" }),
+    Menu.item("📊 Generate Summary of Commits since last PR", { id = "pr_logs" }),
+  }
+
+  local menu = Menu({
+    position = "50%",
+    size = {
+      width = 60,
+      height = 3,
+    },
+    border = {
+      style = "rounded",
+      text = {
+        top = " Git Actions ",
+        top_align = "center",
+      },
+    },
+    win_options = {
+      winhighlight = "Normal:Normal,FloatBorder:FloatBorder",
+    },
+  }, {
+    lines = menu_items,
+    max_width = 60,
+    keymap = {
+      focus_next = { "j", "<Down>", "<Tab>" },
+      focus_prev = { "k", "<Up>", "<S-Tab>" },
+      close = { "<Esc>", "<C-c>" },
+      submit = { "<CR>", "<Space>" },
+    },
+    on_submit = function(item)
+      if item.id == "lazygit" then
+        vim.cmd("LazyGit")
+      elseif item.id == "commit" then
+        require("zedro.funkz.commiter").commit()
+      elseif item.id == "pr_logs" then
+        require("zedro.funkz.puller").view_pr_logs()
+      end
+    end,
+  })
+
+  menu:mount()
 end, { desc = "Git Actions" })
 
 -----------------
 ---- Doxygen ----
 -----------------
 vim.keymap.set("n", "<leader>gD", function()
-  local input = vim.fn.input([[
-Select Action:
-1. Generate Defgrouper
-2. Generate/Update Comments
-3. Generate Cross-References
-4. Generate Separator
-Enter choice: ]])
-  if input == "1" then
-    require("zedro.funkz.doxygen").doxygen_defgrouper()
-  elseif input == "2" then
-    require("zedro.funkz.doxygen").document()
-  elseif input == "3" then
-    require("zedro.funkz.doxygen").cross_reference()
-  elseif input == "4" then
-    require("zedro.funkz.commenter").add_boxed_comment()
-  else
-    print("Invalid choice")
-  end
+  local Menu = require("nui.menu")
+  local menu_items = {
+    Menu.item("Generate Defgrouper", { id = "defgrouper" }),
+    Menu.item("Generate New Comments", { id = "new_comments" }),
+    Menu.item("Generate Updated Comments", { id = "update_comments" }),
+    Menu.item("Generate Cross-References", { id = "cross_ref" }),
+    Menu.item("Generate Separator", { id = "separator" }),
+  }
+
+  local menu = Menu({
+    position = "50%",
+    size = {
+      width = 40,
+      height = 5,
+    },
+    border = {
+      style = "rounded",
+      text = {
+        top = " Doxygen Actions ",
+        top_align = "center",
+      },
+    },
+    win_options = {
+      winhighlight = "Normal:Normal,FloatBorder:FloatBorder",
+    },
+  }, {
+    lines = menu_items,
+    max_width = 40,
+    keymap = {
+      focus_next = { "j", "<Down>", "<Tab>" },
+      focus_prev = { "k", "<Up>", "<S-Tab>" },
+      close = { "<Esc>", "<C-c>" },
+      submit = { "<CR>", "<Space>" },
+    },
+    on_submit = function(item)
+      if item.id == "defgrouper" then
+        require("zedro.funkz.doxygen").doxygen_defgrouper()
+      elseif item.id == "new_comments" then
+        require("zedro.funkz.doxygen").document()
+      elseif item.id == "update_comments" then
+        require("zedro.funkz.doxygen").update()
+      elseif item.id == "cross_ref" then
+        require("zedro.funkz.doxygen").cross_reference()
+      elseif item.id == "separator" then
+        require("zedro.funkz.commenter").add_boxed_comment()
+      end
+    end,
+  })
+
+  menu:mount()
 end, { desc = "Doxygen Actions" })
