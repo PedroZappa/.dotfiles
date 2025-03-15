@@ -53,6 +53,7 @@ packages=(
     "fortune-mod"
     "toilet"
     "boxes"
+    "ascii-image-converter-git"
     "shell-color-scripts-git"
     "cmatrix"
     # Networking
