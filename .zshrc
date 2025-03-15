@@ -154,6 +154,9 @@ alias ghostty='~/.local/bin/ghostty.AppImage'
 # Send / Read Streams
 alias sstream="~/.dotfiles/scripts/audio/send-stream.sh"
 alias rstream="~/.dotfiles/scripts/audio/read-stream.sh"
+
+# Art beybee Art
+alias toolsman="~/.dotfiles/scripts/zsh/toolsman.sh"
  
  #################
  ### Greetings ###
