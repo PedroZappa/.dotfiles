@@ -54,6 +54,7 @@ packages=(
     "toilet"
     "boxes"
     "shell-color-scripts-git"
+    "cmatrix"
     # Networking
     "iftop" # Network Monitoring
     "mtr" # Network diagnostics
