@@ -17,3 +17,34 @@ btop++ needs an interactive shell to run.
 2025/03/15 (11:53:26) | ERROR: No tty detected!
 btop++ needs an interactive shell to run.
 2025/03/15 (11:53:26) | INFO: Quitting! Runtime: 00:00:00
+
+2025/03/16 (09:14:20) | ===> btop++ v.1.4.0
+2025/03/16 (09:14:20) | INFO: Logger set to INFO
+2025/03/16 (09:14:20) | INFO: Running on /dev/pts/6
+2025/03/16 (09:14:20) | INFO: Failed to load librocm_smi64.so, AMD GPUs will not be detected: librocm_smi64.so.6: cannot open shared object file: No such file or directory
+2025/03/16 (09:14:42) | INFO: Quitting! Runtime: 00:00:22
+
+2025/03/16 (09:20:10) | ===> btop++ v.1.4.0
+2025/03/16 (09:20:10) | INFO: Logger set to INFO
+2025/03/16 (09:20:10) | ERROR: Couldn't determine terminal size of "STDOUT_FILENO"!
+2025/03/16 (09:20:10) | INFO: Running on /dev/pts/8
+2025/03/16 (09:20:10) | ERROR: Couldn't determine terminal size of "STDOUT_FILENO"!
+2025/03/16 (09:20:10) | ERROR: Couldn't determine terminal size of "STDOUT_FILENO"!
+2025/03/16 (09:20:10) | INFO: Failed to load librocm_smi64.so, AMD GPUs will not be detected: librocm_smi64.so.6: cannot open shared object file: No such file or directory
+2025/03/16 (09:20:10) | ERROR: Couldn't determine terminal size of "STDOUT_FILENO"!
+2025/03/16 (09:20:11) | ERROR: Couldn't determine terminal size of "STDOUT_FILENO"!
+2025/03/16 (09:20:12) | ERROR: Couldn't determine terminal size of "STDOUT_FILENO"!
+2025/03/16 (09:20:13) | INFO: Quitting! Runtime: 00:00:03
+
+2025/03/16 (09:20:14) | ===> btop++ v.1.4.0
+2025/03/16 (09:20:14) | INFO: Logger set to INFO
+2025/03/16 (09:20:14) | ERROR: Couldn't determine terminal size of "STDOUT_FILENO"!
+2025/03/16 (09:20:14) | INFO: Running on /dev/pts/8
+2025/03/16 (09:20:14) | ERROR: Couldn't determine terminal size of "STDOUT_FILENO"!
+2025/03/16 (09:20:14) | ERROR: Couldn't determine terminal size of "STDOUT_FILENO"!
+2025/03/16 (09:20:14) | INFO: Failed to load librocm_smi64.so, AMD GPUs will not be detected: librocm_smi64.so.6: cannot open shared object file: No such file or directory
+2025/03/16 (09:20:14) | ERROR: Couldn't determine terminal size of "STDOUT_FILENO"!
+2025/03/16 (09:20:15) | ERROR: Couldn't determine terminal size of "STDOUT_FILENO"!
+2025/03/16 (09:20:16) | ERROR: Couldn't determine terminal size of "STDOUT_FILENO"!
+2025/03/16 (09:20:17) | ERROR: Couldn't determine terminal size of "STDOUT_FILENO"!
+2025/03/16 (09:20:18) | INFO: Quitting! Runtime: 00:00:04

@@ -98,8 +98,12 @@ packages=(
     "fzf"
     # Font
     "ttf-firacode-nerd"
-    "ttf-liberation"
-
+    "ttf-font-awesome"
+    "otf-font-awesome"
+    "ttf-nerd-fonts-symbols"
+    "noto-fonts"
+    "noto-fonts-emoji"
+    "ttf-dejavu"
     # Build tools
     "clang"
     "cmake"
@@ -142,6 +146,7 @@ packages=(
     "clipse" # clipboard Manager
     "swaync" # Notifications
     "waybar" # navbar
+    "eww" # widgets
 )
 
 packages_uv=(

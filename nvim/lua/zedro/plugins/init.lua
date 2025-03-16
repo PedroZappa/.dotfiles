@@ -7,4 +7,5 @@ return {
 	{ 'edluffy/hologram.nvim', lazy = true }, -- terminal image viewer
 	'RishabhRD/nvim-cheat.sh', -- cht.sh integration	
 	'RishabhRD/popfix', -- popup window
+  'elkowar/yuck.vim' -- eww filetype support
 }
