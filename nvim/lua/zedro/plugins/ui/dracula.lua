@@ -97,7 +97,8 @@ return {
         BlinkCmpScrollBarGutter = { bg = "#000000" },
         BlinkCmpDocBorder = { fg = "#e8eb34" },
         BlinkCmpMenuBorder = { fg = "#e8eb34" },
-        BlinkCmpMenuSelection = { fg = "#34eb43", bg = "#674b94" },
+        BlinkCmpMenuSelection = { fg = "#34eb43", bg = "#674b94", bold = true },
+        BlinkCmpGhostText = { fg = "#34eb43", undercurl = true },
       },
 
       -- You can use overrides as table like this
@@ -115,5 +116,9 @@ return {
     })
     -- Load colorscheme
     vim.cmd("colorscheme dracula")
+    vim.api.nvim_set_hl(0, "@constructor", { bold = true })
+    vim.api.nvim_set_hl(0, "@constant", { bold = true })
+    vim.api.nvim_set_hl(0, "@lsp.type.property", { italic = true })
+
   end,
 }

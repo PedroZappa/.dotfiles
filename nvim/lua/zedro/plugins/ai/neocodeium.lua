@@ -3,6 +3,7 @@ return {
   event = { "BufReadPre", "BufNewFile" },
   config = function()
     local neocodeium = require("neocodeium")
+    local blink = require("blink.cmp")
     neocodeium.setup({
       -- If `false`, then would not start codeium server (disabled state)
       -- You can manually enable it at runtime with `:NeoCodeium enable`
@@ -26,15 +27,18 @@ return {
       -- Set to a function that returns `true` if a buffer should be enabled
       -- and `false` if the buffer should be disabled
       -- You can still enable disabled by this option buffer with `:NeoCodeium enable_buffer`
-      filter = function(bufnr)
-        -- Check if the buffer is a neo-tree buffer
-        local filetype = vim.api.nvim_buf_get_option(bufnr, "filetype")
-        if filetype == "neo-tree" or fyletype == "Nui" then
-          vim.cmd("Neocodeium disable")
-          return false
-        end
-        return true
+      filter = function()
+        return not blink.is_visible()
       end,
+      -- filter = function(bufnr)
+      --   -- Check if the buffer is a neo-tree buffer
+      --   local filetype = vim.api.nvim_buf_get_option(bufnr, "filetype")
+      --   if filetype == "neo-tree" or fyletype == "Nui" then
+      --     vim.cmd("Neocodeium disable")
+      --     return false
+      --   end
+      --   return true
+      -- end,
       -- Set to `false` to disable suggestions in buffers with specific filetypes
       -- You can still enable disabled by this option buffer with `:NeoCodeium enable_buffer`
       filetypes = {
@@ -44,8 +48,13 @@ return {
         ["."] = false,
       },
       -- List of directories and files to detect workspace root directory for Codeium chat
-      root_dir = { ".bzr", ".git", ".hg", ".svn", "_FOSSIL_", "package.json" }
-
+      root_dir = { ".bzr", ".git", ".hg", ".svn", "_FOSSIL_", "package.json" },
+    })
+    vim.api.nvim_create_autocmd("User", {
+      pattern = "BlinkCmpMenuOpen",
+      callback = function()
+        neocodeium.clear()
+      end,
     })
     -- Keybinds
     vim.keymap.set("i", "<C-g>", function()
