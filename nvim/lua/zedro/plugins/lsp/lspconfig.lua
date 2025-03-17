@@ -3,7 +3,7 @@ return {
   cmd = { "LspInfo", "LspInstall", "LspStart" },
   event = { "BufReadPre", "BufNewFile" },
   dependencies = {
-    "hrsh7th/cmp-nvim-lsp",
+    -- "hrsh7th/cmp-nvim-lsp",
     { "antosha417/nvim-lsp-file-operations", config = true },
     { "williamboman/mason-lspconfig.nvim" },
   },
@@ -123,7 +123,7 @@ return {
     lsp_zero.extend_lspconfig({
       sign_text = true,
       lsp_attach = lsp_attach,
-      capabilities = require('cmp_nvim_lsp').default_capabilities(),
+      -- capabilities = require('cmp_nvim_lsp').default_capabilities(),
     })
   end,
   keys = {

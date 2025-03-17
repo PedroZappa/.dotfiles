@@ -5,11 +5,11 @@ return {
     require('nvim-highlight-colors').setup {
       render = 'background',
     }
-    require("cmp").setup({
-      formatting = {
-        format = require("nvim-highlight-colors").format
-      }
-    })
+    -- require("cmp").setup({
+    --   formatting = {
+    --     format = require("nvim-highlight-colors").format
+    --   }
+    -- })
   end,
 
 }

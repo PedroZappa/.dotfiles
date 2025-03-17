@@ -1,5 +1,5 @@
 return {
-  'Mofiqul/dracula.nvim',
+  "Mofiqul/dracula.nvim",
   priority = 1000, -- Make sure it loads before all other plugins
   config = function()
     local dracula = require("dracula")
@@ -92,7 +92,13 @@ return {
         NeoTreeGitUnstaged = { fg = "#854dff" },
         NeoTreeGitModified = { fg = "#854dff" },
         NeoCodeiumLabel = { bg = "#34eb43", fg = "#000000" },
-      }
+        BlinkCmpMenu = { bg = "#000000" },
+        BlinkCmpScrollBarThumb = { fg = "#854dff" },
+        BlinkCmpScrollBarGutter = { bg = "#000000" },
+        BlinkCmpDocBorder = { fg = "#e8eb34" },
+        BlinkCmpMenuBorder = { fg = "#e8eb34" },
+        BlinkCmpMenuSelection = { fg = "#34eb43", bg = "#674b94" },
+      },
 
       -- You can use overrides as table like this
       -- overrides = {
