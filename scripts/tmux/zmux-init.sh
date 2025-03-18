@@ -16,7 +16,7 @@ if [[ $USER == "zedr0" ]]; then			# DEV-Desk
 elif [[ $USER == "passunca" ]]; then	# 42
 	OBSIDIAN_VAULT_PATH="$HOME/sgoinfre/Zedro-Vault"
 elif [[ $USER == "zedro" ]]; then		# DEV-Mac
-	OBSIDIAN_VAULT_PATH="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/ZedroVault"
+	OBSIDIAN_VAULT_PATH="$HOME/Documents/Zedros-Vault"
 else
 	echo "ZMUX: Unknown user... you shall not PATH! 😅"
 fi

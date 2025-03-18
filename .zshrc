@@ -147,7 +147,7 @@ alias gm='git merge --stat --log'
 # Glow Markdown Renderer
 alias glow=~/bin/glow/glow
 
-alias obsidian='~/.local/share/AppImage/Obsidian-1.7.7.AppImage --no-sandbox'
+# alias obsidian='~/.local/share/AppImage/Obsidian-1.7.7.AppImage --no-sandbox'
 alias ghostty='~/.local/bin/ghostty.AppImage'
 
 # Audio

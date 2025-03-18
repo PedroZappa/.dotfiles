@@ -136,6 +136,9 @@ packages=(
     # Docker
     "ggshield" # vulnerability scanner
 
+    # GNOME
+    "chrome-gnome-shell"
+
     # Hyprland
     "hyprland"
     "hyprlock"
