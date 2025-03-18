@@ -13,10 +13,10 @@ return {
         --   endpoint = "https://api.perplexity.ai",
         --   model = 'sonar-reasoning-pro',
         -- },
-        ollama = {
-          __inherited_from = "openai",
-          model = "deepseek-r1:14b"
-        },
+        -- ollama = {
+        --   __inherited_from = "openai",
+        --   model = "deepseek-r1:14b"
+        -- },
       },
       behaviour = {
         auto_suggestions = false, -- Experimental stage
