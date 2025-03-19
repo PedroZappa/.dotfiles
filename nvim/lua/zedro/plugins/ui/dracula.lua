@@ -98,7 +98,7 @@ return {
         BlinkCmpDocBorder = { fg = "#e8eb34" },
         BlinkCmpMenuBorder = { fg = "#e8eb34" },
         BlinkCmpMenuSelection = { fg = "#34eb43", bg = "#674b94", bold = true },
-        BlinkCmpGhostText = { fg = "#34eb43", undercurl = true },
+        BlinkCmpGhostText = { fg = "#854dff", undercurl = true },
       },
 
       -- You can use overrides as table like this
