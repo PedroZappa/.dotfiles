@@ -58,7 +58,7 @@ return {
 
     mason_tool_installer.setup({
       ensure_installed = {
-        "alejandra", -- nix formatter
+        -- "alejandra", -- nix formatter
         "prettier",  -- prettier formatter
         "stylua",    -- lua formatter
         -- "eslint_d", -- js linter
@@ -73,9 +73,9 @@ return {
       ensure_installed = {
         "clangd",
         "lua_ls",
-        "nil", -- nix
-        -- "jsonls",                    -- json
-        -- "html",                      -- html
+        -- "nil", -- nix
+        "jsonls",                    -- json
+        "html",                      -- html
         "pyright",                   -- python
         "hyprls",                    -- Hyprland
       },
