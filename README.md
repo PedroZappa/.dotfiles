@@ -4,7 +4,7 @@ Installation instructions to my favourite digital tools.
 
 ___
 
-### Table o'Contents
+## Table o'Contents
 
 <p>
     ~
@@ -20,7 +20,7 @@ ___
 
 ### Cloning `zedro-dotfiles`
 
-```shell
+```sh
 git clone https://github.com/PedroZappa/zedro-dotfiles.git ~/.dotfiles
 git submodule update --init --recursive --progress
 
@@ -39,12 +39,14 @@ ln -s ~/.dotfiles/.xsessionrc ~/.xsessionrc
 ```
 
 ___
+
 ## Setup i3
 ```sh
 ln -s ~/.dotfiles/i3/config ~/.config/i3/config
 ```
 
 ___
+
 ## Setup [bash](https://www.gnu.org/software/bash/)
 
 ```sh
@@ -52,6 +54,7 @@ ln -s ~/.dotfiles/.bashrc ~/.bashrc
 ln -s ~/.dotfiles/.bash_aliases ~/.bash_aliases
 ```
 ___
+
 ## Setup [zsh](https://www.zsh.org/)
 
 ```sh
@@ -167,6 +170,7 @@ ln -s ~/.dotfiles/mc/skins/dracula256.ini ~/.local/share/mc/skins/dracula256.ini
 sudo apt install neofetch
 ln -s ~/.dotfiles/neofetch/config.conf ~/.config/neofetch/config.conf
 ```
+
 #### Config [bat](https://github.com/sharkdp/bat)
 
 ```sh
@@ -199,5 +203,4 @@ dconf load /org/gnome/shell/extensions/ < ~/.dotfiles/gnome-shell-extensions.ini
 
 # Dump gnome shell extensions
 dconf dump /org/gnome/shell/extensions/ > ~/.dotfiles/gnome-shell-extensions.ini
-
 ```
