@@ -1,5 +1,5 @@
 theme: galaxy
-layout: horizontal
+layout: vertical
 editor: nvim
 pager: bat
 pager_json: fx
