@@ -77,6 +77,8 @@ packages=(
     "ethtool" # network tools
     "pciutils" # PCI bus tools
     "usbutils" # USB tools
+    # Utilities
+    "obsidian" # Markdown Editor
     # Terminal Tools
     "ghostty"
     "zsh"
