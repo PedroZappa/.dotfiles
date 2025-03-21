@@ -38,6 +38,8 @@ fi
 
 # Array of packages to install
 packages=(
+    # Arch
+    "reflector" # Mirror Lister
     # # Essentials
     "grub" # bootloader
     "ufw" # firewall
