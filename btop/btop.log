@@ -72,3 +72,14 @@ btop++ needs an interactive shell to run.
 2025/03/21 (17:14:25) | ERROR: No tty detected!
 btop++ needs an interactive shell to run.
 2025/03/21 (17:14:25) | INFO: Quitting! Runtime: 00:00:00
+
+2025/03/21 (21:29:45) | ===> btop++ v.1.4.0
+2025/03/21 (21:29:45) | INFO: Logger set to INFO
+2025/03/21 (21:29:45) | INFO: Running on /dev/pts/11
+2025/03/21 (21:29:45) | INFO: Failed to load librocm_smi64.so, AMD GPUs will not be detected: librocm_smi64.so.6: cannot open shared object file: No such file or directory
+2025/03/21 (22:06:52) | INFO: Quitting! Runtime: 00:37:07
+
+2025/03/21 (22:08:09) | ===> btop++ v.1.4.0
+2025/03/21 (22:08:09) | INFO: Logger set to INFO
+2025/03/21 (22:08:09) | INFO: Running on /dev/pts/11
+2025/03/21 (22:08:09) | INFO: Failed to load librocm_smi64.so, AMD GPUs will not be detected: librocm_smi64.so.6: cannot open shared object file: No such file or directory

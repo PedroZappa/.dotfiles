@@ -123,6 +123,7 @@ packages=(
     "docker"
     "docker-compose"
     "lazydocker"
+    "nvidia-container-toolkit"
     # Web
     "google-chrome"
     "nodejs"
