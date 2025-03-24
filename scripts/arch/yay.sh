@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Exit the script if any command fails
-set -e
+# set -e
 
 # Load Colors
 if [ -d ~/.dotfiles ]; then
