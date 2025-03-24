@@ -158,7 +158,7 @@ packages=(
 )
 
 packages_uv=(
-    "posting"
+    "posting --prerelease=allow"
 )
 
 # Loop through the array and install each package
