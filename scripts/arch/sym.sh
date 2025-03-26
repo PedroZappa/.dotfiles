@@ -55,6 +55,7 @@ declare -A FILES=(
     ["$HOME/.dotfiles/fuzzel.ini"]="$HOME/.config/fuzzel"
     ["$HOME/.dotfiles/waybar"]="$HOME/.config/waybar"
     ["$HOME/.dotfiles/eww"]="$HOME/.config/eww"
+    ["$HOME/.dotfiles/spotify-player/"]="$HOME/.config/spotify-player"
 )
 
 # Define the backup directory with timestamp

@@ -144,6 +144,10 @@ packages=(
     # GNOME
     "chrome-gnome-shell"
 
+    # Spotify
+    "spotify"
+    "spotify-player"
+
     # Hyprland
     "hyprland"
     "hyprlock"
