@@ -1,5 +1,5 @@
 theme = "dracula"
-client_id = "d99d022d8075463c993a143fe5a8c5f7"
+client_id_command = { command = "env | grep Spotify | awk -F'=' '{print $2}'" }
 client_port = 8080
 login_redirect_uri = "http://127.0.0.1:8989/login"
 playback_format = """
@@ -15,6 +15,9 @@ pause_icon = "▌▌"
 liked_icon = "♥"
 border_type = "Plain"
 progress_bar_type = "Rectangle"
+cover_img_width = 10
+cover_img_length = 10
+cover_img_scale = 1.0
 enable_cover_image_cache = true
 default_device = "spotify-player"
 seek_duration_secs = 5
