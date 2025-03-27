@@ -1,5 +1,5 @@
 theme = "dracula"
-client_id_command = { command = "env | grep Spotify | awk -F'=' '{print $2}'" }
+client_id_command = { command = "env | grep SPOTIFY | awk -F'=' '{print $2}'" }
 client_port = 8080
 login_redirect_uri = "http://127.0.0.1:8989/login"
 playback_format = """
