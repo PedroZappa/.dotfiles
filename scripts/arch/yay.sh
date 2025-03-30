@@ -176,6 +176,4 @@ for pkg in "${packages_uv[@]}"; do
     uv tool install "$pkg"
 done
 
-pip install gcop --break-system-packages
-
 echo "All packages installed successfully!"

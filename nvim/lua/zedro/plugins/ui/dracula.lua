@@ -99,6 +99,9 @@ return {
         BlinkCmpMenuBorder = { fg = "#e8eb34" },
         BlinkCmpMenuSelection = { fg = "#34eb43", bg = "#674b94", bold = true },
         BlinkCmpGhostText = { fg = "#854dff", undercurl = true },
+        AvanteSidebarWinSeparator = { fg = "#8426ff", bg = "#000000" },
+        NotifyINFOBorder = { fg = "#e8eb34" },
+        LspSagaBorderTitle = { fg = "#e8eb34" },
       },
 
       -- You can use overrides as table like this
