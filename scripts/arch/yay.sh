@@ -109,6 +109,7 @@ packages=(
     "noto-fonts-emoji"
     "ttf-dejavu"
     # Build tools
+    "llvm"
     "clang"
     "cmake"
     # C/C++
