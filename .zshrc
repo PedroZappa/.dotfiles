@@ -144,6 +144,9 @@ alias gcb='git checkout -b'
 alias glgg='git log --graph --oneline --decorate'
 alias gm='git merge --stat --log'
 
+# Valgrind
+alias macgrind='docker run -it -v $PWD:/tmp -w /tmp valgrind:1.0'
+
 # Glow Markdown Renderer
 alias glow=~/bin/glow/glow
 
