@@ -28,6 +28,9 @@ vim.cmd([[
 	augroup end
 ]])
 
+-- Blink w/ Avante
+vim.api.nvim_set_hl(0, 'BlinkCmpKindAvante', { default = false, fg = '#89b4fa' })
+
 -- Turn off cursor when changing buffer
 vim.cmd([[
 	augroup cursor_off

@@ -107,6 +107,12 @@ return {
         debounce = 600,
         throttle = 600,
       },
+      file_selector = {
+        --- @alias FileSelectorProvider "native" | "fzf" | "mini.pick" | "snacks" | "telescope" | string | fun(params: avante.file_selector.IParams|nil): nil
+        provider = "fzf",
+        -- Options override for custom providers
+        provider_opts = {},
+      },
     },
 
     -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
