@@ -296,13 +296,13 @@ return {
       ---@type snacks.animate.Duration|number
       duration = 33, -- ms per step
       easing = "linear",
-      fps = 60, -- frames per second. Global setting for all animations
+      fps = 60,      -- frames per second. Global setting for all animations
     },
     bigfile = {
       enabled = true,
-      notify = true, -- show notification when big file detected
+      notify = true,              -- show notification when big file detected
       size = (1.5 * 1024 * 1024), -- 1.5MB
-      line_length = 1000, -- average line length (useful for minified files)
+      line_length = 1000,         -- average line length (useful for minified files)
       -- Enable or disable features when big file detected
       ---@param ctx {buf: number, ft:string}
       setup = function(ctx)
@@ -321,9 +321,9 @@ return {
     dashboard = {
       enabled = true,
       width = 50,
-      row = nil, -- dashboard position. nil for center
-      col = nil, -- dashboard position. nil for center
-      pane_gap = 10, -- empty columns between vertical panes
+      row = nil,                                                                   -- dashboard position. nil for center
+      col = nil,                                                                   -- dashboard position. nil for center
+      pane_gap = 10,                                                               -- empty columns between vertical panes
       autokeys = "1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", -- autokey sequence
       -- These settings are used by some built-in sections
       preset = {
@@ -335,12 +335,12 @@ return {
         -- When using a function, the `items` argument are the default keymaps.
         ---@type snacks.dashboard.Item[]
         keys = {
-          { icon = "󰞋 ", key = "h", desc = "Get Help", action = ":vertical help" },
           { icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')" },
           { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
           { icon = " ", key = "g", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep')" },
           { icon = " ", key = "r", desc = "Recent Files", action = ":lua Snacks.dashboard.pick('oldfiles')" },
           { icon = " ", key = "s", desc = "Restore Session", section = "session" },
+          { icon = "󰞋 ", key = "h", desc = "Get Help", action = ":vertical help" },
           { icon = " ", key = "o", desc = "Get Options", action = ":vertical options" },
           {
             icon = " ",
@@ -348,7 +348,8 @@ return {
             desc = "Get Config",
             action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})",
           },
-          { icon = "󰒲 ", key = "L", desc = "Get Lazy", action = ":Lazy", enabled = package.loaded.lazy ~= nil },
+          { icon = "󰒲 ", key = "l", desc = "Get Lazy", action = ":Lazy", enabled = package.loaded.lazy ~= nil },
+          { icon = " ", key = "m", desc = "Get Mason", action = ":Mason", enabled = package.loaded.lazy ~= nil },
           { icon = " ", key = "q", desc = "Quit", action = ":qa" },
         },
         -- Used by the `header` section
@@ -439,19 +440,19 @@ return {
       line_end = nil, ---@type number?
       -- patterns to transform remotes to an actual URL
       remote_patterns = {
-        { "^(https?://.*)%.git$", "%1" },
-        { "^git@(.+):(.+)%.git$", "https://%1/%2" },
-        { "^git@(.+):(.+)$", "https://%1/%2" },
-        { "^git@(.+)/(.+)$", "https://%1/%2" },
-        { "^org%-%d+@(.+):(.+)%.git$", "https://%1/%2" },
-        { "^ssh://git@(.*)$", "https://%1" },
-        { "^ssh://([^:/]+)(:%d+)/(.*)$", "https://%1/%3" },
-        { "^ssh://([^/]+)/(.*)$", "https://%1/%2" },
+        { "^(https?://.*)%.git$",               "%1" },
+        { "^git@(.+):(.+)%.git$",               "https://%1/%2" },
+        { "^git@(.+):(.+)$",                    "https://%1/%2" },
+        { "^git@(.+)/(.+)$",                    "https://%1/%2" },
+        { "^org%-%d+@(.+):(.+)%.git$",          "https://%1/%2" },
+        { "^ssh://git@(.*)$",                   "https://%1" },
+        { "^ssh://([^:/]+)(:%d+)/(.*)$",        "https://%1/%3" },
+        { "^ssh://([^/]+)/(.*)$",               "https://%1/%2" },
         { "ssh%.dev%.azure%.com/v3/(.*)/(.*)$", "dev.azure.com/%1/_git/%2" },
-        { "^https://%w*@(.*)", "https://%1" },
-        { "^git@(.*)", "https://%1" },
-        { ":%d+", "" },
-        { "%.git$", "" },
+        { "^https://%w*@(.*)",                  "https://%1" },
+        { "^git@(.*)",                          "https://%1" },
+        { ":%d+",                               "" },
+        { "%.git$",                             "" },
       },
       url_patterns = {
         ["github%.com"] = {
@@ -519,9 +520,9 @@ return {
       enabled = true,
       indent = {
         priority = 1,
-        enabled = true, -- enable indent guides
+        enabled = true,       -- enable indent guides
         char = "│",
-        only_scope = false, -- only show indent guides of the scope
+        only_scope = false,   -- only show indent guides of the scope
         only_current = false, -- only show indent guides in the current window
         hl = "SnacksIndent", ---@type string|string[] hl groups for indent guides
         -- can be a list of hl groups to cycle through
@@ -550,7 +551,7 @@ return {
         style = "out",
         easing = "linear",
         duration = {
-          step = 20, -- ms per step
+          step = 20,   -- ms per step
           total = 500, -- maximum duration
         },
       },
@@ -559,7 +560,7 @@ return {
         enabled = true, -- enable highlighting the current scope
         priority = 200,
         char = "│",
-        underline = false, -- underline the start of the scope
+        underline = false,    -- underline the start of the scope
         only_current = false, -- only show scope in the current window
         hl = "SnacksIndentScope", ---@type string|string[] hl group for scopes
       },
@@ -642,7 +643,7 @@ return {
       height = { min = 1, max = 0.6 },
       -- editor margin to keep free. tabline and statusline are taken into account automatically
       margin = { top = 0, right = 1, bottom = 0 },
-      padding = true, -- add 1 cell of left/right padding to the notification window
+      padding = true,              -- add 1 cell of left/right padding to the notification window
       sort = { "level", "added" }, -- sort by level and time
       -- minimum log level to display. TRACE is the lowest
       -- all notifications are stored in history
@@ -659,7 +660,7 @@ return {
       end,
       ---@type snacks.notifier.style
       style = "compact",
-      top_down = false, -- place notifications from top to bottom
+      top_down = false,   -- place notifications from top to bottom
       date_format = "%R", -- time format for notifications
       -- format for footer when more lines are available
       -- `%d` is replaced with the number of lines.
@@ -682,16 +683,16 @@ return {
       },
       ---@class snacks.picker.matcher.Config
       matcher = {
-        fuzzy = true, -- use fuzzy matching
-        smartcase = true, -- use smartcase
-        ignorecase = true, -- use ignorecase
-        sort_empty = false, -- sort results when the search string is empty
+        fuzzy = true,          -- use fuzzy matching
+        smartcase = true,      -- use smartcase
+        ignorecase = true,     -- use ignorecase
+        sort_empty = false,    -- sort results when the search string is empty
         filename_bonus = true, -- give bonus for matching file names (last part of the path)
-        file_pos = true, -- support patterns like `file:line:col` and `file:line`
+        file_pos = true,       -- support patterns like `file:line:col` and `file:line`
         -- the bonusses below, possibly require string concatenation and path normalization,
         -- so this can have a performance impact for large lists and increase memory usage
-        cwd_bonus = false, -- give bonus for matching files in the cwd
-        frecency = false, -- frecency bonus
+        cwd_bonus = false,     -- give bonus for matching files in the cwd
+        frecency = false,      -- frecency bonus
         history_bonus = false, -- give more weight to chronological order
       },
       sort = {
@@ -706,14 +707,14 @@ return {
         },
         file = {
           filename_first = true, -- display filename before the file path
-          truncate = 40, -- truncate the file path to (roughly) this length
+          truncate = 40,         -- truncate the file path to (roughly) this length
           filename_only = false, -- only show the filename
-          icon_width = 2, -- width of the icon (in characters)
-          git_status_hl = true, -- use the git status highlight group for the filename
+          icon_width = 2,        -- width of the icon (in characters)
+          git_status_hl = true,  -- use the git status highlight group for the filename
         },
         selected = {
           show_always = false, -- only show the selected column when there are multiple selections
-          unselected = true, -- use the unselected icon for unselected items
+          unselected = true,   -- use the unselected icon for unselected items
         },
         severity = {
           icons = true, -- show severity icons
@@ -726,22 +727,22 @@ return {
       previewers = {
         git = {
           native = false, -- use native (terminal) or Neovim for previewing git diffs and commits
-          args = {}, -- additional arguments passed to the git command. Useful to set pager options usin `-c ...`
+          args = {},      -- additional arguments passed to the git command. Useful to set pager options usin `-c ...`
         },
         file = {
           max_size = 1024 * 1024, -- 1MB
-          max_line_length = 500, -- max line length
+          max_line_length = 500,  -- max line length
           ft = nil, ---@type string? filetype for highlighting. Use `nil` for auto detect
         },
         man_pager = nil, ---@type string? MANPAGER env to use for `man` preview
       },
       ---@class snacks.picker.jump.Config
       jump = {
-        jumplist = true, -- save the current position in the jumplist
-        tagstack = false, -- save the current position in the tagstack
+        jumplist = true,   -- save the current position in the jumplist
+        tagstack = false,  -- save the current position in the tagstack
         reuse_win = false, -- reuse an existing window if the buffer is already open
-        close = true, -- close the picker when jumping/editing to a location (defaults to true)
-        match = false, -- jump to the first match position. (useful for `lines`)
+        close = true,      -- close the picker when jumping/editing to a location (defaults to true)
+        match = false,     -- jump to the first match position. (useful for `lines`)
       },
       toggles = {
         follow = "f",
@@ -965,12 +966,12 @@ return {
       },
       ---@class snacks.picker.debug
       debug = {
-        scores = false, -- show scores in the list
-        leaks = false, -- show when pickers don't get garbage collected
+        scores = false,   -- show scores in the list
+        leaks = false,    -- show when pickers don't get garbage collected
         explorer = false, -- show explorer debug info
-        files = false, -- show file debug info
-        grep = false, -- show file debug info
-        proc = false, -- show proc debug info
+        files = false,    -- show file debug info
+        grep = false,     -- show file debug info
+        proc = false,     -- show proc debug info
         extmarks = false, -- show extmarks errors
       },
     },
@@ -986,11 +987,11 @@ return {
       },
       on_stop = {
         highlights = true, -- highlight entries after stopping the profiler
-        pick = true, -- show a picker after stopping the profiler (uses the `on_stop` preset)
+        pick = true,       -- show a picker after stopping the profiler (uses the `on_stop` preset)
       },
       ---@type snacks.profiler.Highlights
       highlights = {
-        min_time = 0, -- only highlight entries with time > min_time (in ms)
+        min_time = 0,   -- only highlight entries with time > min_time (in ms)
         max_shade = 20, -- time in ms for the darkest shade
         badges = { "time", "pct", "count", "trace" },
         align = 80,
@@ -1007,9 +1008,9 @@ return {
       },
       startup = {
         event = "VimEnter", -- stop profiler on this event. Defaults to `VimEnter`
-        after = true, -- stop the profiler **after** the event. When false it stops **at** the event
-        pattern = nil, -- pattern to match for the autocmd
-        pick = true, -- show a picker after starting the profiler (uses the `startup` preset)
+        after = true,       -- stop the profiler **after** the event. When false it stops **at** the event
+        pattern = nil,      -- pattern to match for the autocmd
+        pick = true,        -- show a picker after starting the profiler (uses the `startup` preset)
       },
       ---@type table<string, snacks.profiler.Pick|fun():snacks.profiler.Pick?>
       presets = {
@@ -1069,8 +1070,8 @@ return {
       left = { "mark", "sign" }, -- priority of signs on the left (high to low)
       right = { "fold", "git" }, -- priority of signs on the right (high to low)
       folds = {
-        open = false, -- show open fold icons
-        git_hl = false, -- use Git Signs hl for fold icons
+        open = false,            -- show open fold icons
+        git_hl = false,          -- use Git Signs hl for fold icons
       },
       git = {
         -- patterns to match Git signs
@@ -1085,8 +1086,8 @@ return {
     toggle = {
       enabled = true,
       map = vim.keymap.set, -- keymap.set function to use
-      which_key = true, -- integrate with which-key to show enabled/disabled icons and colors
-      notify = true, -- show a notification when toggling
+      which_key = true,     -- integrate with which-key to show enabled/disabled icons and colors
+      notify = true,        -- show a notification when toggling
       -- icons for enabled/disabled states
       icon = {
         enabled = " ",
@@ -1118,11 +1119,11 @@ return {
     },
     words = {
       enabled = true,
-      debounce = 200, -- time in ms to wait before updating
-      notify_jump = false, -- show a notification when jumping
-      notify_end = true, -- show a notification when reaching the end
-      foldopen = true, -- open folds after jumping
-      jumplist = true, -- set jump point before jumping
+      debounce = 200,            -- time in ms to wait before updating
+      notify_jump = false,       -- show a notification when jumping
+      notify_end = true,         -- show a notification when reaching the end
+      foldopen = true,           -- open folds after jumping
+      jumplist = true,           -- set jump point before jumping
       modes = { "n", "i", "c" }, -- modes to show references
     },
     zen = {
@@ -1673,8 +1674,8 @@ return {
         Snacks.toggle.diagnostics():map("<leader>ud")
         Snacks.toggle.line_number():map("<leader>ul")
         Snacks.toggle
-          .option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 })
-          :map("<leader>uc")
+            .option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 })
+            :map("<leader>uc")
         Snacks.toggle.treesitter():map("<leader>uT")
         Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Background" }):map("<leader>ub")
         Snacks.toggle.inlay_hints():map("<leader>uh")
