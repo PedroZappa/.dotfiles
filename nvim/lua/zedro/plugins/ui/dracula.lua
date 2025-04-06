@@ -102,6 +102,9 @@ return {
         AvanteSidebarWinSeparator = { fg = "#8426ff", bg = "#000000" },
         NotifyINFOBorder = { fg = "#e8eb34" },
         LspSagaBorderTitle = { fg = "#e8eb34" },
+        lualine_a_insert = { bg = "#34eb43" },
+        lualine_a_normal = { bg = "#8426ff" },
+        -- lualine_a_visual = { bg = "#000000" },
       },
 
       -- You can use overrides as table like this
