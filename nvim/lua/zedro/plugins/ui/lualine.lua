@@ -6,11 +6,11 @@ return {
     local lazy_status = require("lazy.status") -- to configure lazy pending updates count
     local virtual_env = function()
       -- only show virtual env for Python
-      if vim.bo.filetype ~= 'python' then
+      if vim.bo.filetype ~= "python" then
         return ""
       end
-      local conda_env = os.getenv('CONDA_DEFAULT_ENV')
-      local venv_path = os.getenv('VIRTUAL_ENV')
+      local conda_env = os.getenv("CONDA_DEFAULT_ENV")
+      local venv_path = os.getenv("VIRTUAL_ENV")
       if venv_path == nil then
         if conda_env == nil then
           return ""
@@ -18,7 +18,7 @@ return {
           return string.format("%s (conda)", conda_env)
         end
       else
-        local venv_name = vim.fn.fnamemodify(venv_path, ':t')
+        local venv_name = vim.fn.fnamemodify(venv_path, ":t")
         return string.format("%s (venv)", venv_name)
       end
     end
@@ -26,8 +26,8 @@ return {
     -- New Nix shell function
     local nix_shell = function()
       -- Check if we're in a Nix shell by looking for NIX_PATH or IN_NIX_SHELL env vars
-      if os.getenv('IN_NIX_SHELL') then
-        local shell_name = os.getenv('name') or 'nix'
+      if os.getenv("IN_NIX_SHELL") then
+        local shell_name = os.getenv("name") or "nix"
         return string.format("❄ %s", shell_name) -- Using snowflake emoji for Nix
       end
       return ""
@@ -66,13 +66,44 @@ return {
       end,
     }
 
+    -- stylua: ignore
+    local colors = {
+      blue   = '#80a0ff',
+      cyan   = '#79dac8',
+      black  = '#080808',
+      white  = '#c6c6c6',
+      red    = '#ff5189',
+      violet = '#d183e8',
+      grey   = '#303030',
+    }
+
+    local bubbles_theme = {
+      normal = {
+        a = { fg = colors.black, bg = colors.violet },
+        b = { fg = colors.white, bg = colors.grey },
+        c = { fg = colors.white },
+      },
+
+      insert = { a = { fg = colors.black, bg = colors.blue } },
+      visual = { a = { fg = colors.black, bg = colors.cyan } },
+      replace = { a = { fg = colors.black, bg = colors.red } },
+
+      inactive = {
+        a = { fg = colors.white, bg = colors.black },
+        b = { fg = colors.white, bg = colors.black },
+        c = { fg = colors.white },
+      },
+    }
+
     lualine.setup({
       options = {
-        theme = 'dracula',
-        component_separators = { left = '', right = '' },
+        theme = bubbles_theme,
+        -- component_separators = { left = "", right = "" },
         -- component_separators = { left = '⵰', right = '⵰' },
-        section_separators = { left = '', right = '' },
+        component_separators = { left = "", right = "" },
+        -- section_separators = { left = "", right = "" },
         -- section_separators = { left = '', right = '' },
+        section_separators = { left = "", right = "" },
         disabled_filetypes = {
           statusline = {},
           winbar = {},
@@ -84,14 +115,14 @@ return {
           statusline = 1000,
           tabline = 1000,
           winbar = 1000,
-        }
+        },
       },
       sections = {
         -- Left side
         lualine_a = {
-          { 'mode' },
+          { "mode" },
         },
-        lualine_b = { 'branch', 'diff', 'diagnostics' },
+        lualine_b = { "branch", "diff", "diagnostics" },
         lualine_c = {
           {
             require("noice").api.statusline.mode.get,
@@ -99,7 +130,7 @@ return {
             color = { fg = "#ff9e64" },
           },
           { virtual_env, color = { fg = "#e8eb34" } },
-          { nix_shell, color = { fg = "#7ab0df" } },
+          { nix_shell,   color = { fg = "#7ab0df" } },
           ollama_component,
         },
         -- Right side
@@ -113,32 +144,31 @@ return {
           { "fileformat" },
           { "filetype" },
         },
-        lualine_y = { 'progress' },
-        lualine_z = { 'location' },
+        lualine_y = { "progress" },
+        lualine_z = { "location" },
       },
       inactive_sections = {
         lualine_a = {},
-        lualine_b = { 'branch' },
+        lualine_b = { "branch" },
         lualine_c = {
           {
-            'filename',
+            "filename",
             path = 1, -- 0: Just the filename
             color = { fg = "#111111" },
           },
         },
         lualine_x = {
           {
-            'location',
+            "location",
             color = { fg = "#111111" },
-          }
+          },
         },
         lualine_y = {},
-        lualine_z = {}
+        lualine_z = {},
       },
       tabline = {},
       inactive_winbar = {},
-      extensions = {}
-
+      extensions = {},
     })
   end,
 }
