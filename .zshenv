@@ -74,7 +74,7 @@ export HISTCONTROL=ignorespace
 ### Clean up ~/ ###
 ###################
 
-export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
+#export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority"
 
 ########################################
 # Load Version Manager (for Node.js) ###
