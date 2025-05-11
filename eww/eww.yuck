@@ -2,15 +2,9 @@
 ;; Time
 (defpoll clock_time :interval "1s" "date '+%H:%M:%S'")
 (defpoll clock_date :interval "1h" "date '+%b %d, %Y'")
-;; Hardware
-(defpoll monitors :interval "1m" "hyprctl monitors -j | jq -rc '[ .[].id ] | sort_by( . )'")
-(defpoll brightness_percent :interval "5s" "light")
 ;; Network
 (defpoll ESSID_WLAN :interval "1m" "scripts/wifi.sh --ESSID")
 (defpoll WLAN_ICON :interval "1m" "scripts/wifi.sh --ICON")
-
-(defvar wifi_rev false)
-(defvar time_rev false)
 
 ;; Widgets
 ;; Clock widget
@@ -21,8 +15,10 @@
   (label :text "${clock_date}" :class "date-label"))
 ;; WIFI widget
 (defwidget wifi []
-  (label :text "${ESSID_WLAN}  ${WLAN_ICON}" :class "date-label"))
-        
+  (label 
+    :text "${WLAN_ICON}" 
+    :class "sidebar"
+    :tooltip "${ESSID_WLAN}"))
  
 ;; Time
 (defwindow time-win0
@@ -32,7 +28,7 @@
              :y "50%"
              :anchor "center"
              :width "200px"
-             :height "100px")
+             :height "0px")
   
   :stacking "bg"
   :focusable false
@@ -47,7 +43,7 @@
              :y "50%"
              :anchor "center"
              :width "200px"
-             :height "100px")
+             :height "0px")
   
   :stacking "bg"
   :focusable false
@@ -61,13 +57,13 @@
   :monitor 1
   :geometry (geometry
              :x "0%"
-             :y "0%"
-             :anchor "center right"
-             :width "200px"
-             :height "100%")
+             :y "1%"
+             :anchor "bottom right"
+             :width "50px"
+             :height "0px")
   
   :stacking "bg"
   :focusable false
   (box :orientation "v"  ;; Horizontal container
-    :space-evenly true
+    :space-evenly false
     (wifi)))
