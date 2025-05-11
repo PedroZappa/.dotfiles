@@ -17,6 +17,9 @@
 ;; Date widget
 (defwidget date []
   (label :text "${clock_date}" :class "date-label"))
+;; WIFI widget
+(defwidget wifi []
+  (label :text "${COL_WLAN} ${ESSID_WLAN} ${WLAN_ICON}" :class "wifi-label"))
   
 ;; Windows
 ;; Time
@@ -52,16 +55,19 @@
     (date)))
 
 ;; Wifi
-;; (defwindow wifi-win
-;;   :monitor 0
-;;
-;;   :geometry (geometry
-;;              :x "50%"
-;;              :y "50%"
-;;              :anchor "center"
-;;              :width "200px"
-;;              :height "100px")
-;;   
-;;   :stacking "bg"
-;;   :focusable false)
+(defwindow wifi-win
+  :monitor 1
+
+  :geometry (geometry
+             ;; :x "10%"
+             ;; :y "50%"
+             :anchor "right center"
+             :width "200px"
+             :height "100px")
+  
+  :stacking "bg"
+  :focusable false
+  (box :orientation "h"  ;; Horizontal container
+    :space-evenly true
+    (wifi)))
              
