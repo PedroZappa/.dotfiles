@@ -6,9 +6,11 @@
 (defpoll monitors :interval "1m" "hyprctl monitors -j | jq -rc '[ .[].id ] | sort_by( . )'")
 (defpoll brightness_percent :interval "5s" "light")
 ;; Network
-(defpoll COL_WLAN :interval "1m" "scripts/wifi --COL")
-(defpoll ESSID_WLAN :interval "1m" "scripts/wifi --ESSID")
-(defpoll WLAN_ICON :interval "1m" "scripts/wifi --ICON")
+(defpoll ESSID_WLAN :interval "1m" "scripts/wifi.sh --ESSID")
+(defpoll WLAN_ICON :interval "1m" "scripts/wifi.sh --ICON")
+
+(defvar wifi_rev false)
+(defvar time_rev false)
 
 ;; Widgets
 ;; Clock widget
@@ -19,9 +21,9 @@
   (label :text "${clock_date}" :class "date-label"))
 ;; WIFI widget
 (defwidget wifi []
-  (label :text "${COL_WLAN} ${ESSID_WLAN} ${WLAN_ICON}" :class "wifi-label"))
-  
-;; Windows
+  (label :text "${ESSID_WLAN}  ${WLAN_ICON}" :class "date-label"))
+        
+ 
 ;; Time
 (defwindow time-win0
   :monitor 0
@@ -55,19 +57,17 @@
     (date)))
 
 ;; Wifi
-(defwindow wifi-win
+(defwindow sidebar1
   :monitor 1
-
   :geometry (geometry
-             ;; :x "10%"
-             ;; :y "50%"
-             :anchor "right center"
+             :x "0%"
+             :y "0%"
+             :anchor "center right"
              :width "200px"
-             :height "100px")
+             :height "100%")
   
   :stacking "bg"
   :focusable false
-  (box :orientation "h"  ;; Horizontal container
+  (box :orientation "v"  ;; Horizontal container
     :space-evenly true
     (wifi)))
-             
