@@ -5,6 +5,6 @@ window {
 
 /* Set transparency for GTK menus, if needed */
 * {
-    background-color: rgba(0, 0, 0, 0.5) !important;  /* Semi-transparent background */
+    background-color: rgba(0, 0, 0, 0.0) !important;  /* Semi-transparent background */
 }
 

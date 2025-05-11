@@ -3,11 +3,12 @@ return {
   dependencies = {
     -- "nvim-treesitter/nvim-treesitter-textobjects",
     "nvim-treesitter/nvim-treesitter-context",
-    -- "nvim-treesitter/nvim-treesitter-refactor", -- Provides "got to def" capabilities 
+    -- "nvim-treesitter/nvim-treesitter-refactor", -- Provides "got to def" capabilities
     { "nushell/tree-sitter-nu", build = ":TSUpdate nu" },
+    "OXY2DEV/markview.nvim",
   },
   build = ":TSUpdate",
-  config = function ()
+  config = function()
     require("nvim-treesitter.configs").setup({
       ensure_installed = {
         "nix",
@@ -22,7 +23,7 @@ return {
         "html",
         "markdown",
         "make",
-        "http"
+        "http",
       },
       sync_install = false,
       -- Automatically install missing parsers when entering buffer
@@ -33,10 +34,10 @@ return {
       incremental_selection = {
         enable = true,
         keymaps = {
-          init_selection = '<C-space>',
-          node_incremental = '<C-space>',
-          scope_incremental = '<C-s>',
-          node_decremental = '<C-x>',
+          init_selection = "<C-space>",
+          node_incremental = "<C-space>",
+          scope_incremental = "<C-s>",
+          node_decremental = "<C-x>",
         },
       },
       -- https://github.com/nvim-treesitter/nvim-treesitter-textobjects
@@ -95,46 +96,46 @@ return {
           ["]z"] = { query = "@fold", query_group = "folds", desc = "Next fold" },
         },
         goto_next_end = {
-          [']M'] = '@function.outer',
-          [']['] = '@class.outer',
+          ["]M"] = "@function.outer",
+          ["]["] = "@class.outer",
         },
         goto_previous_start = {
-          ['[m'] = '@function.outer',
-          ['[['] = '@class.outer',
+          ["[m"] = "@function.outer",
+          ["[["] = "@class.outer",
         },
         goto_previous_end = {
-          ['[M'] = '@function.outer',
-          ['[]'] = '@class.outer',
+          ["[M"] = "@function.outer",
+          ["[]"] = "@class.outer",
         },
       },
       swap = {
         enable = true,
         swap_next = {
-          ['<leader>a'] = '@parameter.inner',
+          ["<leader>a"] = "@parameter.inner",
         },
         swap_previous = {
-          ['<leader>A'] = '@parameter.inner',
+          ["<leader>A"] = "@parameter.inner",
         },
       },
     })
 
     -- https://github.com/nvim-treesitter/nvim-treesitter-context
-    require("treesitter-context").setup {
-      enable = true,            -- Enable this plugin (Can be enabled/disabled later via commands)
-      max_lines = 0,            -- How many lines the window should span. Values <= 0 mean no limit.
-      min_window_height = 0,    -- Minimum editor window height to enable context. Values <= 0 mean no limit.
+    require("treesitter-context").setup({
+      enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
+      max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
+      min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
       line_numbers = true,
       multiline_threshold = 20, -- Maximum number of lines to show for a single context
-      trim_scope = 'outer',     -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
-      mode = 'cursor',          -- Line used to calculate context. Choices: 'cursor', 'topline'
+      trim_scope = "outer", -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
+      mode = "cursor", -- Line used to calculate context. Choices: 'cursor', 'topline'
       -- Separator between context and content. Should be a single character string, like '-'.
       -- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
       separator = nil,
-      zindex = 20,     -- The Z-index of the context window
+      zindex = 20, -- The Z-index of the context window
       on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
-    }
+    })
     -- Jump to context
-    vim.keymap.set("n", "[c", function ()
+    vim.keymap.set("n", "[c", function()
       require("treesitter-context").go_to_context(vim.v.count1)
     end, { silent = true })
   end,
