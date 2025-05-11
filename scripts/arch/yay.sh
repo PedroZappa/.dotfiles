@@ -154,6 +154,7 @@ packages=(
     "hyprlock"
     "hypridle"
     "hyprpaper"
+    "hyprpicker-git" # Color Picker
     "hyprshot" # Scheenshort Manager
     "fuzzel" # App Launcher
     "clipse" # clipboard Manager
