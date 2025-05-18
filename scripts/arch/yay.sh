@@ -127,6 +127,7 @@ packages=(
     "nvidia-container-toolkit"
     # Web
     "google-chrome"
+    "chromium"
     "nodejs"
     "npm"
     "yarn"
