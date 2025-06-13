@@ -26,11 +26,17 @@ indent_size = 2
 tab_width = 2
 continuation_indent = 2
 
-[*.{py,go}]
+[*.{go}]
 indent_style = space
 indent_size = 2
 tab_width = 2
 continuation_indent = 2
+
+[*.{py}]
+indent_style = space
+indent_size = 4
+tab_width = 4
+continuation_indent = 4
 
 ################################################################################
 ################################################################################
