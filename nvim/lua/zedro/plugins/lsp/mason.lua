@@ -62,7 +62,7 @@ return {
         "prettier",  -- prettier formatter
         "stylua",    -- lua formatter
         -- "eslint_d", -- js linter
-        "ruff",      -- python formatter
+        "black",      -- python formatter
         -- "isort",    -- python import sorter
         "debugpy",   -- python debugger
         -- Writting
@@ -79,6 +79,7 @@ return {
         -- "nil", -- nix
         "jsonls",                    -- json
         "html",                      -- html
+        "typescript-language-server", -- Typescript
         "pyright",                   -- python
         "hyprls",                    -- Hyprland
       },

@@ -1,65 +1,133 @@
 local M = {}
 
-function M.commit()
+-- Configuration
+M.config = {
+  model = "qwen3:14b",
+  prompt = "write a standard commit message",
+  split_height = 100,
+  split_width = 25,
+  split_dir = "vertical", -- or "horizontal"
+  timeout = 30000, -- 30 seconds timeout
+}
+
+-- Helper function to check if we're in a git repository
+local function is_git_repo()
+  local git_dir = vim.fn.finddir(".git", ".;")
+  return git_dir ~= ""
+end
+
+-- Helper function to check if ollama is available
+local function is_ollama_available()
+  local handle = io.popen("which ollama 2>/dev/null")
+  local result = handle:read("*a")
+  handle:close()
+  return result ~= ""
+end
+
+-- Helper function to escape shell arguments
+local function escape_shell_arg(arg)
+  return "'" .. arg:gsub("'", "'\"'\"'") .. "'"
+end
+
+-- Build the ollama command with proper string formatting
+local function build_ollama_command(model, prompt)
+  local escaped_prompt = escape_shell_arg(prompt)
+  return string.format("cat .git/COMMIT_EDITMSG | ollama run %s %s", model, escaped_prompt)
+end
+
+--
+-- Main commit function
+--
+function M.commit(opts)
+  opts = opts or {}
+
+  -- Merge user options with defaults
+  local config = vim.tbl_deep_extend("force", M.config, opts)
+
+  -- Validate environment
+  if not is_git_repo() then
+    vim.notify("Error: Not in a git repository", vim.log.levels.ERROR)
+    return false
+  end
+
+  if not is_ollama_available() then
+    vim.notify("Error: Ollama is not available in PATH", vim.log.levels.ERROR)
+    return false
+  end
+
+  -- Check if there are changes to commit
+  local status_output = vim.fn.system("git status --porcelain")
+  if status_output == "" then
+    vim.notify("No changes to commit", vim.log.levels.WARN)
+    return false
+  end
+
   -- Stage all changes
-  vim.cmd("Git add .")
+  local add_result = vim.fn.system("git add .")
+  if vim.v.shell_error ~= 0 then
+    vim.notify("Error staging changes: " .. add_result, vim.log.levels.ERROR)
+    return false
+  end
 
-  -- Open verbose commit buffer (this opens the diff buffer)
-  vim.cmd("Git commit --verbose")
+  -- Create horizontal split with specified height
+  vim.cmd(string.format("belowright %dvsplit | terminal", config.split_height))
 
-  -- Wait briefly for the buffer to load
+  -- Get the terminal buffer and job id
+  local buf = vim.api.nvim_get_current_buf()
+  local job_id = vim.b[buf].terminal_job_id
+
+  if not job_id then
+    vim.notify("Error: Failed to get terminal job ID", vim.log.levels.ERROR)
+    return false
+  end
+
+  -- Prepare commands
+  local enter = vim.api.nvim_replace_termcodes("<CR>", true, true, true)
+  local commands = {
+    "clear",
+    string.format('echo "Generating commit message with %s..."', config.model),
+    build_ollama_command(config.model, config.prompt),
+  }
+
+  -- Execute commands in terminal
   vim.defer_fn(function()
-    -- Get current buffer content (diff) to provide context
-    local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-    local diff_content = {}
-    for _, line in ipairs(lines) do
-      if line:sub(1, 1) ~= "#" then
-        table.insert(diff_content, line)
-      end
+    for _, cmd in ipairs(commands) do
+      vim.fn.chansend(job_id, cmd .. "\n")
+      vim.defer_fn(function() end, 100) -- Small delay between commands
     end
-    diff_content = table.concat(diff_content, "\n")
+  end, 100)
 
-    -- Define a direct and unambiguous prompt
+  -- Enter terminal mode
+  vim.cmd("startinsert")
 
-    local commit_prompt = [[
-GENERATE A COMPLETE GIT COMMIT MESSAGE BASED ON THIS DIFF, COMMIT & PUSH:
+  vim.notify("Commit message generation started...", vim.log.levels.INFO)
+  return true
+end
 
-]] .. diff_content .. [[
+-- Setup function to configure the module
+function M.setup(user_config)
+  M.config = vim.tbl_deep_extend("force", M.config, user_config or {})
+end
 
-IMPORTANT: DO NOT explain how to write commit messages. DO NOT provide instructions or explanations.
-JUST WRITE THE ACTUAL COMMIT MESSAGE FOLLOWING THIS FORMAT:
+-- Convenience function with different models
+function M.commit_with_model(model, prompt)
+  return M.commit({
+    model = model,
+    prompt = prompt or M.config.prompt,
+  })
+end
 
-type(scope): subject
+-- Quick commit with different prompts
+function M.quick_commit()
+  return M.commit({
+    prompt = "write a short, concise commit message",
+  })
+end
 
-body explaining what and why (not how)
-
-Any footer references
-
-EXAMPLES OF GOOD RESPONSES:
-"feat(auth): add JWT authentication
-
-Implement secure token-based authentication to replace session cookies.
-This improves security and enables better scaling across services.
-
-Closes #123"
-
-OR
-
-"fix(ui): resolve button alignment in mobile view
-
-Buttons were misaligned on screens smaller than 768px due to
-conflicting flex properties.
-
-Fixes #456"
-]]
-    -- Escape single quotes in the prompt string
-    local escaped_prompt = commit_prompt:gsub("'", "\\'")
-    local one_line_prompt = escaped_prompt:gsub("\n", " "):gsub("%s+", " "):gsub("^%s*(.-)%s*$", "%1")
-    -- Pass the complete prompt safely escaped
-    vim.schedule(function()
-      vim.cmd("AvanteAsk " .. vim.fn.shellescape(one_line_prompt))
-    end)
-  end, 100) -- Small delay to ensure buffer is loaded
+function M.detailed_commit()
+  return M.commit({
+    prompt = "write a detailed commit message with explanation of changes",
+  })
 end
 
 return M

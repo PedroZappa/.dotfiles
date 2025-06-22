@@ -1,11 +1,14 @@
 -- Get the hostname to determine which machine you're on
 local hostname = vim.fn.hostname()
 
+local qwen = "qwen3:8b"
 local model = "deepseek-r1:14b" -- default model
 if hostname == "zarch" then
-  model = "deepseek-r1:14b"
+  model = qwen
+  -- model = "deepseek-r1:14b"
 elseif hostname == "ZeeMac.local" then
-  model = "qwen3:14b"
+  -- model = "deepseek-r1:14b"
+  model = qwen
 end
 
 return {
