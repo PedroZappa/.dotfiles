@@ -1,6 +1,7 @@
 return {
   "monkoose/neocodeium",
-  event = { "BufReadPre", "BufNewFile" },
+  event = "VeryLazy",
+  -- event = { "BufReadPre", "BufNewFile" },
   config = function()
     local neocodeium = require("neocodeium")
     local blink = require("blink.cmp")

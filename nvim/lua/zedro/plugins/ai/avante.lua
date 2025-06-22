@@ -5,18 +5,12 @@ return {
     lazy = false,
     version = false, -- set this if you want to always pull the latest change
     opts = {
-      provider = "copilot",
-      vendors = {
-        -- perplexity = {
-        --   __inherited_from = "openai",
-        --   api_key_name = "PERPLEXITY_API_KEY",
-        --   endpoint = "https://api.perplexity.ai",
-        --   model = 'sonar-reasoning-pro',
-        -- },
-        -- ollama = {
-        --   __inherited_from = "openai",
-        --   model = "deepseek-r1:14b"
-        -- },
+      provider = "ollama",
+      providers = {
+        ollama = {
+          endpoint = "http://localhost:11434",
+          model = "qwq:32b",
+        },
       },
       behaviour = {
         auto_suggestions = false, -- Experimental stage
@@ -24,8 +18,12 @@ return {
         auto_set_keymaps = true,
         auto_apply_diff_after_generation = false,
         support_paste_from_clipboard = false,
-        minimize_diff = true,         -- Whether to remove unchanged lines when applying a code block
-        enable_token_counting = true, -- Whether to enable token counting. Default to true.
+        minimize_diff = true,                  -- Whether to remove unchanged lines when applying a code block
+        enable_token_counting = true,          -- Whether to enable token counting. Default to true.
+        auto_approve_tool_permissions = false, -- Default: show permission prompts for all tools
+        -- Examples:
+        -- auto_approve_tool_permissions = true,                -- Auto-approve all tools (no prompts)
+        -- auto_approve_tool_permissions = {"bash", "replace_in_file"}, -- Auto-approve specific tools only
       },
       mappings = {
         --- @class AvanteConflictMappings
