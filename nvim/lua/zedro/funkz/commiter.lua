@@ -3,7 +3,7 @@ local M = {}
 -- Configuration
 M.config = {
   model = "qwen3:14b",
-  prompt = "write a standard commit message",
+  prompt = "GENERATE A COMPLETE CONCISE GIT COMMIT MESSAGE BASED ON THIS DIFF",
   split_height = 100,
   split_width = 25,
   split_dir = "vertical", -- or "horizontal"
@@ -69,8 +69,12 @@ function M.commit(opts)
     return false
   end
 
+  -- vim.cmd("Git commit --verbose")
+  vim.cmd(string.format("belowright %dvsplit | Git commit --verbose", config.split_height))
+
+
   -- Create horizontal split with specified height
-  vim.cmd(string.format("belowright %dvsplit | terminal", config.split_height))
+  vim.cmd(string.format("belowright %dsplit | terminal", config.split_height))
 
   -- Get the terminal buffer and job id
   local buf = vim.api.nvim_get_current_buf()
@@ -85,7 +89,6 @@ function M.commit(opts)
   local enter = vim.api.nvim_replace_termcodes("<CR>", true, true, true)
   local commands = {
     "clear",
-    string.format('echo "Generating commit message with %s..."', config.model),
     build_ollama_command(config.model, config.prompt),
   }
 
