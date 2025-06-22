@@ -1,3 +1,13 @@
+-- Get the hostname to determine which machine you're on
+local hostname = vim.fn.hostname()
+
+local model = "deepseek-r1:14b" -- default model
+if hostname == "zarch" then
+  model = "deepseek-r1:14b"
+elseif hostname == "ZeeMac.local" then
+  model = "qwen3:14b"
+end
+
 return {
   {
     "yetone/avante.nvim",
@@ -9,7 +19,7 @@ return {
       providers = {
         ollama = {
           endpoint = "http://localhost:11434",
-          model = "qwq:32b",
+          model = model,
         },
       },
       behaviour = {

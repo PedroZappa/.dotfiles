@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Simple Stopwatch Script
 # Press Ctrl+C to stop the timer.
+#
 
 # Load Colors
 if [ -d ~/.dotfiles ]; then
