@@ -5,15 +5,41 @@ M.config = {
   model = "qwen3:14b",
   prompt = "GENERATE A COMPLETE CONCISE GIT COMMIT MESSAGE BASED ON THIS DIFF",
   split_height = 100,
-  split_width = 25,
-  split_dir = "vertical", -- or "horizontal"
-  timeout = 30000, -- 30 seconds timeout
+  split_width = 66,
+  split_dir = "vertical",
+  timeout = 30000,
 }
+
+-- Helper function to get git repository root
+local function get_git_root()
+  local handle = io.popen("git rev-parse --show-toplevel 2>/dev/null")
+  if not handle then
+    return nil
+  end
+  
+  local result = handle:read("*a")
+  handle:close()
+  
+  if result and result:match("^/") then
+    return result:gsub("\n$", "")
+  end
+  
+  return nil
+end
 
 -- Helper function to check if we're in a git repository
 local function is_git_repo()
-  local git_dir = vim.fn.finddir(".git", ".;")
-  return git_dir ~= ""
+  return get_git_root() ~= nil
+end
+
+-- Helper function to change to git root directory
+local function change_to_git_root()
+  local git_root = get_git_root()
+  if git_root then
+    vim.cmd("cd " .. vim.fn.fnameescape(git_root))
+    return true
+  end
+  return false
 end
 
 -- Helper function to check if ollama is available
@@ -35,13 +61,9 @@ local function build_ollama_command(model, prompt)
   return string.format("cat .git/COMMIT_EDITMSG | ollama run %s %s", model, escaped_prompt)
 end
 
---
 -- Main commit function
---
 function M.commit(opts)
   opts = opts or {}
-
-  -- Merge user options with defaults
   local config = vim.tbl_deep_extend("force", M.config, opts)
 
   -- Validate environment
@@ -55,10 +77,18 @@ function M.commit(opts)
     return false
   end
 
+  -- Store current directory and change to git root
+  local original_cwd = vim.fn.getcwd()
+  if not change_to_git_root() then
+    vim.notify("Error: Could not change to git repository root", vim.log.levels.ERROR)
+    return false
+  end
+
   -- Check if there are changes to commit
   local status_output = vim.fn.system("git status --porcelain")
   if status_output == "" then
     vim.notify("No changes to commit", vim.log.levels.WARN)
+    vim.cmd("cd " .. vim.fn.fnameescape(original_cwd)) -- Restore directory
     return false
   end
 
@@ -66,17 +96,17 @@ function M.commit(opts)
   local add_result = vim.fn.system("git add .")
   if vim.v.shell_error ~= 0 then
     vim.notify("Error staging changes: " .. add_result, vim.log.levels.ERROR)
+    vim.cmd("cd " .. vim.fn.fnameescape(original_cwd)) -- Restore directory
     return false
   end
 
-  -- vim.cmd("Git commit --verbose")
-  vim.cmd(string.format("belowright %dvsplit | Git commit --verbose", config.split_height))
+  -- Open git commit in split
+  vim.cmd(string.format("belowright %dvsplit | Git commit --verbose", config.split_width))
 
-
-  -- Create horizontal split with specified height
+  -- Create terminal split
   vim.cmd(string.format("belowright %dsplit | terminal", config.split_height))
 
-  -- Get the terminal buffer and job id
+  -- Get terminal info
   local buf = vim.api.nvim_get_current_buf()
   local job_id = vim.b[buf].terminal_job_id
 
@@ -85,34 +115,29 @@ function M.commit(opts)
     return false
   end
 
-  -- Prepare commands
-  local enter = vim.api.nvim_replace_termcodes("<CR>", true, true, true)
+  -- Execute commands in terminal
   local commands = {
     "clear",
     build_ollama_command(config.model, config.prompt),
   }
 
-  -- Execute commands in terminal
   vim.defer_fn(function()
     for _, cmd in ipairs(commands) do
       vim.fn.chansend(job_id, cmd .. "\n")
-      vim.defer_fn(function() end, 100) -- Small delay between commands
+      vim.defer_fn(function() end, 100)
     end
   end, 100)
 
-  -- Enter terminal mode
   vim.cmd("startinsert")
-
   vim.notify("Commit message generation started...", vim.log.levels.INFO)
   return true
 end
 
--- Setup function to configure the module
+-- Rest of your functions remain the same...
 function M.setup(user_config)
   M.config = vim.tbl_deep_extend("force", M.config, user_config or {})
 end
 
--- Convenience function with different models
 function M.commit_with_model(model, prompt)
   return M.commit({
     model = model,
@@ -120,7 +145,6 @@ function M.commit_with_model(model, prompt)
   })
 end
 
--- Quick commit with different prompts
 function M.quick_commit()
   return M.commit({
     prompt = "write a short, concise commit message",
