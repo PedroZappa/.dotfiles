@@ -5,7 +5,7 @@ M.config = {
   model = "qwen3:14b",
   prompt = "GENERATE A COMPLETE CONCISE GIT COMMIT MESSAGE BASED ON THIS DIFF",
   split_height = 100,
-  split_width = 66,
+  split_width = 77,
   split_dir = "vertical",
   timeout = 30000,
 }
