@@ -1,4 +1,4 @@
- ###############
+###############
  ### General ###
  ###############
  
@@ -240,3 +240,5 @@ fi
 
 # Load .env
 source ~/.dotfiles/.env
+
+fpath+=~/.zfunc; autoload -Uz compinit; compinit

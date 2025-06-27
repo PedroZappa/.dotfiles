@@ -3,7 +3,7 @@ local M = {}
 -- Configuration
 M.config = {
   model = "qwen3:14b",
-  prompt = "GENERATE A COMPLETE CONCISE GIT COMMIT MESSAGE BASED ON THIS DIFF",
+  prompt = "GENERATE A COMPLETE GIT COMMIT MESSAGE BASED ON THIS DIFF",
   split_height = 100,
   split_width = 77,
   split_dir = "vertical",
@@ -60,6 +60,7 @@ local function build_ollama_command(model, prompt)
   local escaped_prompt = escape_shell_arg(prompt)
   return string.format("cat .git/COMMIT_EDITMSG | ollama run %s %s", model, escaped_prompt)
 end
+
 
 -- Main commit function
 function M.commit(opts)
