@@ -334,6 +334,7 @@ return {
           },
           { icon = "󰒲 ", key = "l", desc = "Get Lazy", action = ":Lazy", enabled = package.loaded.lazy ~= nil },
           { icon = " ", key = "m", desc = "Get Mason", action = ":Mason", enabled = package.loaded.lazy ~= nil },
+          { icon = " ", key = "a", desc = "Get MCP-Hub", action = ":MCPHub", enabled = package.loaded.lazy ~= nil },
           { icon = " ", key = "q", desc = "Quit", action = ":qa" },
         },
         -- Used by the `header` section

@@ -128,6 +128,7 @@ alias ccw='cc -Wall -Wextra -Werror -g'
 alias v='nvim'
 alias sv='sudo -E nvim'
 alias vc='vim | lolcat'
+alias nvc='cd $HOME/.config/nvim && nvim'
 alias clear_nvim='rm -rf ~/.local/share/nvim'
  
 # git
