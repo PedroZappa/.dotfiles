@@ -18,3 +18,5 @@
 	pf = push --force
 	undo = reset --soft HEAD^
 	amend = commit --amend
+[pull]
+	rebase = true
