@@ -27,16 +27,23 @@ return {
 
   ---@type Ollama.Config
   opts = {
-    -- your configuration overrides
-    -- serve = {
-    --   -- set to true here
-    --   on_start = true,
-    --
-    --   -- and change the below if you want to serve Ollama in another way
-    --   command = "ollama",
-    --   args = { "serve" },
-    --   stop_command = "pkill",
-    --   stop_args = { "-SIGTERM", "ollama" },
-    -- },
-  }
+    model = "qwen3",
+    url = "http://127.0.0.1:11434",
+    serve = {
+      on_start = false,
+      command = "ollama",
+      args = { "serve" },
+      stop_command = "pkill",
+      stop_args = { "-SIGTERM", "ollama" },
+    },
+    -- View the actual default prompts in ./lua/ollama/prompts.lua
+    prompts = {
+      Sample_Prompt = {
+        prompt = "This is a sample prompt that receives $input and $sel(ection), among others.",
+        input_label = "> ",
+        model = "qwen3",
+        action = "display",
+      },
+    },
+  },
 }

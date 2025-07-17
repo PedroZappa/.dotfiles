@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "mcp-obsidian": {
+      "command": "uvx",
+      "args": [
+        "mcp-obsidian"
+      ],
+      "env": {
+        "OBSIDIAN_API_KEY": "${env://OBSIDIAN_API_KEY}"
+      }
+    },
+    "git": {
+      "command": "uvx",
+      "args": [
+        "mcp-server-git"
+      ]
+    }
+  }
+}

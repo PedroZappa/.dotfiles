@@ -3,7 +3,7 @@ local M = {}
 -- Configuration
 M.config = {
   model = "qwen3:14b",
-  prompt = "GENERATE A COMPLETE GIT COMMIT MESSAGE BASED ON THIS DIFF",
+  prompt = "GENERATE A STANDARD GIT COMMIT MESSAGE BASED ON THE FOLLOWING DIFF",
   split_height = 100,
   split_width = 77,
   split_dir = "vertical",

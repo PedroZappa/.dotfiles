@@ -198,7 +198,7 @@ _____   __                 _____
 #   # #     #   # #   # ##  # #   #
 #   # #####  ###  ####  #   # #   #
   ]],
-  [[ 
+  [[
 {___     {__
 {_ {__   {__                                {_
             {__ {__  {__   {__       {__    {__     {__   {___ {__ {__
@@ -251,7 +251,7 @@ _|      _|                                  _|
 :::##:::#::::::#::::::::####::::####:::#:::######:::#
 ...@@...@......@@......@@@@@@..@@@@@...@...@@@@@@...@
   ]],
- [[ 
+  [[
      dMMMMb  dMMMMMP .aMMMb  dMP dMP dMP dMMMMMMMMb
     dMP dMP dMP     dMP"dMP dMP dMP amr dMP"dMP"dMP
    dMP dMP dMMMP   dMP dMP dMP dMP dMP dMP dMP dMP
@@ -442,6 +442,11 @@ return {
     },
     health = { enabled = true },
     image = {
+      -- resolve = function(path, src)
+      --   if require("obsidian.api").path_is_note(path) then
+      --     return require("obsidian.api").resolve_image_path(src)
+      --   end
+      -- end,
       formats = {
         "png",
         "jpg",

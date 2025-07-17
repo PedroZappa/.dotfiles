@@ -76,12 +76,14 @@ return {
       ensure_installed = {
         "clangd",
         "lua_ls",
-        -- "nil", -- nix
-        "jsonls",                    -- json
-        "html",                      -- html
-        "typescript-language-server", -- Typescript
-        "pyright",                   -- python
-        "hyprls",                    -- Hyprland
+        -- "nil",       -- nix
+        "jsonls",       -- json
+        "html",         -- html
+        "ts_ls",        -- Typescript
+        "css_variables",        -- CSS"
+        "tailwindcss",  -- TailwindCSS
+        "pyright",      -- python
+        "hyprls",       -- Hyprland
       },
       automatic_installation = true, -- not the same as ensure_installed
       handlers = {

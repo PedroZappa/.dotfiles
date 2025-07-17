@@ -35,27 +35,27 @@ declare -A FILES=(
     ["$HOME/.dotfiles/ghostty"]="$HOME/.config/ghostty"
     ["$HOME/.dotfiles/.zshrc"]="$HOME/.zshrc"
     ["$HOME/.dotfiles/.zshenv"]="$HOME/.zshenv"
-    ["$HOME/.dotfiles/nushell"]="$HOME/.config/nushell"
+    ["$HOME/.dotfiles/nushell/"]="$HOME/.config/nushell"
     ["$HOME/.dotfiles/.gitconfig"]="$HOME/.gitconfig"
     ["$HOME/.dotfiles/starship.toml"]="$HOME/.config/starship.toml"
     ["$HOME/.dotfiles/.gdbinit"]="$HOME/.gdbinit"
     ["$HOME/.dotfiles/.lnav"]="$HOME/.config/.lnav"
     ["$HOME/.dotfiles/.editorconfig"]="$HOME/.editorconfig"
     ["$HOME/.dotfiles/.vimrc"]="$HOME/.vimrc"
-    ["$HOME/.dotfiles/nvim"]="$HOME/.config/nvim"
+    ["$HOME/.dotfiles/nvim/"]="$HOME/.config/nvim"
     ["$HOME/.dotfiles/.clang-format"]="$HOME/.clang-format"
     ["$HOME/.dotfiles/.tmux.conf.local"]="$HOME/.tmux.conf.local"
     ["$HOME/.dotfiles/kitty/"]="$HOME/.config/kitty"
-    ["$HOME/.dotfiles/ghostty/"]="$HOME/.config/"
-    ["$HOME/.dotfiles/btop/"]="$HOME/.config/"
-    ["$HOME/.dotfiles/bat/"]="$HOME/.config/"
-    ["$HOME/.dotfiles/atuin/"]="$HOME/.config/"
-    ["$HOME/.dotfiles/posting/"]="$HOME/.config/"
-    ["$HOME/.dotfiles/hypr"]="$HOME/.config/"
-    ["$HOME/.dotfiles/fuzzel/"]="$HOME/.config/"
-    ["$HOME/.dotfiles/waybar/"]="$HOME/.config/"
-    ["$HOME/.dotfiles/eww/"]="$HOME/.config/"
-    ["$HOME/.dotfiles/spotify-player/"]="$HOME/.config/"
+    ["$HOME/.dotfiles/btop/"]="$HOME/.config/btop"
+    ["$HOME/.dotfiles/bat/"]="$HOME/.config/bat"
+    ["$HOME/.dotfiles/atuin/"]="$HOME/.config/atuin"
+    ["$HOME/.dotfiles/posting/"]="$HOME/.config/posting/"
+    ["$HOME/.dotfiles/hypr/"]="$HOME/.config/hypr"
+    ["$HOME/.dotfiles/fuzzel.ini"]="$HOME/.config/fuzzel.ini/"
+    ["$HOME/.dotfiles/waybar/"]="$HOME/.config/waybar"
+    ["$HOME/.dotfiles/eww/"]="$HOME/.config/eww"
+    ["$HOME/.dotfiles/spotify-player/"]="$HOME/.config/spotify-player"
+    ["$HOME/.dotfiles/.mcphost.json"]="$HOME/.mcphost.json"
 )
 
 # Define the backup directory with timestamp
@@ -75,9 +75,9 @@ create_symlink() {
 
     # Backup existing destination if it exists
     if [ -e "$DEST" ] || [ -L "$DEST" ]; then
-        local BASENAME=$(basename "$DEST")
+        local BASENAME=$(basename "$SRC")
         mv "$DEST" "$BACKUP_DIR/${BASENAME}_bak"
-        echo "${YEL}Moved existing ${PRP}$DEST ${YEL}to ${PRP}$BACKUP_DIR/${BASENAME}_bak${D}"
+        echo "${YEL}Moved existing ${PRP}$SRC ${YEL}to ${PRP}$BACKUP_DIR/${BASENAME}_bak${D}"
     fi
 
     # Create the symlink
