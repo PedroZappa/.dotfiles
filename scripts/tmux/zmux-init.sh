@@ -11,14 +11,16 @@ source ~/.dotfiles/scripts/colors.sh
 echo ${YEL}ZMUX${D}${PRP}: Initializing Dev Env...${D} ${GRN}${D}
 
 # Set Path to Obsidian Vault
-if [[ $USER == "zedr0" ]]; then			# DEV-Desk
-	OBSIDIAN_VAULT_PATH="$HOME/Documents/Obsidian/ZedroVault"
-elif [[ $USER == "passunca" ]]; then	# 42
-	OBSIDIAN_VAULT_PATH="$HOME/sgoinfre/Zedro-Vault"
-elif [[ $USER == "zedro" ]]; then		# DEV-Mac
-	OBSIDIAN_VAULT_PATH="$HOME/Documents/Zedros-Vault"
+ARCH=$(uname -m)
+
+if [[ $ARCH == "x86_64" ]]; then    # 64-bit Intel/AMD - DEV-Desk
+    OBSIDIAN_VAULT_PATH="$HOME/Documents/Zedros-Vault"
+elif [[ $ARCH == "x86_64" ]] && [[ $USER == "passunca" ]]; then    # 64-bit Intel/AMD - 42 School machines
+    OBSIDIAN_VAULT_PATH="$HOME/sgoinfre/Zedro-Vault"
+elif [[ $ARCH == "arm64" ]] || [[ $ARCH == "aarch64" ]]; then    # 64-bit ARM - DEV-Mac (Apple Silicon)
+    OBSIDIAN_VAULT_PATH="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/Zedros-Vault"
 else
-	echo "ZMUX: Unknown user... you shall not PATH! 😅"
+    echo "ZMUX: Unknown architecture ($ARCH)... you shall not PATH! 😅"
 fi
 
 export OBSIDIAN_VAULT_PATH

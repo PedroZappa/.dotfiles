@@ -1,5 +1,19 @@
 -- https://github.com/obsidian-nvim/obsidian.nvim
-local vault_path = "~/Documents/Zedros-Vault"
+-- Load from environment variable with fallback and validation
+local function get_vault_path()
+  local env_path = os.getenv("OBSIDIAN_VAULT_PATH")
+
+  if env_path then
+    return env_path
+  else
+    -- Fallback to default path
+    print("Warning: OBSIDIAN_VAULT_PATH not set, using default path")
+    return "~/Documents/Zedros-Vault"
+  end
+end
+
+local vault_path = get_vault_path()
+
 return {
   "obsidian-nvim/obsidian.nvim",
   version = "*", -- recommended, use latest release instead of latest commit

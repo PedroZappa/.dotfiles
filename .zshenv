@@ -5,6 +5,8 @@
 # Set language
 export LANG=en_US.UTF-8
 
+# set Architeture
+export ARCH=$(uname -m)
 # Set compiler
 export CC=clang
 export CXX=clang++
@@ -44,6 +46,7 @@ elif [[ $USER == "zedro" ]]; then
 	export PATH="/usr/local/Cellar/neovim/0.10.3/bin:$PATH"
 	export PATH="/usr/local/include/JUCE-8.0.6/modules:$PATH"
 fi
+export PATH="$PATH:$HOME/go/bin"
 
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
