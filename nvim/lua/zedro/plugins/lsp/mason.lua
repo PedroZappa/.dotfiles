@@ -66,8 +66,8 @@ return {
         -- "isort",    -- python import sorter
         "debugpy",   -- python debugger
         -- Writting
-        "write-good",
-        "markdownlint"
+        -- "write-good",
+        -- "markdownlint"
       },
     })
     -- vim.api.nvim_command("MasonToolsInstall")
