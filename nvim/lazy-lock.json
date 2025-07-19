@@ -38,7 +38,7 @@
   "markdown-preview.nvim": { "branch": "master", "commit": "a923f5fc5ba36a3b17e289dc35dc17f66d0548ee" },
   "markdown-toc.nvim": { "branch": "main", "commit": "5f51c86a416d7da6c0708d4ea354722fec7bb2b0" },
   "markview.nvim": { "branch": "main", "commit": "ec33f2aa333ca1d76f51847922578434d7aeadf7" },
-  "mason-lspconfig.nvim": { "branch": "main", "commit": "a9c876d72d82b6640266f8b248ac05a63630b1d9" },
+  "mason-lspconfig.nvim": { "branch": "main", "commit": "bb3a17efc797c34c054463174e5522442576ebd8" },
   "mason-nvim-dap.nvim": { "branch": "main", "commit": "5fcd0dfdcf55d8a1c1a02cccc14ee5d79728a496" },
   "mason-tool-installer.nvim": { "branch": "main", "commit": "517ef5994ef9d6b738322664d5fdd948f0fdeb46" },
   "mason.nvim": { "branch": "main", "commit": "8024d64e1330b86044fed4c8494ef3dcd483a67c" },
@@ -112,5 +112,6 @@
   "vim-tmux-navigator": { "branch": "master", "commit": "c45243dc1f32ac6bcf6068e5300f3b2b237e576a" },
   "web-tools.nvim": { "branch": "master", "commit": "2f895049d3b6e3a0b2cedfa18c8733b36fb6cbda" },
   "which-key.nvim": { "branch": "main", "commit": "370ec46f710e058c9c1646273e6b225acf47cbed" },
+  "wrapping.nvim": { "branch": "master", "commit": "f26fdeabd17cf1bf5197badbdadc2e2f08b6ab0f" },
   "yuck.vim": { "branch": "master", "commit": "9b5e0370f70cc30383e1dabd6c215475915fe5c3" }
 }
