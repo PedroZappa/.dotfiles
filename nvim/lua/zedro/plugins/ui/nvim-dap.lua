@@ -1,3 +1,25 @@
+local function find_python_binary()
+    -- Get Neovim's builtin filesystem API ('uv' in Neovim 0.10+)
+    local uv = vim.loop
+    local cwd = vim.fn.getcwd()
+    local python_candidates = {
+        cwd .. '/.venv/bin/python',            -- Unix virtualenv
+        cwd .. '/.venv/Scripts/python.exe',    -- Windows virtualenv
+        vim.fn.expand('~/.pyenv/shims/python'),-- pyenv (Unix)
+        '/usr/bin/python3',                    -- common system python (Unix)
+        '/usr/bin/python',                     -- fallback (Unix)
+        'python3',                             -- in $PATH
+        'python',                              -- another fallback
+    }
+    for _, path in ipairs(python_candidates) do
+        local stat = uv.fs_stat(path)
+        if stat and stat.type == 'file' then
+            return path
+        end
+    end
+    return nil
+end
+
 return {
   "mfussenegger/nvim-dap",
   event = "VeryLazy",
@@ -21,14 +43,14 @@ return {
         'mfussenegger/nvim-dap',
         "rcarriga/nvim-dap-ui",
       },
-      -- config = function(_, opts)
-      --   local path = "~/.local/share/nvim/mason/packages/debugpy/venv/bin/python"
-      --   require('dap-python').setup(path)
-      -- end
-      config = function()
-        local path = vim.fn.getcwd() .. '/.venv/bin/python'
+      config = function(_, opts)
+        local path = find_python_binary()
         require('dap-python').setup(path)
       end
+      -- config = function()
+      --   local path = vim.fn.getcwd() .. '/.venv/bin/python'
+      --   require('dap-python').setup(path)
+      -- end
     },
     {
       'Joakker/lua-json5',
@@ -109,11 +131,11 @@ return {
     end
 
     -- Adapter Configurations
-    dap.adapters.gdb       = {
-      type = 'executable',
-      command = 'gdb',
-      args = { '--quiet', '--interpreter=dap' }
-    }
+    -- dap.adapters.gdb       = {
+    --   type = 'executable',
+    --   command = 'gdb',
+    --   args = { '--quiet', '--interpreter=dap' }
+    -- }
     dap.adapters.python    = {
       type = "executable",
       command = "python3",
@@ -591,6 +613,7 @@ return {
     vim.keymap.set("n", "<leader>tdk", toggle_dap_keys, { desc = "DAP: Toggle DAP keybinds" })
     vim.keymap.set("n", "<leader>b", dap.toggle_breakpoint, { desc = "DAP: Toggle breakpoint" })
     vim.keymap.set("n", "<A-\\>", start_dap_with_args, { desc = "DAP: Start w/ Args" })
+
     vim.keymap.set("n", '<leader>pdo', function()
       if vim.bo.filetype == 'python' then
         vim.api.nvim_command('PyrightOrganizeImports')
