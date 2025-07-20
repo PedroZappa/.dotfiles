@@ -45,7 +45,7 @@ return {
       },
       config = function(_, opts)
         local path = find_python_binary()
-        require('dap-python').setup(path)
+        require('dap-python').setup(uv)
       end
       -- config = function()
       --   local path = vim.fn.getcwd() .. '/.venv/bin/python'
@@ -404,14 +404,11 @@ return {
         --   return (path and path ~= '') and path or dap.ABORT
         -- end,
         pythonPath = function()
-          return '/usr/bin/python3'
+          return find_python_binary()
         end,
         cwd = function()
           return vim.fn.getcwd()
         end,
-        -- cwd = function()
-        --   return util.root_pattern("pyproject.toml")(vim.fn.getcwd())
-        -- end,
         console = "integratedTerminal",
         logToFile = true,
         showReturnValue = true,
