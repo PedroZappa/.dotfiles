@@ -1,23 +1,23 @@
 local function find_python_binary()
-    -- Get Neovim's builtin filesystem API ('uv' in Neovim 0.10+)
-    local uv = vim.loop
-    local cwd = vim.fn.getcwd()
-    local python_candidates = {
-        cwd .. '/.venv/bin/python',            -- Unix virtualenv
-        cwd .. '/.venv/Scripts/python.exe',    -- Windows virtualenv
-        vim.fn.expand('~/.pyenv/shims/python'),-- pyenv (Unix)
-        '/usr/bin/python3',                    -- common system python (Unix)
-        '/usr/bin/python',                     -- fallback (Unix)
-        'python3',                             -- in $PATH
-        'python',                              -- another fallback
-    }
-    for _, path in ipairs(python_candidates) do
-        local stat = uv.fs_stat(path)
-        if stat and stat.type == 'file' then
-            return path
-        end
+  -- Get Neovim's builtin filesystem API ('uv' in Neovim 0.10+)
+  local uv = vim.loop
+  local cwd = vim.fn.getcwd()
+  local python_candidates = {
+    cwd .. "/.venv/bin/python",             -- Unix virtualenv
+    cwd .. "/.venv/Scripts/python.exe",     -- Windows virtualenv
+    vim.fn.expand("~/.pyenv/shims/python"), -- pyenv (Unix)
+    "/usr/bin/python3",                     -- common system python (Unix)
+    "/usr/bin/python",                      -- fallback (Unix)
+    "python3",                              -- in $PATH
+    "python",                               -- another fallback
+  }
+  for _, path in ipairs(python_candidates) do
+    local stat = uv.fs_stat(path)
+    if stat and stat.type == "file" then
+      return path
     end
-    return nil
+  end
+  return nil
 end
 
 return {
@@ -36,26 +36,26 @@ return {
     "nvim-telescope/telescope-dap.nvim",
     -- Language specific
     {
-      'mfussenegger/nvim-dap-python',
-      ft = 'python',
+      "mfussenegger/nvim-dap-python",
+      ft = "python",
       dependencies = {
         -- https://github.com/mfussenegger/nvim-dap
-        'mfussenegger/nvim-dap',
+        "mfussenegger/nvim-dap",
         "rcarriga/nvim-dap-ui",
       },
       config = function(_, opts)
         local path = find_python_binary()
-        require('dap-python').setup(uv)
-      end
+        require("dap-python").setup(uv)
+      end,
       -- config = function()
       --   local path = vim.fn.getcwd() .. '/.venv/bin/python'
       --   require('dap-python').setup(path)
       -- end
     },
     {
-      'Joakker/lua-json5',
-      build = './install.sh'
-    }
+      "Joakker/lua-json5",
+      build = "./install.sh",
+    },
   },
   config = function()
     local dap_ok, dap = pcall(require, "dap")
@@ -63,12 +63,12 @@ return {
       print("nvim-dap not installed!")
       return
     end
-    dap.defaults.fallback.terminal_win_cmd = '50vsplit new'
+    dap.defaults.fallback.terminal_win_cmd = "50vsplit new"
     dap.defaults.fallback.focus_terminal = true
     require("dap").set_log_level("INFO") -- Helps when configuring DAP, see logs with :DapShowLog
     local ui = require("dapui")
-    local widgets = require('dap.ui.widgets')
-    require('dap-python').setup('python')
+    local widgets = require("dap.ui.widgets")
+    require("dap-python").setup("python")
 
     -- JSON5 Compatibility
     -- require('dap.ext.vscode').json_decode = require('json5').parse
@@ -83,7 +83,7 @@ return {
           -- all sources with no handler get passed here
 
           -- Keep original functionality
-          require('mason-nvim-dap').default_setup(config)
+          require("mason-nvim-dap").default_setup(config)
         end,
       },
     })
@@ -107,10 +107,16 @@ return {
           ui.eval(nil, { enter = true })
         end, { desc = "DAP: Evaluate expression under cursor" })
         vim.keymap.set("n", "<leader>dl", dap.run_last, { desc = "DAP: Run last" })
-        vim.keymap.set("n", "v", function() widgets.hover() end)
+        vim.keymap.set("n", "v", function()
+          widgets.hover()
+        end)
         -- vim.keymap.set("n", "v", function() widgets.preview() end)
-        vim.keymap.set("n", "<leader>df", function() widgets.center_float(widgets.frames) end)
-        vim.keymap.set("n", "<leader>ds", function() widgets.center_float(widgets.scopes) end)
+        vim.keymap.set("n", "<leader>df", function()
+          widgets.center_float(widgets.frames)
+        end)
+        vim.keymap.set("n", "<leader>ds", function()
+          widgets.center_float(widgets.scopes)
+        end)
       else
         -- Disable DAP keymaps
         vim.keymap.del("n", "<C-C>")
@@ -136,7 +142,7 @@ return {
     --   command = 'gdb',
     --   args = { '--quiet', '--interpreter=dap' }
     -- }
-    dap.adapters.python    = {
+    dap.adapters.python = {
       type = "executable",
       command = "python3",
       args = { "-m", "debugpy.adapter" },
@@ -145,11 +151,11 @@ return {
     -- Language Configurations
     -- https://sourceware.org/gdb/current/onlinedocs/gdb.html/Interpreters.html
     -- https://sourceware.org/gdb/current/onlinedocs/gdb.html/Debugger-Adapter-Protocol.html
-    dap.configurations.c   = {
+    dap.configurations.c = {
       {
-        name = 'Run executable (GDB)',
-        type = 'gdb',
-        request = 'launch',
+        name = "Run executable (GDB)",
+        type = "gdb",
+        request = "launch",
         -- This requires special handling of 'run_last', see
         -- https://github.com/mfussenegger/nvim-dap/issues/1025#issuecomment-1695852355
         program = function()
@@ -157,19 +163,19 @@ return {
         end,
       },
       {
-        name = 'Run executable with arguments (GDB)',
-        type = 'gdb',
-        request = 'launch',
+        name = "Run executable with arguments (GDB)",
+        type = "gdb",
+        request = "launch",
         -- This requires special handling of 'run_last', see
         -- https://github.com/mfussenegger/nvim-dap/issues/1025#issuecomment-1695852355
         program = function()
           local path = vim.fn.input({
-            prompt = 'Path to executable: ',
-            default = vim.fn.getcwd() .. '/',
-            completion = 'file',
+            prompt = "Path to executable: ",
+            default = vim.fn.getcwd() .. "/",
+            completion = "file",
           })
 
-          return (path and path ~= '') and path or dap.ABORT
+          return (path and path ~= "") and path or dap.ABORT
         end,
         args = function()
           local arg_source = vim.fn.input("Load arguments from file (f) or enter as string (s)? ")
@@ -187,25 +193,25 @@ return {
         end,
       },
       {
-        name = 'Attach to process (GDB)',
-        type = 'gdb',
-        request = 'attach',
-        processId = require('dap.utils').pick_process,
+        name = "Attach to process (GDB)",
+        type = "gdb",
+        request = "attach",
+        processId = require("dap.utils").pick_process,
       },
       {
-        name = 'Run executable with arguments (codelldb)',
-        type = 'codelldb',
-        request = 'launch',
+        name = "Run executable with arguments (codelldb)",
+        type = "codelldb",
+        request = "launch",
         -- This requires special handling of 'run_last', see
         -- https://github.com/mfussenegger/nvim-dap/issues/1025#issuecomment-1695852355
         program = function()
           local path = vim.fn.input({
-            prompt = 'Path to executable: ',
-            default = vim.fn.getcwd() .. '/',
-            completion = 'file',
+            prompt = "Path to executable: ",
+            default = vim.fn.getcwd() .. "/",
+            completion = "file",
           })
           toggle_dap_keys()
-          return (path and path ~= '') and path or dap.ABORT
+          return (path and path ~= "") and path or dap.ABORT
         end,
         args = function()
           local arg_source = vim.fn.input("Load arguments from file (f) or enter as string (s)? ")
@@ -248,9 +254,9 @@ return {
 
     dap.configurations.cpp = {
       {
-        name = 'Run executable (GDB)',
-        type = 'gdb',
-        request = 'launch',
+        name = "Run executable (GDB)",
+        type = "gdb",
+        request = "launch",
         -- This requires special handling of 'run_last', see
         -- https://github.com/mfussenegger/nvim-dap/issues/1025#issuecomment-1695852355
         program = function()
@@ -258,19 +264,19 @@ return {
         end,
       },
       {
-        name = 'Run executable with arguments (GDB)',
-        type = 'gdb',
-        request = 'launch',
+        name = "Run executable with arguments (GDB)",
+        type = "gdb",
+        request = "launch",
         -- This requires special handling of 'run_last', see
         -- https://github.com/mfussenegger/nvim-dap/issues/1025#issuecomment-1695852355
         program = function()
           local path = vim.fn.input({
-            prompt = 'Path to executable: ',
-            default = vim.fn.getcwd() .. '/',
-            completion = 'file',
+            prompt = "Path to executable: ",
+            default = vim.fn.getcwd() .. "/",
+            completion = "file",
           })
 
-          return (path and path ~= '') and path or dap.ABORT
+          return (path and path ~= "") and path or dap.ABORT
         end,
         args = function()
           local arg_source = vim.fn.input("Load arguments from file (f) or enter as string (s)? ")
@@ -288,10 +294,10 @@ return {
         end,
       },
       {
-        name = 'Attach to process (GDB)',
-        type = 'gdb',
-        request = 'attach',
-        processId = require('dap.utils').pick_process,
+        name = "Attach to process (GDB)",
+        type = "gdb",
+        request = "attach",
+        processId = require("dap.utils").pick_process,
       },
       {
         name = "(codelldb) Launch",
@@ -305,19 +311,19 @@ return {
         stopAtBeginningOfMainSubprogram = true,
       },
       {
-        name = 'Run executable with arguments (codelldb)',
-        type = 'codelldb',
-        request = 'launch',
+        name = "Run executable with arguments (codelldb)",
+        type = "codelldb",
+        request = "launch",
         -- This requires special handling of 'run_last', see
         -- https://github.com/mfussenegger/nvim-dap/issues/1025#issuecomment-1695852355
         program = function()
           local path = vim.fn.input({
-            prompt = 'Path to executable: ',
-            default = vim.fn.getcwd() .. '/',
-            completion = 'file',
+            prompt = "Path to executable: ",
+            default = vim.fn.getcwd() .. "/",
+            completion = "file",
           })
 
-          return (path and path ~= '') and path or dap.ABORT
+          return (path and path ~= "") and path or dap.ABORT
         end,
         args = function()
           local arg_source = vim.fn.input("Load arguments from file (f) or enter as string (s)? ")
@@ -359,7 +365,7 @@ return {
       },
     }
 
-    dap.configurations.sh  = {
+    dap.configurations.sh = {
       {
         type = "bashdb",
         request = "launch",
@@ -382,8 +388,8 @@ return {
     }
 
     local function getpid()
-      local pid = require('dap.utils').pick_process({ filter = 'python' })
-      if type(pid) == 'thread' then
+      local pid = require("dap.utils").pick_process({ filter = "python" })
+      if type(pid) == "thread" then
         -- returns a coroutine.create due to it being run from fzf-lua ui.select
         -- start the coroutine and wait for `coroutine.resume` (user selection)
         coroutine.resume(pid)
@@ -404,7 +410,12 @@ return {
         --   return (path and path ~= '') and path or dap.ABORT
         -- end,
         pythonPath = function()
-          return find_python_binary()
+          local cwd = vim.fn.getcwd()
+          if vim.fn.executable(cwd .. "/.venv/bin/python") == 1 then
+            return cwd .. "/.venv/bin/python"
+          else
+            return "/usr/bin/python3"
+          end
         end,
         cwd = function()
           return vim.fn.getcwd()
@@ -413,11 +424,15 @@ return {
         logToFile = true,
         showReturnValue = true,
         -- stopOnEntry = true,
+        args = function()
+          local user_args = vim.fn.input("Arguments: ")
+          return vim.split(user_args or "", " ")
+        end,
       },
       {
-        type = 'python',
-        request = 'attach',
-        name = 'Attach to process',
+        type = "python",
+        request = "attach",
+        name = "Attach to process",
         cwd = function()
           return vim.fn.getcwd()
         end,
@@ -427,22 +442,22 @@ return {
           local pid = getpid()
           local out = vim.fn.systemlist({
             python_prefix .. python_bin,
-            '-m',
-            'debugpy',
-            '--listen',
-            'localhost:' .. tostring(port),
-            '--pid',
+            "-m",
+            "debugpy",
+            "--listen",
+            "localhost:" .. tostring(port),
+            "--pid",
             tostring(pid),
           })
-          assert(vim.v.shell_error == 0, table.concat(out, '\n'))
+          assert(vim.v.shell_error == 0, table.concat(out, "\n"))
           return { port = port }
         end,
         logToFile = true,
-      }
+      },
     }
 
     -- UI : see |:help nvim-dap-ui|
-    vim.fn.sign_define('DapBreakpoint', { text = '●', texthl = 'Character', linehl = '', numhl = '' })
+    vim.fn.sign_define("DapBreakpoint", { text = "●", texthl = "Character", linehl = "", numhl = "" })
     ui.setup({
       layouts = {
         {
@@ -480,7 +495,6 @@ return {
           disconnect = "⏏",
         },
       },
-
     })
     require("nvim-dap-virtual-text").setup({
       -- This just tries to mitigate the chance that I leak tokens here. Probably won't stop it from happening...
@@ -611,27 +625,27 @@ return {
     vim.keymap.set("n", "<leader>b", dap.toggle_breakpoint, { desc = "DAP: Toggle breakpoint" })
     vim.keymap.set("n", "<A-\\>", start_dap_with_args, { desc = "DAP: Start w/ Args" })
 
-    vim.keymap.set("n", '<leader>pdo', function()
-      if vim.bo.filetype == 'python' then
-        vim.api.nvim_command('PyrightOrganizeImports')
+    vim.keymap.set("n", "<leader>pdo", function()
+      if vim.bo.filetype == "python" then
+        vim.api.nvim_command("PyrightOrganizeImports")
       end
     end, { desc = "DAP: Organize Imports" })
 
-    vim.keymap.set("n", '<leader>pdc', function()
-      if vim.bo.filetype == 'python' then
-        require('dap-python').test_class();
+    vim.keymap.set("n", "<leader>pdc", function()
+      if vim.bo.filetype == "python" then
+        require("dap-python").test_class()
       end
     end, { desc = "DAP: Debug python class" })
 
-    vim.keymap.set("n", '<leader>pdm', function()
-      if vim.bo.filetype == 'python' then
-        require('dap-python').test_method();
+    vim.keymap.set("n", "<leader>pdm", function()
+      if vim.bo.filetype == "python" then
+        require("dap-python").test_method()
       end
     end, { desc = "DAP: Debug python method" })
 
-    vim.keymap.set("n", '<leader>pds', function()
-      if vim.bo.filetype == 'python' then
-        require('dap-python').debug_selection();
+    vim.keymap.set("n", "<leader>pds", function()
+      if vim.bo.filetype == "python" then
+        require("dap-python").debug_selection()
       end
     end, { desc = "DAP: Debug python selection" })
   end,

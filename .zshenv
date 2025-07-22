@@ -24,6 +24,10 @@ export GIT_USER="PedroZappa"
 export DOTFILES="$HOME/.dotfiles"
 export SCRIPTS="$DOTFILES/scripts"
 
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
 # Add NixOS bin/ to PATH
 # export PATH="$PATH:/run/current-system/sw/bin"
 # Add ~/.local/bin to PATH

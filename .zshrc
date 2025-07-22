@@ -23,6 +23,12 @@
  zmodload zsh/complist
  compinit -d "$XDG_CACHE_HOME/zsh/.zshcompdump-$ZSH_VERSION"
  _comp_options+=(globdots)
+
+
+fpath+=~/.zfunc; autoload -Uz compinit; compinit
+
+# bun completions
+[ -s "/home/zedro/.bun/_bun" ] && source "/home/zedro/.bun/_bun"
  
  ##########################
  ### Zap Plugin Manager ###
@@ -241,5 +247,3 @@ fi
 
 # Load .env
 source ~/.dotfiles/.env
-
-fpath+=~/.zfunc; autoload -Uz compinit; compinit
