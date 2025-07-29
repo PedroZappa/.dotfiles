@@ -1,243 +1,297 @@
--- strudel-integration.lua - Neovim plugin for seamless Strudel integration
--- Usage: Place this file somewhere in ~/.config/nvim/lua/...
+-- strudel-integration.lua – Neovim plugin for complete Strudel server control
+-- Put this file in ~/.config/nvim/lua/… and `require` it from init.lua
 
 local M = {}
 
--- Add this to your M.config
+--------------------------------------------------------------------
+-- 1. CONFIG -------------------------------------------------------
+--------------------------------------------------------------------
 M.config = {
-    server_url = "http://localhost:3001",
-    auto_init_browser = true,
-    show_notifications = true,
-    timeout = 5000,
-    nvim_socket = "/tmp/strudel-nvim-socket"  -- Add socket path
+  server_url = "http://localhost:3001",
+  timeout = 5000, -- ms
+  show_notifications = true,
+  nvim_socket = "/tmp/strudel-nvim-socket",
 }
 
--- Add this function to create/ensure socket server
-function M.ensure_socket_server()
-    -- Check if we already have a server running
-    local existing_server = vim.v.servername
-    if existing_server and existing_server ~= "" then
-        if M.config.show_notifications then
-            vim.notify("🔌 Using existing Neovim server: " .. existing_server, vim.log.levels.INFO)
-        end
-        return existing_server
-    end
+local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+parser_config.strudel = {
+  install_info = {
+    -- url = "https://github.com/pedrozappa/tree-sitter-strdl", -- local path or git repo
+    url = "~/C0D3/AUDIO/tree-sitter-strdl/", -- local path
+    files = { "src/parser.c" }, -- note that some parsers also require src/scanner.c or src/scanner.cc
+    -- optional entries:
+    branch = "main", -- default branch in case of git repo if different from master
+    generate_requires_npm = false, -- if stand-alone parser without npm dependencies
+    requires_generate_from_grammar = false, -- if folder contains pre-generated src/parser.c
+  },
+  filetype = "strdl", -- if filetype does not match the parser name
+}
 
-    -- Start a new server
-    local socket_path = M.config.nvim_socket
-    local server_name = vim.fn.serverstart(socket_path)
+vim.api.nvim_create_autocmd("BufRead", {
+  pattern = "*.strdl",
+  callback = function()
+    vim.bo.filetype = "strdl"
+  end,
+})
 
-    if server_name then
-        if M.config.show_notifications then
-            vim.notify("🚀 Started Neovim server: " .. server_name, vim.log.levels.INFO)
-        end
-        return server_name
-    else
-        if M.config.show_notifications then
-            vim.notify("❌ Failed to start Neovim server", vim.log.levels.ERROR)
-        end
-        return nil
-    end
+--------------------------------------------------------------------
+-- 2. UTILITIES ----------------------------------------------------
+--------------------------------------------------------------------
+-- JSON encode shim (works on 0.8–0.10)
+local json_encode = vim.json and vim.json.encode or vim.fn.json_encode
+
+local function notify(msg, level)
+  if M.config.show_notifications then
+    vim.notify(msg, level or vim.log.levels.INFO)
+  end
 end
 
-local function async_curl_post(endpoint, data, callback)
+-- Asynchronous curl wrapper (uses vim.system if available, otherwise jobstart)
+local function curl_async(method, endpoint, body, cb, content_type)
   local url = M.config.server_url .. endpoint
+  local args = { "curl", "-s", "-X", method, "--max-time", tostring(M.config.timeout / 1000) }
 
-  -- Use vim.system for async HTTP requests (requires Neovim 0.10+)
-  vim.system({
-    'curl', '-s', '-X', 'POST',
-    '-H', 'Content-Type: text/plain',
-    '--data-binary', data,
-    '--max-time', tostring(M.config.timeout / 1000), -- Convert to seconds
-    url
-  }, {
-    text = true,
-    timeout = M.config.timeout,
-  }, function(obj)
-    local success = obj.code == 0
-    if callback then
-      -- Schedule callback to run in main thread
+  if body then
+    local ct = content_type or "application/json"
+    table.insert(args, "-H")
+    table.insert(args, "Content-Type: " .. ct)
+    table.insert(args, "--data-binary")
+    table.insert(args, body)
+  end
+  table.insert(args, url)
+
+  local on_exit = function(obj)
+    local ok = (obj.code == 0)
+    local data = (obj.stdout ~= "" and obj.stdout) or obj.stderr
+    if cb then
       vim.schedule(function()
-        callback(success, obj.stdout or obj.stderr)
+        cb(ok, data)
       end)
     end
-  end)
-end
+  end
 
--- SOLUTION 2: Alternative using vim.fn.jobstart() for async requests (older Neovim versions)
-local function async_curl_post_job(endpoint, data, callback)
-  local url = M.config.server_url .. endpoint
-  local temp_file = vim.fn.tempname()
-
-  -- Write data to temp file
-  vim.fn.writefile(type(data) == "table" and data or {data}, temp_file)
-
-  local cmd = {
-    'curl', '-s', '-X', 'POST',
-    '-H', 'Content-Type: text/plain',
-    '--data-binary', '@' .. temp_file,
-    '--max-time', tostring(M.config.timeout / 1000),
-    url
-  }
-
-  vim.fn.jobstart(cmd, {
-    on_exit = function(_, exit_code)
-      -- Clean up temp file
-      vim.fn.delete(temp_file)
-
-      if callback then
-        vim.schedule(function()
-          callback(exit_code == 0)
-        end)
-      end
-    end,
-    timeout = M.config.timeout
-  })
-end
-
--- Choose the appropriate async function based on Neovim version
-local function curl_post_async(endpoint, data, callback)
-  if vim.fn.has('nvim-0.10') == 1 then
-    async_curl_post(endpoint, data, callback)
-  else
-    async_curl_post_job(endpoint, data, callback)
+  if vim.system then -- Neovim ≥0.10
+    vim.system(args, { text = true, timeout = M.config.timeout }, on_exit)
+  else -- Fallback
+    vim.fn.jobstart(args, {
+      stdout_buffered = true,
+      on_exit = function(_, code, _)
+        on_exit({ code = code, stdout = table.concat(vim.fn.jobwait({}), ""), stderr = "" })
+      end,
+      timeout = M.config.timeout,
+    })
   end
 end
 
---
--- Send current buffer to Strudel
-function M.send_buffer()
-  local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-  local content = table.concat(lines, "\n")
-
-  if content:match("^%s*$") then
-    if M.config.show_notifications then
-      vim.notify("Buffer is empty!", vim.log.levels.WARN)
+--------------------------------------------------------------------
+-- 3. SERVER HEALTH & CONNECTION ----------------------------------
+--------------------------------------------------------------------
+function M.health()
+  curl_async("GET", "/health", nil, function(ok, data)
+    if not ok then
+      return notify("Server unreachable", vim.log.levels.ERROR)
     end
-    return
-  end
-
-  if M.config.show_notifications then
-    vim.notify("🎵 Sending buffer to Strudel...", vim.log.levels.INFO)
-  end
-
-  curl_post_async("/api/send-current-buffer", content, function(success, response)
-    if M.config.show_notifications then
-      if success then
-        vim.notify("✅ Buffer sent to Strudel!", vim.log.levels.INFO)
-      else
-        vim.notify("❌ Failed to send buffer: " .. (response or "Network error"), vim.log.levels.ERROR)
-      end
-    end
-  end)
-end
-
--- Send visual selection to Strudel
-function M.send_selection()
-  local start_pos = vim.fn.getpos("'<")
-  local end_pos = vim.fn.getpos("'>")
-  local lines = vim.api.nvim_buf_get_lines(0, start_pos[2] - 1, end_pos[2], false)
-
-  if #lines == 0 then
-    if M.config.show_notifications then
-      vim.notify("No selection found!", vim.log.levels.WARN)
-    end
-    return
-  end
-
-  -- Handle partial line selections
-  if #lines == 1 then
-    lines[1] = string.sub(lines[1], start_pos[3], end_pos[3])
-  else
-    lines[1] = string.sub(lines[1], start_pos[3])
-    lines[#lines] = string.sub(lines[#lines], 1, end_pos[3])
-  end
-
-  local content = table.concat(lines, "\n")
-
-  if M.config.show_notifications then
-    vim.notify("🎵 Sending selection to Strudel...", vim.log.levels.INFO)
-  end
-
-  curl_post_async("/api/send-selection", content, function(success, response)
-    if M.config.show_notifications then
-      if success then
-        vim.notify("✅ Selection sent to Strudel!", vim.log.levels.INFO)
-      else
-        vim.notify("❌ Failed to send selection: " .. (response or "Network error"), vim.log.levels.ERROR)
-      end
-    end
-  end)
-end
-
--- Stop Strudel playback
-function M.stop_strudel()
-  curl_post_async("/api/hush", "", function(success, response)
-    if M.config.show_notifications then
-      if success then
-        vim.notify("⏹️  Strudel stopped", vim.log.levels.INFO)
-      else
-        vim.notify("❌ Failed to stop Strudel: " .. (response or "Network error"), vim.log.levels.ERROR)
-      end
-    end
-  end)
-end
-
--- Initialize browser
-function M.init_browser()
-  curl_post_async("/api/browser/init", "", function(success, response)
-    if M.config.show_notifications then
-      if success then
-        vim.notify("🎭 Browser initialized", vim.log.levels.INFO)
-      else
-        vim.notify("❌ Failed to initialize browser: " .. (response or "Network error"), vim.log.levels.ERROR)
-      end
-    end
-  end)
-end
-
--- Show server status (can remain sync as it's user-initiated)
-function M.show_status()
-  local cmd = string.format("curl -s --max-time 3 %s/health", M.config.server_url)
-  local result = vim.fn.system(cmd)
-
-  if vim.v.shell_error == 0 then
-    local status = vim.fn.json_decode(result)
-    local message = string.format(
-      "Server: %s | Neovim: %s | Browser: %s | Files: %d",
-      status.status or "unknown",
-      status.neovim and "connected" or "disconnected",
-      status.browser and "connected" or "disconnected", 
-      status.files or 0
+    local s = vim.fn.json_decode(data)
+    local msg = string.format(
+      "Server:%s | Neovim:%s | Browser:%s | Files:%d",
+      s.status,
+      s.neovim and "🟢" or "🔴",
+      s.browser and "🟢" or "🔴",
+      s.files.count or 0
     )
-    vim.notify(message, vim.log.levels.INFO)
-  else
-    vim.notify("❌ Server not reachable", vim.log.levels.ERROR)
-  end
+    notify(msg)
+  end)
 end
 
--- Modify your setup function to ensure socket server
-function M.setup(opts)
-    M.config = vim.tbl_deep_extend("force", M.config, opts or {})
-
-    -- Ensure socket server is running
-    M.ensure_socket_server()
-
-    -- Rest of your existing setup code...
-    vim.api.nvim_create_user_command('StrudelSendBuffer', M.send_buffer, {})
-    vim.api.nvim_create_user_command('StrudelSendSelection', M.send_selection, {})
-    vim.api.nvim_create_user_command('StrudelStop', M.stop_strudel, {})
-    vim.api.nvim_create_user_command('StrudelInit', M.init_browser, {})
-    vim.api.nvim_create_user_command('StrudelStatus', M.show_status, {})
-
-    vim.keymap.set('n', 'ss', M.send_buffer, { desc = 'Send buffer to Strudel' })
-    vim.keymap.set('v', 'ss', M.send_selection, { desc = 'Send selection to Strudel' })
-    vim.keymap.set('n', 'sh', M.stop_strudel, { desc = 'Stop Strudel (hush)' })
-    vim.keymap.set('n', 'si', M.init_browser, { desc = 'Initialize Strudel browser' })
-
-    if M.config.show_notifications then
-        vim.notify("Strudel integration loaded! Socket: " .. (vim.v.servername or "none"), vim.log.levels.INFO)
+function M.connect_neovim()
+  notify("Connecting to Neovim …")
+  curl_async("POST", "/api/neovim/connect", "", function(ok, data)
+    if not ok then
+      return notify("❌ Neovim connect failed", vim.log.levels.ERROR)
     end
+    local res = vim.fn.json_decode(data)
+    notify(res.message or "Unknown response")
+    if res.success then
+      M.refresh_files()
+    end
+    -- local s = vim.fn.json_decode(data)
+    -- s.neovim = true
+  end)
 end
 
-return M 
+function M.nvim_status()
+  curl_async("GET", "/api/neovim/status", nil, function(ok, data)
+    if ok then
+      notify(data)
+    else
+      notify("Neovim status error", vim.log.levels.ERROR)
+    end
+  end)
+end
+
+--------------------------------------------------------------------
+-- 4. FILE MANAGEMENT ---------------------------------------------
+--------------------------------------------------------------------
+function M.file_list()
+  curl_async("GET", "/api/files", nil, function(ok, data)
+    if not ok then
+      return notify("File list failed", vim.log.levels.ERROR)
+    end
+    local list = vim.fn.json_decode(data)
+    vim.pretty_print(list) -- interactive view
+  end)
+end
+
+function M.refresh_files()
+  notify("Refreshing file cache …")
+  curl_async("POST", "/api/files", "", function(ok, data)
+    if ok then
+      notify("File list refreshed")
+    else
+      notify("Refresh failed", vim.log.levels.ERROR)
+    end
+  end)
+end
+
+-- open file content in new scratch buffer
+function M.open_file(path)
+  local ep = "/api/file/" .. vim.fn.escape(path, "/")
+  curl_async("GET", ep, nil, function(ok, data)
+    if not ok then
+      return notify("Cannot fetch " .. path, vim.log.levels.ERROR)
+    end
+    local f = vim.fn.json_decode(data)
+    vim.cmd("new " .. f.name)
+    vim.api.nvim_buf_set_lines(0, 0, -1, false, vim.split(f.content, "\n"))
+    notify("Opened " .. path)
+  end)
+end
+
+-- save current buffer back to server
+function M.save_buffer()
+  local bufname = vim.api.nvim_buf_get_name(0)
+  if bufname == "" then
+    return notify("Buffer has no name", vim.log.levels.WARN)
+  end
+  local rel = vim.fn.fnamemodify(bufname, ":.")
+  local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+  local body = json_encode({ content = table.concat(lines, "\n") })
+  local ep = "/api/file/" .. vim.fn.escape(rel, "/")
+  curl_async("PUT", ep, body, function(ok, data)
+    local res = ok and vim.fn.json_decode(data) or {}
+    if res.success then
+      notify("💾 Saved " .. rel)
+    else
+      notify("Save failed", vim.log.levels.ERROR)
+    end
+  end)
+end
+
+--------------------------------------------------------------------
+-- 5. BROWSER / PLAYWRIGHT ----------------------------------------
+--------------------------------------------------------------------
+function M.browser_init()
+  notify("Launching Strudel browser …")
+  curl_async("POST", "/api/browser/init", "", function(ok, data)
+    local res = ok and vim.fn.json_decode(data) or {}
+    notify(res.message or "Browser init failed", res.success and nil or vim.log.levels.ERROR)
+  end)
+end
+
+function M.browser_status()
+  curl_async("GET", "/api/browser/status", nil, function(ok, data)
+    if ok then
+      notify(data)
+    else
+      notify("Browser status error", vim.log.levels.ERROR)
+    end
+  end)
+end
+
+function M.stop_strudel()
+  -- Prefer structured endpoint; fall back to /api/hush
+  curl_async("POST", "/api/browser/stop", "", function(ok, data)
+    local fallback = function()
+      curl_async("POST", "/api/hush", "", function(ok2)
+        if ok2 then
+          notify("⏹️ Strudel stopped")
+        else
+          notify("Stop failed", vim.log.levels.ERROR)
+        end
+      end)
+    end
+    if not ok then
+      return fallback()
+    end
+    local res = vim.fn.json_decode(data)
+    if res.success then
+      notify(res.message)
+    else
+      fallback()
+    end
+  end)
+end
+
+--------------------------------------------------------------------
+-- 6. CODE TRANSFER -----------------------------------------------
+--------------------------------------------------------------------
+local function post_code(code)
+  local payload = json_encode({ code = code })
+  curl_async("POST", "/api/browser/send-code", payload, function(ok, data)
+    local res = ok and vim.fn.json_decode(data) or {}
+    notify(res.message or "Code send failed", res.success and nil or vim.log.levels.ERROR)
+  end)
+end
+
+function M.send_buffer()
+  local text = table.concat(vim.api.nvim_buf_get_lines(0, 0, -1, false), "\n")
+  if text:match("^%s*$") then
+    return notify("Empty buffer", vim.log.levels.WARN)
+  end
+  notify("🚀 Sending buffer to Strudel …")
+  post_code(text)
+end
+
+--------------------------------------------------------------------
+-- 7. SOCKET SERVER HELPER ----------------------------------------
+--------------------------------------------------------------------
+function M.ensure_socket_server()
+  if vim.v.servername ~= "" then
+    return vim.v.servername
+  end
+  local srv = vim.fn.serverstart(M.config.nvim_socket)
+  if srv ~= "" then
+    notify("🔌 Neovim server: " .. srv)
+  end
+  return srv
+end
+
+--------------------------------------------------------------------
+-- 8. SETUP & COMMANDS --------------------------------------------
+--------------------------------------------------------------------
+function M.setup(opts)
+  M.config = vim.tbl_deep_extend("force", M.config, opts or {})
+  M.ensure_socket_server()
+
+  local cmd = vim.api.nvim_create_user_command
+  cmd("StrudelHealth", M.health, {})
+  cmd("StrudelConnect", M.connect_neovim, {})
+  cmd("StrudelNvimStat", M.nvim_status, {})
+  cmd("StrudelFiles", M.file_list, {})
+  cmd("StrudelRefresh", M.refresh_files, {})
+  cmd("StrudelOpen", function(o)
+    M.open_file(o.args)
+  end, { nargs = 1, complete = "file" })
+  cmd("StrudelSave", M.save_buffer, {})
+  cmd("StrudelBrowser", M.browser_init, {})
+  cmd("StrudelBStat", M.browser_status, {})
+  cmd("StrudelStop", M.stop_strudel, {})
+  cmd("StrudelSendBuf", M.send_buffer, {})
+
+  -- Handy keymaps
+  vim.keymap.set("n", "<leader>ss", M.send_buffer, { desc = "Strudel: send buffer" })
+  vim.keymap.set("n", "<leader>sh", M.stop_strudel, { desc = "Strudel: hush/stop" })
+  vim.keymap.set("n", "<leader>si", M.browser_init, { desc = "Strudel: init browser" })
+end
+
+return M

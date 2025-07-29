@@ -1,0 +1,1 @@
+/home/zedro/C0D3/AUDIO/tree-sitter-strdl/queries/highlights.scm
