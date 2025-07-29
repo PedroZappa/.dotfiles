@@ -13,6 +13,7 @@ M.config = {
   nvim_socket = "/tmp/strudel-nvim-socket",
 }
 
+---@class ParserConfig
 local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
 parser_config.strudel = {
   install_info = {
@@ -72,7 +73,7 @@ local function curl_async(method, endpoint, body, cb, content_type)
 
   if vim.system then -- Neovim ≥0.10
     vim.system(args, { text = true, timeout = M.config.timeout }, on_exit)
-  else -- Fallback
+  else               -- Fallback
     vim.fn.jobstart(args, {
       stdout_buffered = true,
       on_exit = function(_, code, _)
@@ -84,7 +85,7 @@ local function curl_async(method, endpoint, body, cb, content_type)
 end
 
 --------------------------------------------------------------------
--- 3. SERVER HEALTH & CONNECTION ----------------------------------
+-- 3. SERVER HEALTH ------------------------------------------------
 --------------------------------------------------------------------
 function M.health()
   curl_async("GET", "/health", nil, function(ok, data)
@@ -103,32 +104,6 @@ function M.health()
   end)
 end
 
-function M.connect_neovim()
-  notify("Connecting to Neovim …")
-  curl_async("POST", "/api/neovim/connect", "", function(ok, data)
-    if not ok then
-      return notify("❌ Neovim connect failed", vim.log.levels.ERROR)
-    end
-    local res = vim.fn.json_decode(data)
-    notify(res.message or "Unknown response")
-    if res.success then
-      M.refresh_files()
-    end
-    -- local s = vim.fn.json_decode(data)
-    -- s.neovim = true
-  end)
-end
-
-function M.nvim_status()
-  curl_async("GET", "/api/neovim/status", nil, function(ok, data)
-    if ok then
-      notify(data)
-    else
-      notify("Neovim status error", vim.log.levels.ERROR)
-    end
-  end)
-end
-
 --------------------------------------------------------------------
 -- 4. FILE MANAGEMENT ---------------------------------------------
 --------------------------------------------------------------------
@@ -138,7 +113,7 @@ function M.file_list()
       return notify("File list failed", vim.log.levels.ERROR)
     end
     local list = vim.fn.json_decode(data)
-    vim.pretty_print(list) -- interactive view
+    vim.notify("Files:\n" .. table.concat(list, "\n"), vim.log.levels.INFO)
   end)
 end
 
@@ -153,40 +128,6 @@ function M.refresh_files()
   end)
 end
 
--- open file content in new scratch buffer
-function M.open_file(path)
-  local ep = "/api/file/" .. vim.fn.escape(path, "/")
-  curl_async("GET", ep, nil, function(ok, data)
-    if not ok then
-      return notify("Cannot fetch " .. path, vim.log.levels.ERROR)
-    end
-    local f = vim.fn.json_decode(data)
-    vim.cmd("new " .. f.name)
-    vim.api.nvim_buf_set_lines(0, 0, -1, false, vim.split(f.content, "\n"))
-    notify("Opened " .. path)
-  end)
-end
-
--- save current buffer back to server
-function M.save_buffer()
-  local bufname = vim.api.nvim_buf_get_name(0)
-  if bufname == "" then
-    return notify("Buffer has no name", vim.log.levels.WARN)
-  end
-  local rel = vim.fn.fnamemodify(bufname, ":.")
-  local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-  local body = json_encode({ content = table.concat(lines, "\n") })
-  local ep = "/api/file/" .. vim.fn.escape(rel, "/")
-  curl_async("PUT", ep, body, function(ok, data)
-    local res = ok and vim.fn.json_decode(data) or {}
-    if res.success then
-      notify("💾 Saved " .. rel)
-    else
-      notify("Save failed", vim.log.levels.ERROR)
-    end
-  end)
-end
-
 --------------------------------------------------------------------
 -- 5. BROWSER / PLAYWRIGHT ----------------------------------------
 --------------------------------------------------------------------
@@ -195,16 +136,6 @@ function M.browser_init()
   curl_async("POST", "/api/browser/init", "", function(ok, data)
     local res = ok and vim.fn.json_decode(data) or {}
     notify(res.message or "Browser init failed", res.success and nil or vim.log.levels.ERROR)
-  end)
-end
-
-function M.browser_status()
-  curl_async("GET", "/api/browser/status", nil, function(ok, data)
-    if ok then
-      notify(data)
-    else
-      notify("Browser status error", vim.log.levels.ERROR)
-    end
   end)
 end
 
@@ -228,6 +159,16 @@ function M.stop_strudel()
       notify(res.message)
     else
       fallback()
+    end
+  end)
+end
+
+function M.browser_status()
+  curl_async("GET", "/api/browser/status", nil, function(ok, data)
+    if ok then
+      notify(data)
+    else
+      notify("Browser status error", vim.log.levels.ERROR)
     end
   end)
 end
@@ -269,29 +210,60 @@ end
 --------------------------------------------------------------------
 -- 8. SETUP & COMMANDS --------------------------------------------
 --------------------------------------------------------------------
+local strudel_subcommands = {
+  sendbuf = { fn = M.send_buffer, desc = "Send buffer" },
+  stop = { fn = M.stop_strudel, desc = "Stop Strudel" },
+  browser = { fn = M.browser_init, desc = "Start browser" },
+  health = { fn = M.health, desc = "Show Strudel health" },
+  files = { fn = M.file_list, desc = "List files" },
+  refresh = { fn = M.refresh_files, desc = "Refresh files" },
+}
+
+local function strudel_cmd(opts)
+  local sub = opts.fargs[1]
+  if not sub then
+    vim.notify("Strudel subcommand required. Available: " .. table.concat(vim.tbl_keys(strudel_subcommands), ", "), vim.log.levels.ERROR)
+    return
+  end
+  local handler = strudel_subcommands[sub:lower()]
+  if not handler then
+    vim.notify("Unknown Strudel subcommand: " .. sub, vim.log.levels.ERROR)
+    return
+  end
+  handler.fn(opts)
+end
+
+local function strudel_complete(arg_lead, cmdline, cursor_pos)
+  local words = vim.split(cmdline, "%s+")
+  if #words <= 2 then
+    -- Complete the subcommand name
+    return vim.tbl_filter(function(key)
+      return key:find(arg_lead, 1, true) == 1
+    end, vim.tbl_keys(strudel_subcommands))
+  end
+  -- Optionally handle per-subcommand arg completion here
+  return {}
+end
+
+vim.api.nvim_create_user_command("Strudel", strudel_cmd, {
+  nargs = "+",
+  complete = strudel_complete,
+  desc = "Strudel command group"
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "strdl",
+  callback = function(args)
+    local bufnr = args.buf
+    vim.keymap.set("n", "<leader>ss", M.send_buffer, { buffer = bufnr, desc = "Strudel: send buffer" })
+    vim.keymap.set("n", "<leader>sh", M.stop_strudel, { buffer = bufnr, desc = "Strudel: hush/stop" })
+    vim.keymap.set("n", "<leader>si", M.browser_init, { buffer = bufnr, desc = "Strudel: init browser" })
+  end,
+})
+
 function M.setup(opts)
   M.config = vim.tbl_deep_extend("force", M.config, opts or {})
   M.ensure_socket_server()
-
-  local cmd = vim.api.nvim_create_user_command
-  cmd("StrudelHealth", M.health, {})
-  cmd("StrudelConnect", M.connect_neovim, {})
-  cmd("StrudelNvimStat", M.nvim_status, {})
-  cmd("StrudelFiles", M.file_list, {})
-  cmd("StrudelRefresh", M.refresh_files, {})
-  cmd("StrudelOpen", function(o)
-    M.open_file(o.args)
-  end, { nargs = 1, complete = "file" })
-  cmd("StrudelSave", M.save_buffer, {})
-  cmd("StrudelBrowser", M.browser_init, {})
-  cmd("StrudelBStat", M.browser_status, {})
-  cmd("StrudelStop", M.stop_strudel, {})
-  cmd("StrudelSendBuf", M.send_buffer, {})
-
-  -- Handy keymaps
-  vim.keymap.set("n", "<leader>ss", M.send_buffer, { desc = "Strudel: send buffer" })
-  vim.keymap.set("n", "<leader>sh", M.stop_strudel, { desc = "Strudel: hush/stop" })
-  vim.keymap.set("n", "<leader>si", M.browser_init, { desc = "Strudel: init browser" })
 end
 
 return M
