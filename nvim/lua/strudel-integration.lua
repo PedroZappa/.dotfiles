@@ -3,6 +3,15 @@
 
 local M = {}
 
+-- Add debug flag
+M.debug = true -- Set to false in production
+
+local function debug_log(msg)
+  if M.debug then
+    vim.notify("🐛 [Strudel Debug] " .. msg, vim.log.levels.INFO)
+  end
+end
+
 --------------------------------------------------------------------
 -- 1. CONFIG -------------------------------------------------------
 --------------------------------------------------------------------
@@ -11,6 +20,7 @@ M.config = {
   timeout = 5000, -- ms
   show_notifications = true,
   nvim_socket = "/tmp/strudel-nvim-socket",
+  playing = false,
 }
 
 ---@class ParserConfig
@@ -19,13 +29,13 @@ parser_config.strudel = {
   install_info = {
     -- url = "https://github.com/pedrozappa/tree-sitter-strdl", -- local path or git repo
     url = "~/C0D3/AUDIO/tree-sitter-strdl/", -- local path
-    files = { "src/parser.c" }, -- note that some parsers also require src/scanner.c or src/scanner.cc
+    files = { "src/parser.c" },              -- note that some parsers also require src/scanner.c or src/scanner.cc
     -- optional entries:
-    branch = "main", -- default branch in case of git repo if different from master
-    generate_requires_npm = false, -- if stand-alone parser without npm dependencies
-    requires_generate_from_grammar = false, -- if folder contains pre-generated src/parser.c
+    branch = "main",                         -- default branch in case of git repo if different from master
+    generate_requires_npm = false,           -- if stand-alone parser without npm dependencies
+    requires_generate_from_grammar = false,  -- if folder contains pre-generated src/parser.c
   },
-  filetype = "strdl", -- if filetype does not match the parser name
+  filetype = "strdl",                        -- if filetype does not match the parser name
 }
 
 vim.api.nvim_create_autocmd("BufRead", {
@@ -50,6 +60,9 @@ end
 -- Asynchronous curl wrapper (uses vim.system if available, otherwise jobstart)
 local function curl_async(method, endpoint, body, cb, content_type)
   local url = M.config.server_url .. endpoint
+  debug_log(string.format("Making %s request to: %s", method, url))
+  debug_log(string.format("Current playing state: %s", tostring(M.config.playing)))
+
   local args = { "curl", "-s", "-X", method, "--max-time", tostring(M.config.timeout / 1000) }
 
   if body then
@@ -64,6 +77,10 @@ local function curl_async(method, endpoint, body, cb, content_type)
   local on_exit = function(obj)
     local ok = (obj.code == 0)
     local data = (obj.stdout ~= "" and obj.stdout) or obj.stderr
+
+    debug_log(string.format("Request completed - OK: %s, Code: %s", tostring(ok), tostring(obj.code)))
+    debug_log(string.format("Response data: %s", data or "nil"))
+
     if cb then
       vim.schedule(function()
         cb(ok, data)
@@ -71,9 +88,9 @@ local function curl_async(method, endpoint, body, cb, content_type)
     end
   end
 
-  if vim.system then -- Neovim ≥0.10
+  if vim.system then
     vim.system(args, { text = true, timeout = M.config.timeout }, on_exit)
-  else               -- Fallback
+  else
     vim.fn.jobstart(args, {
       stdout_buffered = true,
       on_exit = function(_, code, _)
@@ -139,25 +156,115 @@ function M.browser_init()
   end)
 end
 
-function M.stop_strudel()
-  -- Prefer structured endpoint; fall back to /api/hush
-  curl_async("POST", "/api/browser/stop", "", function(ok, data)
-    local fallback = function()
-      curl_async("POST", "/api/hush", "", function(ok2)
-        if ok2 then
-          notify("⏹️ Strudel stopped")
-        else
-          notify("Stop failed", vim.log.levels.ERROR)
-        end
-      end)
-    end
+-- Enhanced toggle function with debugging
+function M.toggle_strudel()
+  debug_log("=== TOGGLE FUNCTION CALLED ===")
+  debug_log(string.format("Current state before toggle: playing = %s", tostring(M.config.playing)))
+
+  if M.config.playing then
+    debug_log("State indicates PLAYING - will attempt to STOP")
+    notify("Stopping Strudel Playback")
+    M.stop_strudel()
+  else
+    debug_log("State indicates STOPPED - will attempt to START")
+    notify("Starting Strudel Playback")
+    M.start_strudel()
+  end
+end
+
+-- Enhanced start function with state management
+function M.start_strudel()
+  debug_log("=== START FUNCTION CALLED ===")
+  notify("Starting Strudel")
+
+  curl_async("POST", "/api/browser/start", "", function(ok, data)
+    debug_log(string.format("Start request callback - OK: %s", tostring(ok)))
+
     if not ok then
+      debug_log("Start request failed - server error")
+      notify("Strudel start failed - server error", vim.log.levels.ERROR)
+      return
+    end
+
+    if not data or data == "" then
+      debug_log("Start request failed - empty response")
+      notify("Strudel start failed - empty response", vim.log.levels.ERROR)
+      return
+    end
+
+    -- Handle non-JSON responses
+    if not data:match("^%s*[{%[]") then
+      debug_log(string.format("Start request failed - non-JSON response: %s", data))
+      notify("Strudel start failed: " .. data, vim.log.levels.ERROR)
+      return
+    end
+
+    local success, res = pcall(vim.fn.json_decode, data)
+    if not success then
+      debug_log("Start request failed - invalid JSON response")
+      notify("Strudel start failed - invalid JSON response", vim.log.levels.ERROR)
+      return
+    end
+
+    debug_log(string.format("Start response parsed successfully: %s", vim.inspect(res)))
+
+    if res and res.success then
+      M.config.playing = true
+      debug_log(string.format("State updated: playing = %s", tostring(M.config.playing)))
+      notify(res.message or "Strudel started")
+    else
+      debug_log("Start request returned unsuccessful response")
+      notify(res and res.message or "Strudel start failed", vim.log.levels.ERROR)
+    end
+  end)
+end
+
+-- Enhanced stop function with state management
+function M.stop_strudel()
+  debug_log("=== STOP FUNCTION CALLED ===")
+
+  local fallback = function()
+    debug_log("Using fallback /api/hush endpoint")
+    curl_async("POST", "/api/hush", "", function(ok2)
+      debug_log(string.format("Fallback request callback - OK: %s", tostring(ok2)))
+      if ok2 then
+        M.config.playing = false
+        debug_log(string.format("State updated via fallback: playing = %s", tostring(M.config.playing)))
+        notify("⏹️ Strudel stopped")
+      else
+        debug_log("Fallback request also failed")
+        notify("Stop failed", vim.log.levels.ERROR)
+      end
+    end)
+  end
+
+  curl_async("POST", "/api/browser/stop", "", function(ok, data)
+    debug_log(string.format("Stop request callback - OK: %s", tostring(ok)))
+
+    if not ok then
+      debug_log("Stop request failed - using fallback")
       return fallback()
     end
-    local res = vim.fn.json_decode(data)
-    if res.success then
+
+    if not data or data == "" or not data:match("^%s*[{%[]") then
+      debug_log("Stop request returned empty/non-JSON - using fallback")
+      return fallback()
+    end
+
+    local success, res = pcall(vim.fn.json_decode, data)
+    if not success then
+      debug_log("Stop request JSON parsing failed - using fallback")
+      return fallback()
+    end
+
+    debug_log(string.format("Stop response parsed successfully: %s", vim.inspect(res)))
+
+    if res and res.success then
+      M.config.playing = false
+      debug_log(string.format("State updated: playing = %s", tostring(M.config.playing)))
       notify(res.message)
     else
+      debug_log("Stop request returned unsuccessful response - using fallback")
       fallback()
     end
   end)
@@ -208,21 +315,43 @@ function M.ensure_socket_server()
 end
 
 --------------------------------------------------------------------
--- 8. SETUP & COMMANDS --------------------------------------------
+-- 8. DEBUG ----------------------------------------
+--------------------------------------------------------------------
+function M.debug_state()
+  debug_log("=== STATE DEBUG ===")
+  debug_log(string.format("Current playing state: %s", tostring(M.config.playing)))
+  debug_log(string.format("Server URL: %s", M.config.server_url))
+  debug_log(string.format("Timeout: %s", M.config.timeout))
+  notify(string.format("Playing: %s", tostring(M.config.playing)))
+end
+
+function M.check_server_health()
+  debug_log("=== TESTING SERVER HEALTH ===")
+  M.health()
+end
+
+--------------------------------------------------------------------
+-- 9. SETUP & COMMANDS --------------------------------------------
 --------------------------------------------------------------------
 local strudel_subcommands = {
-  sendbuf = { fn = M.send_buffer, desc = "Send buffer" },
-  stop = { fn = M.stop_strudel, desc = "Stop Strudel" },
   browser = { fn = M.browser_init, desc = "Start browser" },
-  health = { fn = M.health, desc = "Show Strudel health" },
+  sendbuf = { fn = M.send_buffer, desc = "Send buffer" },
+  toggle = { fn = M.toggle_strudel, desc = "Toggle Strudel Playback" },
   files = { fn = M.file_list, desc = "List files" },
   refresh = { fn = M.refresh_files, desc = "Refresh files" },
+  debug = { fn = M.debug_state, desc = "Show Strudel state" },
+  health = { fn = M.health, desc = "Show Strudel health" },
+  teststart = { fn = M.start_strudel, desc = "Force start" },
+  teststop = { fn = M.stop_strudel, desc = "Force stop" },
 }
 
 local function strudel_cmd(opts)
   local sub = opts.fargs[1]
   if not sub then
-    vim.notify("Strudel subcommand required. Available: " .. table.concat(vim.tbl_keys(strudel_subcommands), ", "), vim.log.levels.ERROR)
+    vim.notify(
+      "Strudel subcommand required. Available: " .. table.concat(vim.tbl_keys(strudel_subcommands), ", "),
+      vim.log.levels.ERROR
+    )
     return
   end
   local handler = strudel_subcommands[sub:lower()]
@@ -248,7 +377,7 @@ end
 vim.api.nvim_create_user_command("Strudel", strudel_cmd, {
   nargs = "+",
   complete = strudel_complete,
-  desc = "Strudel command group"
+  desc = "Strudel command group",
 })
 
 vim.api.nvim_create_autocmd("FileType", {
@@ -257,13 +386,82 @@ vim.api.nvim_create_autocmd("FileType", {
     local bufnr = args.buf
     vim.keymap.set("n", "<leader>ss", M.send_buffer, { buffer = bufnr, desc = "Strudel: send buffer" })
     vim.keymap.set("n", "<leader>sh", M.stop_strudel, { buffer = bufnr, desc = "Strudel: hush/stop" })
+    vim.keymap.set("n", "<leader>st", M.toggle_strudel, { buffer = bufnr, desc = "Strudel: toggle" })
     vim.keymap.set("n", "<leader>si", M.browser_init, { buffer = bufnr, desc = "Strudel: init browser" })
+    vim.keymap.set("n", "<leader>sd", M.debug_state, { buffer = bufnr, desc = "Strudel: debug state" })
+    vim.keymap.set("n", "<leader>sH", M.check_server_health, { buffer = bufnr, desc = "Strudel: check health" })
   end,
 })
+
+-- Define colors for Strudel function categories
+function M.setup_strudel_highlights()
+  -- Core control functions - bright cyan for system-level controls
+  vim.api.nvim_set_hl(0, "@function.control", {
+    fg = "#4ecdc4", -- bright cyan
+    -- bg = "",
+    bold = true,
+    -- italic = false,
+    -- underline = false,
+    -- strikethrough = false,
+    -- reverse = false,
+    -- standout = false,
+  })
+
+  -- Audio functions - warm orange for sound generation
+  vim.api.nvim_set_hl(0, "@function.audio", {
+    fg = "#ff8c42", -- warm orange
+    bold = false,
+  })
+
+  -- Pattern generation functions - purple for creative operations
+  vim.api.nvim_set_hl(0, "@function.pattern", {
+    fg = "#a855f7", -- purple
+    italic = true,
+  })
+
+  -- Effects functions - yellow/gold for audio processing
+  vim.api.nvim_set_hl(0, "@function.effect", {
+    fg = "#f59e0b", -- golden yellow
+    bold = false,
+  })
+
+  -- Envelope functions - pink/magenta for amplitude control
+  vim.api.nvim_set_hl(0, "@function.envelope", {
+    fg = "#ec4899", -- pink
+    italic = true,
+  })
+
+  -- Time manipulation functions - green for temporal operations
+  vim.api.nvim_set_hl(0, "@function.time", {
+    fg = "#10b981", -- emerald green
+    bold = true,
+  })
+
+  -- Utility functions - light blue for helper functions
+  vim.api.nvim_set_hl(0, "@function.utility", {
+    fg = "#38bdf8", -- sky blue
+    bold = false,
+  })
+
+  -- MIDI functions - red for hardware communication
+  vim.api.nvim_set_hl(0, "@function.midi", {
+    fg = "#ef4444", -- red
+    bold = true,
+  })
+
+  -- Sample manipulation functions - teal for sample operations
+  vim.api.nvim_set_hl(0, "@function.sample", {
+    fg = "#14b8a6", -- teal
+    italic = false,
+  })
+end
 
 function M.setup(opts)
   M.config = vim.tbl_deep_extend("force", M.config, opts or {})
   M.ensure_socket_server()
+
+  -- Call the function to apply highlights
+  M.setup_strudel_highlights()
 end
 
 return M

@@ -4,6 +4,7 @@ return {
     require("wrapping").setup(opts)
   end,
   opts = {
+    notify_on_switch = true,
     auto_set_mode_filetype_allowlist = {
       "asciidoc",
       "gitcommit",

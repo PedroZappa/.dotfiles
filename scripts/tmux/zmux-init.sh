@@ -61,7 +61,7 @@ else
 	tmux send-keys		-t RC:2 'll' C-m
 fi
 if command -v obsidian &> /dev/null; then
-	tmux split-window	-t RC:2 -h 
+	tmux split-window	-t RC:2 -v 
 	tmux send-keys		-t RC:2 'cd '$OBSIDIAN_VAULT_PATH C-m
 	tmux send-keys		-t RC:2 'git pull' C-m
 	tmux send-keys		-t RC:2 'obsidian' C-m
@@ -81,7 +81,7 @@ tmux new-session	-d -s $SESH2
 tmux rename-window	-t DEV:1 "$PROJECT_NAME"
 tmux send-keys		-t DEV:1 'cd '$DEV_DIR C-m
 # Create Debug window
-tmux new-window		-t DEV:2 -n 'GDB'
+tmux new-window		-t DEV:2 -n '...'
 # Create SYNC window
 # tmux new-window		-t DEV:3 -n 'DAP'
 # tmux send-keys		-t DEV:3 'cd '$DEV_DIR C-m

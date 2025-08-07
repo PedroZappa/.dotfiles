@@ -148,7 +148,7 @@ alias gls='git pull && git submodule update --recursive --progress'
 alias gcl='git clone'
 alias gco='git checkout'
 alias gcb='git checkout -b'
-alias glgg='git log --graph --oneline --decorate'
+alias glgg='git log --oneline --parents --graph --all'
 alias gm='git merge --stat --log'
 
 # Valgrind

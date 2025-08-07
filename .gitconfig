@@ -1,5 +1,5 @@
 [init]
-	defaultBranch = master
+	defaultBranch = main
 [credential "https://github.com"]
 	helper = 
 [user]
