@@ -31,7 +31,7 @@ cursor-style-blink = true
 # Window
 window-vsync = true
 window-inherit-working-directory = true
-window-decoration = false
+window-decoration = auto
 
 # Shell
 shell-integration = detect

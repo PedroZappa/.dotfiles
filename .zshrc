@@ -247,3 +247,4 @@ fi
 
 # Load .env
 source ~/.dotfiles/.env
+source ${HOME}/.ghcup/env
