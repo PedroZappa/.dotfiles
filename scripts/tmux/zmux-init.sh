@@ -15,15 +15,18 @@ ARCH=$(uname -m)
 
 if [[ $ARCH == "x86_64" ]]; then    # 64-bit Intel/AMD - DEV-Desk
     OBSIDIAN_VAULT_PATH="$HOME/Documents/Zedros-Vault"
+    OBSIDIAN_LYRICS_VAULT_PATH="$HOME/Documents/lyrics.vault"
 elif [[ $ARCH == "x86_64" ]] && [[ $USER == "passunca" ]]; then    # 64-bit Intel/AMD - 42 School machines
     OBSIDIAN_VAULT_PATH="$HOME/sgoinfre/Zedro-Vault"
 elif [[ $ARCH == "arm64" ]] || [[ $ARCH == "aarch64" ]]; then    # 64-bit ARM - DEV-Mac (Apple Silicon)
     OBSIDIAN_VAULT_PATH="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/Zedros-Vault"
+    OBSIDIAN_LYRICS_VAULT_PATH="$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/lyrics.vault"
 else
     echo "ZMUX: Unknown architecture ($ARCH)... you shall not PATH! 😅"
 fi
 
 export OBSIDIAN_VAULT_PATH
+export OBSIDIAN_LYRICS_VAULT_PATH
 
 # Command line argument for working directory
 if [[ $# -gt 0 ]]; then

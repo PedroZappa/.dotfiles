@@ -1,7 +1,12 @@
 -- https://github.com/obsidian-nvim/obsidian.nvim
+
+local function debug_log(msg, level)
+  vim.notify("🪨 [Obsidian Debug] " .. msg, vim.log.levels.INFO)
+end
+
 -- Load from environment variable with fallback and validation
-local function get_vault_path()
-  local env_path = os.getenv("OBSIDIAN_VAULT_PATH")
+local function get_vault_path(path)
+  local env_path = os.getenv(path)
 
   if env_path then
     return env_path
@@ -12,7 +17,11 @@ local function get_vault_path()
   end
 end
 
-local vault_path = get_vault_path()
+local vault_path = get_vault_path("OBSIDIAN_VAULT_PATH")
+local lyrics_vault_path = get_vault_path("OBSIDIAN_LYRICS_VAULT_PATH")
+
+debug_log("Vault path: " .. vault_path, vim.log.levels.INFO)
+debug_log("Lyrics Vault path: " .. lyrics_vault_path, vim.log.levels.INFO)
 
 return {
   "obsidian-nvim/obsidian.nvim",
@@ -41,10 +50,24 @@ return {
         name = "Zedro's Vault",
         path = vault_path,
       },
+      {
+        name = "Lyrics Vault",
+        path = lyrics_vault_path,
+      },
       -- {
       --   name = "work",
       --   path = "~/vaults/work",
       -- },
+    },
+    templates = {
+      folder = "templates",
+      date_format = "%Y-%m-%d-%a",
+      time_format = "%H-%M",
+      substitutions = {
+        now = function()
+          return os.date("%Y-%m-%d-%a")
+        end,
+      }
     },
     log_level = vim.log.levels.INFO,
     daily_notes = {
