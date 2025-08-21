@@ -1,7 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Color Codes note remains the same
 # bash -c 'for c in {0..255}; do tput setaf $c; tput setaf $c | cat -v; echo =$c; done'
+
+# Enable error handling
+# set -euo pipefail
 
 # Load Colors
 if [ -d ~/.dotfiles ]; then
@@ -20,15 +23,26 @@ if [ "${BASH_VERSINFO:-0}" -lt 4 ]; then
     exit 1
 fi
 
-# Enable error handling
-# set -euo pipefail
-
 # Get $USER home directory
 if [ -n "$SUDO_USER" ]; then
     HOME=$(eval echo ~$SUDO_USER)
 else
     HOME=$HOME
 fi
+
+# Detect OS
+detect_os() {
+    case "$(uname -s)" in
+        Darwin*)    echo "Mac";;
+        Linux*)     echo "Linux";;
+        CYGWIN*)    echo "Cygwin";;
+        MINGW*)     echo "Windows";;
+        *)          echo "Unknown";;
+    esac
+}
+
+OS=$(detect_os)
+echo "Detected OS: ${MAG}${OS}${D}"
 
 # Associative array defining source and target FILES
 declare -A FILES=(
@@ -57,6 +71,15 @@ declare -A FILES=(
     ["$HOME/.dotfiles/spotify-player/"]="$HOME/.config/spotify-player"
     ["$HOME/.dotfiles/.mcphost.json"]="$HOME/.mcphost.json"
 )
+
+# Add VSCode
+if [[ "$OS" == "Mac" ]]; then
+  FILES["$HOME/.dotfiles/code/settings.json"]="$HOME/Library/Application Support/Code/User/settings.json"
+elif [[ "$OS" == "Linux" ]]; then
+  FILES["$HOME/.dotfiles/code/settings.json"]="$HOME/.config/Code/User/settings.json"
+elif [[ "$OS" == "Windows" ]]; then
+  FILES["$HOME/.dotfiles/code/settings.json"]="$HOME/%APPDATA%/Code/User/settings.json"
+fi
 
 # Define the backup directory with timestamp
 BACKUP_DIR="$HOME/.dotfiles_bak/$(date +%Y%m%d_%H%M%S)"
@@ -99,5 +122,5 @@ if [ $ERRORS -eq 0 ]; then
     echo "${B}${GRN}󰄬 ${PRP}${USER}${YEL}'s .dotfiles symlinking completed successfully. ${GRN}💻${D}"
 else
     echo "${B}${RED}󰄮 ${PRP}${USER}${YEL}'s .dotfiles symlinking completed with $ERRORS errors. ${RED}⚠${D}" >&2
-    # exit 1
+    exit 1
 fi
