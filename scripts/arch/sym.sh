@@ -78,6 +78,7 @@ if [[ "$OS" == "Mac" ]]; then
 elif [[ "$OS" == "Linux" ]]; then
   FILES["$HOME/.dotfiles/code/settings.json"]="$HOME/.config/Code/User/settings.json"
 elif [[ "$OS" == "Windows" ]]; then
+  APPDATA=$(cygpath -w "$USERPROFILE")
   FILES["$HOME/.dotfiles/code/settings.json"]="$APPDATA/Code/User/settings.json"
 fi
 
