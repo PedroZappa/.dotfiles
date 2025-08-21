@@ -78,7 +78,7 @@ if [[ "$OS" == "Mac" ]]; then
 elif [[ "$OS" == "Linux" ]]; then
   FILES["$HOME/.dotfiles/code/settings.json"]="$HOME/.config/Code/User/settings.json"
 elif [[ "$OS" == "Windows" ]]; then
-  FILES["$HOME/.dotfiles/code/settings.json"]="$HOME/%APPDATA%/Code/User/settings.json"
+  FILES["$HOME/.dotfiles/code/settings.json"]="$APPDATA/Code/User/settings.json"
 fi
 
 # Define the backup directory with timestamp
