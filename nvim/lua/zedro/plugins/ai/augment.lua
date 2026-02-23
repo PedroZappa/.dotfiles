@@ -5,5 +5,5 @@ vim.g.augment_workspace_folders = {
 }
 
 return {
-  "augmentcode/augment.vim"
+  -- "augmentcode/augment.vim"
 }

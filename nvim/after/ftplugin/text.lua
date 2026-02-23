@@ -1,0 +1,11 @@
+-- vim.lsp.start({
+--   name = "LSP From Scratch",
+--   cmd = {
+--     "npx",
+--     "ts-node",
+--     -- Update this with the path to your server.ts
+--     vim.fn.expand("~/C0D3/TEST/lsp-from-scratch/server/src/server.ts"),
+--     "--stdio"
+--   },
+--   capabilities = vim.lsp.protocol.make_client_capabilities(),
+-- })
