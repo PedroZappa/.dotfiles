@@ -248,3 +248,6 @@ fi
 # Load .env
 source ~/.dotfiles/.env
 source ${HOME}/.ghcup/env
+
+# opencode
+export PATH=/home/zedro/.opencode/bin:$PATH

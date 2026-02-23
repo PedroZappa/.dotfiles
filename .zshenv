@@ -93,8 +93,16 @@ export HISTCONTROL=ignorespace
 ########################################
 # Load Version Manager (for Node.js) ###
 ########################################
-#
+
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+#####################
+# OpenCode Config ###
+#####################
+
+# export OPENCODE_MODEL_PROVIDER="ollama"
+# export OPENCODE_BASE_URL="http://localhost:11434/v1"
+# export OPENCODE_MODEL_NAME="deepseek-coder-v2"
 
