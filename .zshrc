@@ -251,3 +251,7 @@ source ${HOME}/.ghcup/env
 
 # opencode
 export PATH=/home/zedro/.opencode/bin:$PATH
+
+if [[ "$TERM_PROGRAM" == "ghostty" ]]; then
+    export TERM=xterm-256color
+fi

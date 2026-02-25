@@ -5,6 +5,7 @@ title =
 # ghostty +list-themes
 theme = Dracula
 fullscreen = true
+term = xterm-256color
 
 background-opacity = 0.9
 background-blur = true
