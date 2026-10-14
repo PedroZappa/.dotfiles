@@ -240,8 +240,8 @@ create_rc_session() {
     fi
     
     # Create Spotify window
-    tmux new-window -t RC:3 -n 'Spotify'
-    tmux send-keys -t RC:3 'spotify_player' C-m
+    tmux new-window -t RC:3 -n 'Monitor'
+    tmux send-keys -t RC:3 'btop' C-m
     
     # Create update window 
     tmux new-window -t RC:4 -n 'update'

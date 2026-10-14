@@ -64,13 +64,13 @@ declare -A FILES=(
     ["$HOME/.dotfiles/bat/"]="$HOME/.config/bat"
     ["$HOME/.dotfiles/atuin/"]="$HOME/.config/atuin"
     ["$HOME/.dotfiles/posting/"]="$HOME/.config/posting/"
-    ["$HOME/.dotfiles/hypr/"]="$HOME/.config/hypr"
-    ["$HOME/.dotfiles/fuzzel.ini"]="$HOME/.config/fuzzel.ini/"
-    ["$HOME/.dotfiles/waybar/"]="$HOME/.config/waybar"
-    ["$HOME/.dotfiles/eww/"]="$HOME/.config/eww"
+    #["$HOME/.dotfiles/hypr/"]="$HOME/.config/hypr"
+    #["$HOME/.dotfiles/fuzzel.ini"]="$HOME/.config/fuzzel.ini/"
+    #["$HOME/.dotfiles/waybar/"]="$HOME/.config/waybar"
+    #["$HOME/.dotfiles/eww/"]="$HOME/.config/eww"
     ["$HOME/.dotfiles/spotify-player/"]="$HOME/.config/spotify-player"
-    ["$HOME/.dotfiles/.mcphost.json"]="$HOME/.mcphost.json"
-    ["$HOME/.dotfiles/opencode"]="$HOME/.config/opencode"
+    #["$HOME/.dotfiles/.mcphost.json"]="$HOME/.mcphost.json"
+    #["$HOME/.dotfiles/opencode"]="$HOME/.config/opencode"
 )
 
 # Add VSCode

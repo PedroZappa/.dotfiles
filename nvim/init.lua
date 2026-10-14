@@ -13,4 +13,4 @@ require("zedro.core.macros")
 -- Lazy Plugin Manager
 require("zedro.lazy")
 
-require("strudel-integration").setup()
+-- require("strudel-integration").setup()

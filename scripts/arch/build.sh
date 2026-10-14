@@ -39,7 +39,7 @@ cd "$ORIG_DIR"
 SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 
 echo "${B}${CYA}Starting zap.sh execution...${D}"
-"${SCRIPT_DIR}/zap.sh" || { echo "${B}${RED}Error: zap.sh failed${D}"; exit 1; }
+"${SCRIPT_DIR}/zap.sh" || { echo "${B}${RED}Error: zap.sh failed${D}"; exit 0; }
 
 echo "${B}${GRN}Starting tmux.sh execution...${D}"
 "${SCRIPT_DIR}/tmux.sh" || { echo "${B}${RED}Error: tmux.sh failed${D}"; exit 1; }
