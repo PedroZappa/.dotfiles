@@ -12,7 +12,7 @@ elseif hostname == "ZeeMac.local" then
 end
 
 return {
-  {
+  -- {
   --   "yetone/avante.nvim",
   --   event = "VeryLazy",
   --   lazy = false,
