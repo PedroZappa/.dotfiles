@@ -25,6 +25,7 @@
  _comp_options+=(globdots)
 
 
+fpath+=($HOME/completion_zsh $fpath)
 fpath+=~/.zfunc; autoload -Uz compinit; compinit
 
 # bun completions
