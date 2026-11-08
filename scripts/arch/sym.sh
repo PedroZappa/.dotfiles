@@ -71,7 +71,8 @@ declare -A FILES=(
     #["$HOME/.dotfiles/eww/"]="$HOME/.config/eww"
     ["$HOME/.dotfiles/spotify-player/"]="$HOME/.config/spotify-player"
     #["$HOME/.dotfiles/.mcphost.json"]="$HOME/.mcphost.json"
-    #["$HOME/.dotfiles/opencode"]="$HOME/.config/opencode"
+    ["$HOME/.dotfiles/opencode/opencode.json"]="$HOME/.config/opencode/opencode.json"
+    ["$HOME/.dotfiles/opencode/commands"]="$HOME/.config/opencode/commands"
 )
 
 # Add VSCode
