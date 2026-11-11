@@ -7,6 +7,9 @@ export LANG=en_US.UTF-8
 
 # set Architeture
 export ARCH=$(uname -m)
+# System hostname (macOS + Linux)
+export HOSTNAME="$(hostname)"
+
 # Set compiler
 export CC=clang
 export CXX=clang++
