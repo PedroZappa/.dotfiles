@@ -22,6 +22,7 @@ require("lazy").setup({
     { import = 'zedro.plugins.git' },
     { import = 'zedro.plugins.lsp' },
     { import = 'zedro.plugins.nav' },
+    { import = 'zedro.plugins.render' },
   },
   {
     checker = {
