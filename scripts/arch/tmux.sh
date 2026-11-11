@@ -19,17 +19,15 @@ else
     source ./colors.sh
 fi
 
-# Install oh-my-tmux
-install_oh_my_tmux() {
-	if [[ ! -d "$HOME/.tmux" || ! -L "$HOME/.tmux.conf" ]]; then
-		echo "${YEL}Installing oh-my-tmux...${D}"
-		cd "$HOME"
-		git clone https://github.com/gpakosz/.tmux.git
-		ln -s -f .tmux/.tmux.conf
-		echo "${YEL}${B}oh-my-tmux installation complete.${PRP} 󰩑 ${D}"
+# Install tpm (Tmux Plugin Manager)
+install_tpm() {
+	if [[ ! -d "$HOME/.tmux/plugins/tpm" ]]; then
+		echo "${YEL}Installing tpm...${D}"
+		git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
+		echo "${YEL}${B}tpm installation complete.${PRP} 󰩑 ${D}"
 	else
-		echo "${YEL}oh-my-tmux already installed. ${PRP} 󰩑 ${D}"
+		echo "${YEL}tpm already installed. ${PRP} 󰩑 ${D}"
 	fi
 }
 
-install_oh_my_tmux
+install_tpm
