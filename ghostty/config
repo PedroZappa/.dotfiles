@@ -8,6 +8,7 @@ fullscreen = false
 term = xterm-256color
 
 background-opacity = 0.9
+background-opacity-cells = true
 background-blur = true
 background = #000000
 foreground = #ffffff
@@ -37,6 +38,9 @@ window-decoration = auto
 # Shell
 shell-integration = detect
 shell-integration-features = cursor
+
+# Notifications
+notify-on-command-finish = unfocused
 
 bold-is-bright = true
 
