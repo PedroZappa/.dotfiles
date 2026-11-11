@@ -61,6 +61,17 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 # Ollama
 export OLLAMA_ORIGINS="*"
 
+# Obsidian
+case "$(uname -s)" in
+    Linux)
+        export OBSIDIAN_ZEDRO=""
+        ;;
+    Darwin)
+        export OBSIDIAN_ZEDRO=""
+        ;;
+esac
+
+
 ##############
 ### Tools ###
 ##############
