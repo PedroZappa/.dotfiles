@@ -256,3 +256,6 @@ export PATH=/home/zedro/.opencode/bin:$PATH
 if [[ "$TERM_PROGRAM" == "ghostty" ]]; then
     export TERM=xterm-256color
 fi
+
+# Added by Antigravity CLI installer
+export PATH="/home/zedro/.local/bin:$PATH"
