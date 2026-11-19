@@ -1,3 +1,14 @@
+-- Open audio files with nvim.sfx_player, otherwise use neo-tree's default open.
+local function open_with_sfx(state)
+  local node = state.tree:get_node()
+  local sfx = require("nvim.sfx_player")
+  if node and node.type == "file" and sfx.is_audio(node.path) then
+    sfx.open(node.path)
+    return
+  end
+  require("neo-tree.sources.filesystem.commands").open(state)
+end
+
 return {
   "nvim-neo-tree/neo-tree.nvim",
   branch = "v3.x",
@@ -291,7 +302,10 @@ return {
         },
       },
 
-      commands = {} -- Add a custom command or override a global one using the same function name
+      commands = { -- Add a custom command or override a global one using the same function name
+        -- <CR> / <2-LeftMouse> play audio files, everything else opens normally.
+        open = open_with_sfx,
+      }
     },
     buffers = {
       follow_current_file = {
