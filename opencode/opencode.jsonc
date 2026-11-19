@@ -8,6 +8,7 @@
     "provider": "random",
   },
   "plugins": [
+    "@mohak34/opencode-notifier@latest"
   ],
   "update": "notify",
 }
